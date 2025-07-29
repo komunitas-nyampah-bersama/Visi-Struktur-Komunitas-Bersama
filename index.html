@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komunitas Nyampah Bersama | Menuju Ekonomi Sirkular Berbasis Komunitas Global yang Berdaya</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c7744;
+            --secondary: #1a2a6c;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --green-light: #d4edda;
+            --blue-light: #d6e4ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            color: #333;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--secondary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .cta a {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(26,42,108,0.1) 0%, rgba(44,119,68,0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26,42,108,0.05) 0%, rgba(26,42,108,0) 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            color: var(--secondary);
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            color: #555;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .button.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .button.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Programs Section */
+        .programs {
+            padding: 5rem 2rem;
+            background-color: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .program-icon {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            font-size: 2rem;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .program-content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .program-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .program-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-link {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .program-link:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        /* DefiHub Integration */
+        .defihub {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(26,42,108,0.05) 0%, rgba(44,119,68,0.05) 100%);
+        }
+
+        .integration-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .defihub-content {
+            flex: 1;
+        }
+
+        .defihub-content h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .defihub-content p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .features-list {
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+
+        .defihub-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .defihub-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: var(--light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .footer-col p, .footer-col li {
+            opacity: 0.8;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.7;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .integration-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .button {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-recycle"></i>
+            <div class="logo-text">
+                Komunitas Nyampah Bersama
+                <span class="logo-sub">Menuju Ekonomi Sirkular Berbasis Komunitas Global yang Berdaya dan Berkelanjutan</span>
+            </div>
+        </div>
+        
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="#"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> Tentang Kami</a></li>
+                <li><a href="#programs"><i class="fas fa-project-diagram"></i> Program</a></li>
+                <li><a href="https://zenodo.org/communities/nyampahbersama"><i class="fas fa-blog"></i> publikasi</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Kontak</a></li>
+            </ul>
+        </nav>
+        
+        <div class="cta">
+            <a href="https://ec.europa.eu/eusurvey/runner/d9508257-4c05-4109-74d8-cac7c261a9a6"><i class="fas fa-users"></i> Gabung Komunitas</a>
+        </div>
+        
+        <div class="mobile-toggle" id="mobile-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Kutemani Nyampahmu <span>Sampai Tua</span></h1>
+            <p>Komunitas inovatif yang menggabungkan pengelolaan sampah dan lingkungan dengan teknologi desentralisasi untuk menciptakan ekonomi sirkular berkelanjutan.</p>
+            <div class="hero-buttons">
+                <a href="#" class="button primary"><i class="fas fa-play-circle"></i> Mulai Sekarang</a>
+                <a href="#" class="button secondary"><i class="fas fa-info-circle"></i> Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Komunitas Nyampah Bersama">
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs" id="programs">
+        <div class="section-header">
+            <h2>Program dan Layanan Unggulan</h2>
+            <p>Kami menyediakan berbagai solusi inovatif untuk pengelolaan sampah dan pemberdayaan komunitas dan organisasi</p>
+        </div>
+        
+        <div class="program-grid">
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Dompet Cerdas Bersama</h3>
+                    <p>Dompet cerdas digital untuk mengelola insentif dan transaksi ekonomi sirkular berbasis teknologi masa depan dan blockhain.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Nyampah Akademi</h3>
+                    <p>Program pemberdayaan masyarakat dengan edukasi, pelatihan , publikasi dan jurnalistik tentang pengelolaan lingkungan, limbah, sampah, ekonomi sirkular, dan teknologi blockchain, serta menjadi jembatan antara masyarakat dan dukungan nasional dan internasional.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Bank Sampah Digital</h3>
+                    <p>Sistem bank sampah modern berbasis aplikasi dengan integrasi token ekonomi dan DeFi.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Dex Carbon Rakyat</h3>
+                    <p>Marketplace dengan standart internasional dan terdesentralisasi untuk perdagangan karbon dan produk daur ulang untuk menciptakan ekonomi yang berdaya dan berkelanjutan.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Nyampah Profesi</h3>
+                    <p>Platform untuk membuka lapangan pekerjaan dan peluang karir profesional kepada masyarakat dengan memberikan jalur relasi yang bisa diakses secara global dan sejalan dengan visi PGDS dan Gas Rumah Kaca.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="program-content">
+                    <h3>Zero Waste Area</h3>
+                    <p>Program pengembangan kawasan bebas sampah dengan pendekatan holistik dan teknologi terutama lingkungan pendidikan dan kesehatan serta penyesuaian kebutuhan masyarakat.</p>
+                    <a href="#" class="program-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DeFiHub Integration -->
+    <section class="defihub">
+        <div class="integration-container">
+            <div class="defihub-content">
+                <h2>Membuka Jaringan dengan <span style="color: var(--primary);">European Union dan Sistem Nasional</span></h2>
+                <p>Kami bangga menjadi bagian dari ekosistem EU (European Union) dan Bebas Sampah ID yang menghubungkan pengelolaan sampah dan lingkungan dengan visi dan inovasi terdepan yang berkelanjutan.</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Infrastruktur Global</h4>
+                            <p>Platform kami dibangun dengan arsitektur modular yang memungkinkan integrasi mudah dengan berbagai layanan.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Reward Token Ekonomi dari Aksi dan pengelolaan sampah</h4>
+                            <p>Mengembangkan token utilitas berbasis aksi nyata dan pengelolaan sampah yang dapat digunakan dalam ekosistem komunitas untuk meciptakan ekonomi sirkular yang transfaran dan berkelanjutan.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Transparansi dan Terverifikasi</h4>
+                            <p>Setiap transaksi dan kontribusi aktifitas sosial dan pengelolaan limbah lingkungan tercatat secara transparan dan dapat diverifikasi secara langsung di blockchain.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Insentif Finansial</h4>
+                            <p>Memberikan insentif finansial langsung melalui mekanisme sistem komunitas yang transparan untuk kontribusi aksi sosial dan pengelolaan limbah.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://zenodo.org/communities/nyampahbersama" class="button secondary"><i class="fas fa-download"></i> Whitepaper kerangka kerja Komunitas</a>
+            </div>
+            
+            <div class="defihub-image">
+                <img src="https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="SuperModularDeFiHub Integration">
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Bergabunglah dengan Revolusi Pengelolaan Sampah</h2>
+            <p>Jadilah bagian dari komunitas yang mengubah sampah menjadi sumber daya berharga dengan teknologi blockchain dan DeFi.</p>
+            <a href="#" class="cta-button"><i class="fas fa-user-plus"></i> lihat komunitas</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Komunitas Nyampah Bersama</h3>
+                <p>Mengubah sampah menjadi sumber daya berharga melalui inovasi teknologi dan pemberdayaan komunitas.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Program Kami</h3>
+                <ul>
+                    <li><a href="#">Dompet Cerdas Bersama</a></li>
+                    <li><a href="#">Nyampah Akademi</a></li>
+                    <li><a href="#">Bank Sampah Digital</a></li>
+                    <li><a href="#">Dex Carbon Rakyat</a></li>
+                    <li><a href="#">Nyampah Profesi</a></li>
+                    <li><a href="#">Zero Waste Area</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Tautan Cepat</h3>
+                <ul>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Blog & Artikel</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
+                    <li><a href="#">Karir</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Kontak Kami</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Jl. Ekosistem Hijau No. 123, Jakarta</p>
+                <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
+                <p><i class="fas fa-envelope"></i> info@nyampahbersama.id</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Komunitas Nyampah Bersama. Seluruh hak cipta dilindungi. | Integrasi dengan European Union dan Bebas Sampah ID</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('show');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Simple animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        // Observe program cards
+        document.querySelectorAll('.program-card').forEach(card => {
+            card.classList.add('animate');
+            observer.observe(card);
+        });
+        
+        // Add animation classes
+        document.querySelectorAll('.feature-item').forEach(item => {
+            item.classList.add('animate');
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
