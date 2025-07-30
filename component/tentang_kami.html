@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Komunitas Nyampah Bersama</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a5d1a 0%, #2e8b57 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #2e7d32;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .vision-mission {
+            background: #f0f9f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .vision-mission h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 10px;
+        }
+        
+        .vis-mis-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .vision, .mission {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .mission ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .mission li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: #e8f5e9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+        
+        .tab:hover, .tab.active {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 0 0 15px 15px;
+            padding: 30px;
+            min-height: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Hierarchy Tree Styling */
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .level {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+        
+        .node {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 0 15px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-color: #4caf50;
+        }
+        
+        .node::before {
+            content: '';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 25px;
+            background: #4caf50;
+        }
+        
+        .node.high-level {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 25px;
+            width: 320px;
+        }
+        
+        .node.top-level {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 30px;
+            width: 350px;
+        }
+        
+        .node-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #1b5e20;
+        }
+        
+        .node.top-level .node-title {
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        .node-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .node.top-level .node-desc {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .divider {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4caf50, transparent);
+            margin: 30px auto;
+        }
+        
+        .division-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .division-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .division-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: #e8f5e9;
+            padding: 20px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        
+        .card-title {
+            color: #1b5e20;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-section {
+            margin-bottom: 20px;
+        }
+        
+        .card-section h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #c8e6c9;
+            padding-bottom: 5px;
+        }
+        
+        .card-section ul {
+            padding-left: 20px;
+        }
+        
+        .card-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .requirements {
+            background: #f5fbf5;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .requirements h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .req-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .req-box {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #4caf50;
+        }
+        
+        .req-box h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .req-box h3 i {
+            margin-right: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            margin-top: 40px;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 992px) {
+            .level {
+                flex-wrap: wrap;
+            }
+            
+            .node {
+                margin: 10px;
+            }
+            
+            .division-cards {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .vis-mis-container {
+                flex-direction: column;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .division-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-recycle"></i>
+            </div>
+            <h1>Tentang Kami</h1>
+            <p class="subtitle">Visi Misi & Tata Kelola Berkelanjutan</p>
+            
+            <div class="vision-mission">
+                <h2><i class="fas fa-bullseye"></i> Visi & Misi</h2>
+                <div class="vis-mis-container">
+                    <div class="vision">
+                        <h3><i class="fas fa-eye"></i> Visi</h3>
+                        <p>Menjadi komunitas terdepan dalam inovasi pengelolaan lingkungan dan limbah yang berkelanjutan, menciptakan nilai ekonomi, dan meningkatkan kesadaran lingkungan melalui partisipasi aktif masyarakat dengan menjunjung tinggi prinsip-prinsip tata kelola yang baik dan etika universal.</p>
+                    </div>
+                    <div class="mission">
+                        <h3><i class="fas fa-tasks"></i> Misi</h3>
+                        <ul>
+                            <li>Mengedukasi masyarakat tentang pentingnya pengelolaan sampah yang bertanggung jawab.</li>
+                            <li>Menciptakan sistem insentif dan reward yang mendorong partisipasi dalam kegiatan lingkungan.</li>
+                            <li>Mengembangkan ekosistem ekonomi sirkular yang berkelanjutan melalui produk energi terbarukan dan daur ulang.</li>
+                            <li>Mendigitalisasi sistem manajemen dan pengelolaan lingkungan untuk efisiensi dan transparansi.</li>
+                            <li>Mengembangkan solusi energi terbarukan dan budidaya berkelanjutan dari sampah.</li>
+                            <li>Memberikan apresiasi dan peluang eksklusif bagi pionir perubahan di komunitas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="hierarchy"><i class="fas fa-sitemap"></i> Struktur Hierarki</div>
+            <div class="tab" data-tab="divisions"><i class="fas fa-layer-group"></i> Divisi Program</div>
+            <div class="tab" data-tab="requirements"><i class="fas fa-clipboard-list"></i> Syarat & Kewajiban</div>
+            <div class="tab" data-tab="governance"><i class="fas fa-balance-scale"></i> Tata Kelola</div>
+        </div>
+        
+        <div class="content">
+            <!-- Tab 1: Hierarchy Structure -->
+            <div class="tab-content active" id="hierarchy-content">
+                <h2 style="text-align: center; color: #2e7d32; margin-bottom: 30px;"><i class="fas fa-network-wired"></i> Struktur Hierarki Komunitas</h2>
+                
+                <div class="tree">
+                    <!-- Level 1: Dewan Pengawas -->
+                    <div class="level">
+                        <div class="node top-level">
+                            <div class="node-title">Dewan Pengawas / Komite Etik</div>
+                            <div class="node-desc">Tingkatan tertinggi pengawasan independen, memastikan kepatuhan terhadap nilai-nilai, etika, dan peraturan</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Level 2: Ketua -->
+                    <div class="level">
+                        <div class="node high-level">
+                            <div class="node-title">Ketua Komunitas</div>
+                            <div class="node-desc">Pemimpin utama strategi, operasional keseluruhan, dan representasi komunitas</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Level 3: Wakil Ketua, Sekretaris, Bendahara -->
+                    <div class="level">
+                        <div class="node">
+                            <div class="node-title">Wakil Ketua Komunitas</div>
+                            <div class="node-desc">Mendukung Ketua, koordinasi antar divisi, dan pengawasan implementasi program</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Sekretaris Jenderal</div>
+                            <div class="node-desc">Administrasi, dokumentasi, komunikasi, dan kepatuhan regulasi</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Bendahara</div>
+                            <div class="node-desc">Manajemen keuangan, laporan, kepatuhan finansial, dan audit internal</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Level 4: Kepala Divisi -->
+                    <div class="level">
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Edukasi</div>
+                            <div class="node-desc">Merancang & melaksanakan kurikulum edukasi pengelolaan sampah</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Insentif & Reward</div>
+                            <div class="node-desc">Mengembangkan sistem penghargaan untuk partisipasi anggota</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Marketplace</div>
+                            <div class="node-desc">Pengelolaan platform marketplace produk daur ulang</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Bank Sampah Digital</div>
+                            <div class="node-desc">Pengembangan sistem digitalisasi bank sampah</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Energi & Maggot</div>
+                            <div class="node-desc">Pengembangan solusi energi terbarukan dari sampah</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Kepala Divisi Premium Eksklusif</div>
+                            <div class="node-desc">Manajemen program insentif eksklusif untuk pionir</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Level 5: Staf & Anggota -->
+                    <div class="level">
+                        <div class="node">
+                            <div class="node-title">Staf Divisi Program</div>
+                            <div class="node-desc">Pelaksana kegiatan dan program di masing-masing divisi</div>
+                        </div>
+                        <div class="node">
+                            <div class="node-title">Anggota Umum</div>
+                            <div class="node-desc">Seluruh anggota komunitas yang terdaftar dan berpartisipasi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 2: Divisions -->
+            <div class="tab-content" id="divisions-content">
+                <h2 style="text-align: center; color: #2e7d32; margin-bottom: 30px;"><i class="fas fa-th-large"></i> Divisi Program</h2>
+                
+                <div class="division-cards">
+                    <!-- Division 1 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-graduation-cap"></i> Divisi Program Edukasi</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Merancang & melaksanakan kurikulum edukasi</li>
+                                    <li>Memastikan materi relevan dan menarik</li>
+                                    <li>Melakukan evaluasi dampak edukasi</li>
+                                    <li>Mendorong perubahan perilaku positif</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Pilah Sampah dari Rumah</li>
+                                    <li>Ekonomi Sampah (Saldo Sampah Tabungan Digital)</li>
+                                    <li>Energi Hijau dan Daur Ulang</li>
+                                    <li>Sekolah Hidup Bersih Luar Dalam</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Pengembang kurikulum</li>
+                                    <li>Tim pengajar/fasilitator</li>
+                                    <li>Koordinator acara edukasi</li>
+                                    <li>Tim monitoring & evaluasi</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division 2 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-award"></i> Divisi Insentif dan Reward</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Mengembangkan sistem penghargaan</li>
+                                    <li>Memastikan poin dan hadiah dikelola dengan integritas</li>
+                                    <li>Mengidentifikasi kemitraan untuk hadiah</li>
+                                    <li>Menjaga transparansi dan keadilan sistem</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Poin Reward Harian</li>
+                                    <li>Saldo NyampahCoin & Marketplace Reward</li>
+                                    <li>Level Nasabah (Pemula → Setia → Legenda)</li>
+                                    <li>Hadiah Digital & Fisik</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Administrator sistem poin</li>
+                                    <li>Analis data partisipasi</li>
+                                    <li>Koordinator hadiah</li>
+                                    <li>Tim kemitraan reward</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division 3 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-shopping-cart"></i> Divisi Marketplace</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Mengelola platform marketplace</li>
+                                    <li>Memastikan kualitas produk daur ulang</li>
+                                    <li>Mempromosikan UMKM lokal</li>
+                                    <li>Memperluas jangkauan pasar</li>
+                                    <li>Mengelola inventarisasi dan logistik</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Penyediaan Sampah Terpilah</li>
+                                    <li>Produk Kreatif Home Made</li>
+                                    <li>Kompos Organik & Urban Farming Kit</li>
+                                    <li>Marketplace Internal + Ekspansi ke Tokopedia/Shopee</li>
+                                    <li>Program NET Produk Daur Ulang Eksklusif</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Pengelola platform e-commerce</li>
+                                    <li>Kurator produk</li>
+                                    <li>Tim pemasaran digital</li>
+                                    <li>Tim logistik</li>
+                                    <li>Tim hubungan penjual</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division 4 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-mobile-alt"></i> Divisi Bank Sampah Digital</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Merancang sistem digital bank sampah</li>
+                                    <li>Memastikan sistem aman dan user-friendly</li>
+                                    <li>Memastikan integrasi data akurat</li>
+                                    <li>Mengatasi masalah teknis</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Wallet Cerdas Bersama Digitalisasi Umum Rakyat</li>
+                                    <li>Sistem Setor-Sampah → Dapat Saldo Digital</li>
+                                    <li>Hubungkan Bank Sampah Konvensional → Digital</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Pengembang aplikasi/sistem</li>
+                                    <li>Analis data</li>
+                                    <li>Spesialis keamanan data</li>
+                                    <li>Tim dukungan teknis</li>
+                                    <li>Koordinator integrasi bank sampah</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division 5 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-bolt"></i> Divisi Energi & Maggot</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Mengembangkan solusi energi terbarukan</li>
+                                    <li>Mempromosikan budidaya maggot</li>
+                                    <li>Melakukan riset dan pilot project</li>
+                                    <li>Memastikan praktik aman dan ramah lingkungan</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Komposter Rumah & Komunitas</li>
+                                    <li>Unit Maggot Rakyat → Budidaya → Marketplace</li>
+                                    <li>Program Minyak Jelantah → Biodiesel Rakyat</li>
+                                    <li>Biodigester Mini → Produksi Biogas Lokal</li>
+                                    <li>Skema Tokenisasi Energi Sampah</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Peneliti/inovator</li>
+                                    <li>Teknisi lapangan</li>
+                                    <li>Koordinator budidaya maggot</li>
+                                    <li>Ahli biogas</li>
+                                    <li>Tim edukasi teknis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Division 6 -->
+                    <div class="division-card">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-crown"></i> Divisi Premium Eksklusif</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-section">
+                                <h3><i class="fas fa-tasks"></i> Tugas Kepala Divisi</h3>
+                                <ul>
+                                    <li>Merancang program insentif eksklusif</li>
+                                    <li>Mengidentifikasi peluang kolaborasi premium</li>
+                                    <li>Mengembangkan peluang kolaborasi</li>
+                                    <li>Memastikan nilai tambah bagi anggota</li>
+                                    <li>Menjaga transparansi kriteria</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-list-ul"></i> Sub-Program</h3>
+                                <ul>
+                                    <li>Golden Seller di Marketplace</li>
+                                    <li>NFT Founder Rakyat Nyampah</li>
+                                    <li>Akses Pendanaan Mikro Proyek Inovasi</li>
+                                    <li>Ekspor Produk Daur Ulang Premium</li>
+                                    <li>Badge Eksklusif + Gelar</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="card-section">
+                                <h3><i class="fas fa-users"></i> Staf Program</h3>
+                                <ul>
+                                    <li>Koordinator program</li>
+                                    <li>Tim hubungan anggota premium</li>
+                                    <li>Kurator peluang investasi/ekspor</li>
+                                    <li>Tim komunikasi khusus</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Requirements -->
+            <div class="tab-content" id="requirements-content">
+                <h2 style="text-align: center; color: #2e7d32; margin-bottom: 30px;"><i class="fas fa-clipboard-check"></i> Syarat & Kewajiban Anggota</h2>
+                
+                <div class="requirements">
+                    <div class="req-container">
+                        <div class="req-box">
+                            <h3><i class="fas fa-user-check"></i> Syarat Keanggotaan</h3>
+                            <ul>
+                                <li>Mengisi formulir pendaftaran anggota</li>
+                                <li>Menyetujui Anggaran Dasar/Rumah Tangga (AD/ART)</li>
+                                <li>Menyetujui Kode Etik Komunitas</li>
+                                <li>Menyetujui Kebijakan Perlindungan Data Pribadi</li>
+                                <li>Bersedia mematuhi prinsip non-diskriminasi dan inklusivitas</li>
+                                <li>Menghargai hak asasi manusia</li>
+                                <li>(Opsional) Memiliki ketertarikan pada isu lingkungan dan ekonomi sirkular</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="req-box">
+                            <h3><i class="fas fa-user-shield"></i> Kewajiban Umum</h3>
+                            <ul>
+                                <li>Mematuhi Kode Etik dan semua kebijakan komunitas</li>
+                                <li>Menjaga kerahasiaan informasi sensitif</li>
+                                <li>Berinteraksi secara profesional dan tanpa diskriminasi</li>
+                                <li>Mendukung visi dan misi komunitas dengan integritas</li>
+                                <li>Berpartisipasi aktif dalam upaya komunitas</li>
+                                <li>Memromosikan nilai-nilai positif, inklusivitas, dan keberlanjutan</li>
+                                <li>Melaporkan pelanggaran etika melalui saluran pengaduan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 4: Governance -->
+            <div class="tab-content" id="governance-content">
+                <h2 style="text-align: center; color: #2e7d32; margin-bottom: 30px;"><i class="fas fa-balance-scale-right"></i> Tata Kelola & Akuntabilitas</h2>
+                
+                <div class="req-container">
+                    <div class="req-box">
+                        <h3><i class="fas fa-book"></i> Anggaran Dasar & Rumah Tangga</h3>
+                        <p>Seluruh struktur dan operasional diresmikan dalam AD/ART yang jelas, dapat diakses, dan ditinjau secara berkala.</p>
+                    </div>
+                    
+                    <div class="req-box">
+                        <h3><i class="fas fa-chart-line"></i> Sistem Audit & Evaluasi</h3>
+                        <ul>
+                            <li><strong>Audit Internal:</strong> Berkala oleh Bendahara/Komite Etik</li>
+                            <li><strong>Audit Eksternal:</strong> Oleh pihak ketiga independen untuk validasi</li>
+                            <li><strong>Evaluasi Kinerja:</strong> Berdasarkan Key Performance Indicators (KPIs)</li>
+                            <li><strong>Laporan Tahunan:</strong> Kinerja finansial, operasional, dan dampak</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="req-box">
+                        <h3><i class="fas fa-exclamation-circle"></i> Mekanisme Pengaduan</h3>
+                        <p>Saluran aman dan rahasia untuk melaporkan pelanggaran etika, penipuan, atau kecurangan tanpa takut retribusi. Ditangani oleh Dewan Pengawas/Komite Etik.</p>
+                    </div>
+                    
+                    <div class="req-box">
+                        <h3><i class="fas fa-database"></i> Perlindungan Data</h3>
+                        <p>Kebijakan ketat mengenai pengumpulan, penyimpanan, penggunaan, dan penghapusan data pribadi anggota, sesuai prinsip-prinsip privasi data internasional (GDPR).</p>
+                    </div>
+                    
+                    <div class="req-box">
+                        <h3><i class="fas fa-shield-alt"></i> Manajemen Risiko</h3>
+                        <p>Mengidentifikasi, menilai, dan memitigasi risiko operasional, finansial, reputasi, dan kepatuhan secara proaktif.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Sistem Hierarki & Tata Kelola Komunitas "Nyampah Bersama" - Menciptakan Nilai Ekonomi dan Meningkatkan Kesadaran Lingkungan</p>
+            <p>© 2023 Nyampah Bersama Community. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show the selected tab content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // Add hover effect to nodes
+        document.querySelectorAll('.node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                node.style.transform = 'translateY(-7px)';
+                node.style.boxShadow = '0 12px 25px rgba(0,0,0,0.15)';
+            });
+            
+            node.addEventListener('mouseleave', () => {
+                node.style.transform = 'translateY(0)';
+                node.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+        });
+    </script>
+</body>
+</html>
