@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opera Mini Web3 Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e5799, #207cca, #2989d8, #1e5799);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #000;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff7700;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: #ff7700;
+            font-size: 24px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, #ff7700, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 119, 0, 0.3);
+        }
+        
+        .connection-info {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .connection-info i {
+            color: #0f0;
+        }
+        
+        .url-bar {
+            display: flex;
+            padding: 10px;
+            background: #111;
+            border-bottom: 1px solid #333;
+        }
+        
+        .url-bar input {
+            flex: 1;
+            padding: 10px;
+            background: #222;
+            color: #fff;
+            border: 1px solid #ff7700;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+        
+        .url-bar button {
+            background: #ff7700;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background: #000;
+            border-bottom: 1px solid #333;
+        }
+        
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .control-btn i {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: #ffaa00;
+        }
+        
+        .control-btn:hover {
+            color: #fff;
+            transform: translateY(-3px);
+        }
+        
+        .screen {
+            height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #000;
+            color: #ccc;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        
+        .compression-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            font-size: 12px;
+            color: #0f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .home-content {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .home-content h2 {
+            color: #ff7700;
+            margin: 20px 0;
+        }
+        
+        .web3-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: rgba(255, 119, 0, 0.1);
+            border: 1px solid #ff7700;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .feature:hover {
+            background: rgba(255, 119, 0, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .feature i {
+            font-size: 24px;
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+        
+        .rendered-page img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #333;
+            margin: 10px 0;
+        }
+        
+        .rendered-page {
+            color: #fff;
+        }
+        
+        .rendered-page h1, .rendered-page h2, .rendered-page h3 {
+            color: #ffaa00;
+            margin: 15px 0 10px;
+        }
+        
+        .rendered-page a {
+            color: #4af;
+            text-decoration: none;
+        }
+        
+        .rendered-page a:hover {
+            text-decoration: underline;
+        }
+        
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ff7700;
+        }
+        
+        .result-title {
+            color: #4af;
+            font-weight: bold;
+        }
+        
+        .result-url {
+            color: #0f0;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        
+        .menu-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+            padding: 20px;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff7700;
+        }
+        
+        .menu-section {
+            margin-bottom: 30px;
+        }
+        
+        .menu-section h3 {
+            color: #ff7700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:hover {
+            background: rgba(255, 119, 0, 0.1);
+        }
+        
+        .menu-item i {
+            width: 30px;
+            color: #ffaa00;
+            font-size: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #000;
+            color: #aaa;
+            font-size: 12px;
+            border-top: 2px solid #ff7700;
+        }
+        
+        .data-saving {
+            color: #0f0;
+            font-weight: bold;
+        }
+        
+        .web3-badge {
+            background: linear-gradient(to right, #ff7700, #ffaa00);
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        /* Mode Hemat Data */
+        .data-saving-mode .rendered-page img,
+        .data-saving-mode .rendered-page video {
+            display: none;
+        }
+        
+        .data-saving-mode .rendered-page {
+            background: #000 !important;
+            color: #ccc !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-opera"></i>
+                <h1>OPERA MINI <span class="web3-badge">Web3</span></h1>
+            </div>
+            <div class="connection-info">
+                <i class="fas fa-signal"></i>
+                <span>3G</span>
+            </div>
+        </header>
+        
+        <div class="url-bar">
+            <input type="text" id="url-input" placeholder="Masukkan URL atau pencarian..." value="opera-mini://home">
+            <button id="go-btn">GO!</button>
+        </div>
+        
+        <div class="controls">
+            <div class="control-btn" id="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </div>
+            <div class="control-btn" id="forward-btn">
+                <i class="fas fa-arrow-right"></i>
+                <span>Forward</span>
+            </div>
+            <div class="control-btn" id="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="control-btn" id="menu-btn">
+                <i class="fas fa-bars"></i>
+                <span>Menu</span>
+            </div>
+            <div class="control-btn" id="web3-btn">
+                <i class="fas fa-coins"></i>
+                <span>Web3</span>
+            </div>
+        </div>
+        
+        <div class="screen" id="screen">
+            <div class="compression-info">
+                <span>Mode: <span id="compression-mode">Extreme</span></span>
+                <span>Saved: <span class="data-saving">95%</span></span>
+            </div>
+            
+            <div class="home-content">
+                <i class="fab fa-opera fa-4x" style="color: #ff7700;"></i>
+                <h2>Opera Mini Web3 Edition</h2>
+                <p>Browser cepat dengan fitur Web3 terintegrasi</p>
+                
+                <div class="web3-features">
+                    <div class="feature">
+                        <i class="fas fa-wallet"></i>
+                        <h3>Crypto Wallet</h3>
+                        <p>Kelola aset digital Anda</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-compress-alt"></i>
+                        <h3>Data Saving</h3>
+                        <p>Hemat hingga 90% kuota</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fab fa-ethereum"></i>
+                        <h3>dApp Browser</h3>
+                        <p>Akses aplikasi terdesentralisasi</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Privasi</h3>
+                        <p>Proteksi data pribadi</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Pencarian Populer</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; justify-content: center;">
+                        <button class="quick-search" data-search="Berita terkini">Berita</button>
+                        <button class="quick-search" data-search="Harga crypto">Crypto</button>
+                        <button class="quick-search" data-search="Cuaca hari ini">Cuaca</button>
+                        <button class="quick-search" data-search="Game Web3">Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-panel" id="menu-panel">
+            <div class="menu-header">
+                <h2><i class="fas fa-bars"></i> Menu Opera</h2>
+                <button id="close-menu" style="background: #ff7700; color: white; border: none; padding: 5px 15px; border-radius: 20px;">Tutup</button>
+            </div>
+            
+            <div class="menu-section">
+                <h3><i class="fas fa-star"></i> Favorit</h3>
+                <div class="menu-item">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fab fa-wikipedia-w"></i>
+                    <span>Wikipedia</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3><i class="fas fa-cog"></i> Pengaturan</h3>
+                <div class="menu-item">
+                    <i class="fas fa-database"></i>
+                    <span>Mode Hemat Data</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-moon"></i>
+                    <span>Mode Malam</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Privasi & Keamanan</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3><i class="fab fa-ethereum"></i> Web3</h3>
+                <div class="menu-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Crypto Wallet</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>DeFi Explorer</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-certificate"></i>
+                    <span>NFT Gallery</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3><i class="fas fa-info-circle"></i> Tentang</h3>
+                <div class="menu-item">
+                    <i class="fas fa-code"></i>
+                    <span>Versi: Web3 Edition 1.0</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>Riwayat Penjelajahan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-book"></i>
+                    <span>Bantuan</span>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Opera Mini Web3 Edition | Data Saving Technology | © 2023</p>
+            <p>Dibangun dengan 2BCycle Framework</p>
+        </footer>
+    </div>
+
+    <script>
+        // State aplikasi
+        const state = {
+            currentUrl: 'opera-mini://home',
+            history: [],
+            currentHistoryIndex: -1,
+            compressionMode: 'extreme',
+            dataSaving: true,
+            web3Enabled: true
+        };
+
+        // Elemen DOM
+        const screen = document.getElementById('screen');
+        const urlInput = document.getElementById('url-input');
+        const goBtn = document.getElementById('go-btn');
+        const backBtn = document.getElementById('back-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const homeBtn = document.getElementById('home-btn');
+        const menuBtn = document.getElementById('menu-btn');
+        const web3Btn = document.getElementById('web3-btn');
+        const menuPanel = document.getElementById('menu-panel');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const compressionModeSpan = document.getElementById('compression-mode');
+
+        // Navigasi ke URL
+        function navigate() {
+            let url = urlInput.value.trim();
+            
+            // Tambahkan protokol jika tidak ada
+            if (!url.startsWith('http://') && 
+                !url.startsWith('https://') && 
+                !url.startsWith('opera-mini://')) {
+                
+                // Cek jika itu alamat domain atau pencarian
+                if (url.includes('.') && !url.includes(' ')) {
+                    url = 'https://' + url;
+                } else {
+                    // Lakukan pencarian Google
+                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                }
+            }
+            
+            state.currentUrl = url;
+            urlInput.value = url;
+            
+            // Simpan ke riwayat
+            state.history.push(url);
+            state.currentHistoryIndex = state.history.length - 1;
+            
+            // Tampilkan halaman
+            renderPage(url);
+        }
+
+        // Render halaman berdasarkan URL
+        function renderPage(url) {
+            // Tampilkan indikator loading
+            screen.innerHTML = `
+                <div class="compression-info">
+                    <span>Mode: <span id="compression-mode">${state.compressionMode}</span></span>
+                    <span>Saved: <span class="data-saving">${state.dataSaving ? '90%' : '0%'}</span></span>
+                </div>
+                <div style="text-align:center; padding:50px 20px;">
+                    <i class="fas fa-spinner fa-spin fa-3x" style="color:#ff7700;"></i>
+                    <p style="margin-top:20px;">Mengompresi dan memuat halaman...</p>
+                </div>
+            `;
+            
+            // Simulasi loading
+            setTimeout(() => {
+                if (url === 'opera-mini://home') {
+                    showHomePage();
+                } else if (url.includes('google.com/search')) {
+                    showSearchResults(url);
+                } else if (url.includes('web3://')) {
+                    showWeb3Page(url);
+                } else {
+                    showWebsite(url);
+                }
+            }, 1000);
+        }
+
+        // Tampilkan halaman utama
+        function showHomePage() {
+            screen.innerHTML = document.querySelector('.home-content').outerHTML;
+            
+            // Tambahkan event listener untuk pencarian cepat
+            document.querySelectorAll('.quick-search').forEach(button => {
+                button.addEventListener('click', function() {
+                    urlInput.value = this.dataset.search;
+                    navigate();
+                });
+            });
+        }
+
+        // Tampilkan hasil pencarian
+        function showSearchResults(url) {
+            const query = new URL(url).searchParams.get('q');
+            const results = [
+                {
+                    title: `${query} - Wikipedia`,
+                    url: `https://id.wikipedia.org/wiki/${encodeURIComponent(query)}`,
+                    description: `Artikel ensiklopedia tentang ${query}`
+                },
+                {
+                    title: `Berita terkini tentang ${query}`,
+                    url: `https://news.google.com/search?q=${encodeURIComponent(query)}`,
+                    description: `Berita terbaru dan terkini seputar ${query}`
+                },
+                {
+                    title: `Gambar ${query}`,
+                    url: `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`,
+                    description: `Lihat gambar terkait ${query}`
+                },
+                {
+                    title: `Peta ${query}`,
+                    url: `https://www.google.com/maps/search/${encodeURIComponent(query)}`,
+                    description: `Lokasi dan peta terkait ${query}`
+                }
+            ];
+            
+            let resultsHTML = `
+                <div class="compression-info">
+                    <span>Mode: <span id="compression-mode">${state.compressionMode}</span></span>
+                    <span>Saved: <span class="data-saving">${state.dataSaving ? '95%' : '0%'}</span></span>
+                </div>
+                <div class="rendered-page">
+                    <h2>Hasil Pencarian: ${query}</h2>
+                    <p>Menampilkan hasil pencarian untuk <strong>${query}</strong></p>
+                    <div class="search-results">
+            `;
+            
+            results.forEach(result => {
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-title">${result.title}</div>
+                        <div class="result-url">${result.url}</div>
+                        <div class="result-description">${result.description}</div>
+                    </div>
+                `;
+            });
+            
+            resultsHTML += `
+                    </div>
+                </div>
+            `;
+            
+            screen.innerHTML = resultsHTML;
+        }
+
+        // Tampilkan halaman Web3 khusus
+        function showWeb3Page(url) {
+            let content = '';
+            
+            if (url === 'web3://wallet') {
+                content = `
+                    <div class="rendered-page">
+                        <h2><i class="fas fa-wallet"></i> Crypto Wallet</h2>
+                        <div style="text-align:center; margin:20px 0;">
+                            <div style="font-size:24px; color:#ff7700;">0.00 ETH</div>
+                            <div style="font-size:14px; color:#aaa;">$0.00 USD</div>
+                        </div>
+                        
+                        <h3>Aset Digital</h3>
+                        <div style="background:rgba(255,119,0,0.1); padding:10px; border-radius:10px; margin:10px 0;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <div>Ethereum (ETH)</div>
+                                <div>0.00</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-around; margin:30px 0;">
+                            <button style="background:#ff7700; color:white; border:none; padding:10px 15px; border-radius:20px;">
+                                <i class="fas fa-arrow-down"></i> Terima
+                            </button>
+                            <button style="background:#ff7700; color:white; border:none; padding:10px 15px; border-radius:20px;">
+                                <i class="fas fa-arrow-up"></i> Kirim
+                            </button>
+                        </div>
+                        
+                        <h3>dApps Terkini</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;">
+                            <div style="text-align:center;">
+                                <div style="width:50px; height:50px; background:#ff7700; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center;">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div>DeFi</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="width:50px; height:50px; background:#ff7700; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center;">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <div>Game</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="width:50px; height:50px; background:#ff7700; border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center;">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div>NFT</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content = `
+                    <div class="rendered-page">
+                        <h2><i class="fab fa-ethereum"></i> Web3 Explorer</h2>
+                        <p>Browser aplikasi terdesentralisasi</p>
+                        
+                        <h3>dApps Populer</h3>
+                        <div class="result-item">
+                            <div class="result-title">Uniswap</div>
+                            <div class="result-url">app.uniswap.org</div>
+                            <div class="result-description">Decentralized Exchange</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-title">OpenSea</div>
+                            <div class="result-url">opensea.io</div>
+                            <div class="result-description">NFT Marketplace</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-title">Aave</div>
+                            <div class="result-url">app.aave.com</div>
+                            <div class="result-description">Lending Protocol</div>
+                        </div>
+                        
+                        <h3>Jaringan yang Didukung</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+                            <div style="background: rgba(255,119,0,0.1); padding: 10px; border-radius: 10px; text-align: center; flex: 1;">
+                                <i class="fab fa-ethereum"></i>
+                                <div>Ethereum</div>
+                            </div>
+                            <div style="background: rgba(255,119,0,0.1); padding: 10px; border-radius: 10px; text-align: center; flex: 1;">
+                                <i class="fas fa-layer-group"></i>
+                                <div>Polygon</div>
+                            </div>
+                            <div style="background: rgba(255,119,0,0.1); padding: 10px; border-radius: 10px; text-align: center; flex: 1;">
+                                <i class="fab fa-bitcoin"></i>
+                                <div>Bitcoin</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            screen.innerHTML = `
+                <div class="compression-info">
+                    <span>Mode: <span id="compression-mode">${state.compressionMode}</span></span>
+                    <span>Saved: <span class="data-saving">${state.dataSaving ? '95%' : '0%'}</span></span>
+                </div>
+                ${content}
+            `;
+        }
+
+        // Tampilkan halaman website biasa
+        function showWebsite(url) {
+            let domain = new URL(url).hostname;
+            
+            const content = `
+                <div class="rendered-page">
+                    <h1>Selamat datang di ${domain}</h1>
+                    <p>Ini adalah halaman simulasi dari ${domain} yang telah dikompresi oleh teknologi Opera Mini.</p>
+                    
+                    <div style="text-align:center; margin:20px 0;">
+                        <div style="background:#333; height:150px; display:flex; align-items:center; justify-content:center; border-radius:10px;">
+                            <i class="fas fa-image fa-3x" style="color:#666;"></i>
+                        </div>
+                        <p style="font-size:12px; color:#aaa;">[Gambar telah dikompresi]</p>
+                    </div>
+                    
+                    <h2>Tentang ${domain}</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    
+                    <h2>Artikel Terbaru</h2>
+                    <ul style="margin-left:20px;">
+                        <li>Artikel 1 tentang ${domain}</li>
+                        <li>Artikel 2 tentang perkembangan terbaru</li>
+                        <li>Artikel 3 dengan tips dan trik</li>
+                    </ul>
+                    
+                    <h2>Kontak Kami</h2>
+                    <p>Email: info@${domain}</p>
+                    <p>Telepon: +62 123 4567 8910</p>
+                </div>
+            `;
+            
+            screen.innerHTML = `
+                <div class="compression-info">
+                    <span>Mode: <span id="compression-mode">${state.compressionMode}</span></span>
+                    <span>Saved: <span class="data-saving">${state.dataSaving ? '90%' : '0%'}</span></span>
+                </div>
+                ${content}
+            `;
+        }
+
+        // Event Listeners
+        goBtn.addEventListener('click', navigate);
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') navigate();
+        });
+        
+        homeBtn.addEventListener('click', () => {
+            state.currentUrl = 'opera-mini://home';
+            urlInput.value = state.currentUrl;
+            showHomePage();
+        });
+        
+        menuBtn.addEventListener('click', () => {
+            menuPanel.style.display = 'block';
+        });
+        
+        closeMenuBtn.addEventListener('click', () => {
+            menuPanel.style.display = 'none';
+        });
+        
+        web3Btn.addEventListener('click', () => {
+            state.currentUrl = 'web3://explorer';
+            urlInput.value = state.currentUrl;
+            showWeb3Page(state.currentUrl);
+        });
+        
+        backBtn.addEventListener('click', () => {
+            if (state.currentHistoryIndex > 0) {
+                state.currentHistoryIndex--;
+                state.currentUrl = state.history[state.currentHistoryIndex];
+                urlInput.value = state.currentUrl;
+                renderPage(state.currentUrl);
+            }
+        });
+        
+        forwardBtn.addEventListener('click', () => {
+            if (state.currentHistoryIndex < state.history.length - 1) {
+                state.currentHistoryIndex++;
+                state.currentUrl = state.history[state.currentHistoryIndex];
+                urlInput.value = state.currentUrl;
+                renderPage(state.currentUrl);
+            }
+        });
+        
+        // Inisialisasi
+        showHomePage();
+    </script>
+</body>
+</html>
