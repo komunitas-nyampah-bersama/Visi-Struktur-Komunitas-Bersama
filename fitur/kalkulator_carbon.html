@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Jejak Karbon Pribadi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e0f2f7; /* Light blue background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            border: 1px solid #cce7ee;
+        }
+        h1 {
+            text-align: center;
+            color: #005662; /* Darker teal */
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+        p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 86, 98, 0.75), rgba(0, 0, 0, 0));
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #005662;
+            font-size: 1.05em;
+        }
+        input[type="number"],
+        select {
+            width: calc(100% - 24px); /* Account for padding and border */
+            padding: 12px;
+            border: 1px solid #a7d9e2; /* Light blue border */
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box; /* Include padding in width */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745; /* Green */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        button:hover {
+            background-color: #218838; /* Darker green */
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #hasilKarbon {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: #e6f7ff; /* Lighter blue background for result */
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007bff; /* Blue for result text */
+            border: 2px dashed #a7d9e2;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+        }
+        #loadingIndicator {
+            display: none; /* Hidden by default */
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            font-style: italic;
+        }
+        .info-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Jejak Karbon Pribadi</h1>
+        <p>Isi informasi berikut untuk memperkirakan jejak karbon bulanan Anda.</p>
+        <hr>
+
+        <div class="form-group">
+            <label for="listrik">Pemakaian Listrik Bulanan (kWh):</label>
+            <input type="number" id="listrik" placeholder="Contoh: 200" min="0" value="0">
+            <p class="info-text">Masukkan perkiraan penggunaan listrik rumah tangga Anda dalam kilowatt-jam (kWh) per bulan.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="transportasi">Jarak Tempuh Transportasi Pribadi (km/bulan):</label>
+            <input type="number" id="transportasi" placeholder="Contoh: 300" min="0" value="0">
+            <p class="info-text">Total jarak yang ditempuh kendaraan pribadi (mobil/motor) Anda dalam kilometer per bulan.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="jenisBahanBakar">Jenis Bahan Bakar Kendaraan:</label>
+            <select id="jenisBahanBakar">
+                <option value="bensin">Bensin</option>
+                <option value="diesel">Diesel</option>
+                <option value="tidak_ada">Tidak Ada / Tidak Berlaku</option>
+            </select>
+            <p class="info-text">Pilih jenis bahan bakar yang biasa Anda gunakan.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="penerbangan">Jumlah Jam Penerbangan (per bulan, estimasi):</label>
+            <input type="number" id="penerbangan" placeholder="Contoh: 0" min="0" value="0">
+            <p class="info-text">Perkiraan total jam penerbangan (pulang-pergi) Anda dalam sebulan. (Sangat bervariasi tergantung rute & kelas)</p>
+        </div>
+
+        <button onclick="kirimDataUntukHitungKarbon()">Hitung Jejak Karbon</button>
+
+        <div id="loadingIndicator">
+            Menghitung... Mohon tunggu.
+        </div>
+
+        <div id="hasilKarbon">
+            Jejak Karbon Anda: **0 kg CO2e/bulan**
+        </div>
+    </div>
+
+    <script>
+        async function kirimDataUntukHitungKarbon() {
+            const listrik = parseFloat(document.getElementById('listrik').value) || 0;
+            const transportasi = parseFloat(document.getElementById('transportasi').value) || 0;
+            const jenisBahanBakar = document.getElementById('jenisBahanBakar').value;
+            const penerbangan = parseFloat(document.getElementById('penerbangan').value) || 0;
+
+            const hasilDiv = document.getElementById('hasilKarbon');
+            const loadingDiv = document.getElementById('loadingIndicator');
+
+            hasilDiv.innerHTML = 'Jejak Karbon Anda: **0 kg CO2e/bulan**'; // Reset hasil
+            loadingDiv.style.display = 'block'; // Tampilkan indikator loading
+
+            try {
+                // Endpoint yang akan Anda buat sebagai fungsi Edge
+                const API_ENDPOINT = '/api/hitung-karbon'; // Contoh: https://your-domain.com/api/hitung-karbon
+
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        listrik,
+                        transportasi,
+                        jenisBahanBakar,
+                        penerbangan
+                    }),
+                });
+
+                if (!response.ok) {
+                    // Tangani error dari server (fungsi Edge Anda)
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const totalJejakKarbon = data.totalJejakKarbon;
+
+                if (typeof totalJejakKarbon === 'number') {
+                    hasilDiv.innerHTML = `Jejak Karbon Anda: <strong>${totalJejakKarbon.toFixed(2)} kg CO2e/bulan</strong>`;
+                } else {
+                    hasilDiv.innerHTML = `Terjadi kesalahan: Respon tidak valid dari server.`;
+                }
+
+            } catch (error) {
+                console.error('Ada masalah saat menghitung jejak karbon:', error);
+                hasilDiv.innerHTML = `Terjadi kesalahan saat menghitung jejak karbon: <br>${error.message}.`;
+            } finally {
+                loadingDiv.style.display = 'none'; // Sembunyikan indikator loading
+            }
+        }
+    </script>
+</body>
+</html>
