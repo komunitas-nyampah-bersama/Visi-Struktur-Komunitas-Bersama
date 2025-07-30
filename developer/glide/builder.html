@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2BCycle Framework Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --secondary: #3498db;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .app-header {
+            background-color: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Panel Komponen */
+        .components-panel {
+            width: 250px;
+            background: white;
+            padding: 15px;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .components-panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .component-item {
+            background: var(--light);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+
+        .component-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+            border-color: var(--primary);
+        }
+
+        .component-item i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        /* Area Builder */
+        .builder-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: #f0f2f5;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .toolbar-actions button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+
+        .toolbar-actions button:hover {
+            opacity: 0.9;
+        }
+
+        .preview-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard-preview {
+            width: 375px; /* Ukuran mobile */
+            min-height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Panel Properti */
+        .properties-panel {
+            width: 300px;
+            background: white;
+            padding: 15px;
+            overflow-y: auto;
+            border-left: 1px solid #ddd;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .properties-panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .empty-properties {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        /* Footer */
+        .app-footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsif */
+        @media (max-width: 1200px) {
+            .components-panel {
+                width: 200px;
+            }
+            .properties-panel {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <i class="fas fa-recycle fa-lg"></i>
+            <h1>2BCycle Builder</h1>
+        </div>
+        <div class="header-actions">
+            <button id="exportBtn"><i class="fas fa-file-export"></i> Ekspor JSON</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Panel Komponen UI -->
+        <section class="components-panel">
+            <h2>Komponen</h2>
+            <div class="component-list">
+                <div class="component-item" data-type="header">
+                    <i class="fas fa-header"></i>
+                    <div>Header</div>
+                </div>
+                <div class="component-item" data-type="card">
+                    <i class="fas fa-id-card"></i>
+                    <div>Card</div>
+                </div>
+                <div class="component-item" data-type="button">
+                    <i class="fas fa-hand-pointer"></i>
+                    <div>Button</div>
+                </div>
+                <div class="component-item" data-type="nft-passport">
+                    <i class="fas fa-passport"></i>
+                    <div>NFT Passport</div>
+                </div>
+                <div class="component-item" data-type="activity-feed">
+                    <i class="fas fa-list"></i>
+                    <div>Aktivitas</div>
+                </div>
+                <div class="component-item" data-type="footer">
+                    <i class="fas fa-window-restore"></i>
+                    <div>Footer</div>
+                </div>
+                <div class="component-item" data-type="text">
+                    <i class="fas fa-text-height"></i>
+                    <div>Text</div>
+                </div>
+                <div class="component-item" data-type="image">
+                    <i class="fas fa-image"></i>
+                    <div>Image</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Area Builder Utama -->
+        <section class="builder-area">
+            <div class="toolbar">
+                <div class="toolbar-info">
+                    <span>Drag komponen untuk memulai</span>
+                </div>
+                <div class="toolbar-actions">
+                    <button id="previewBtn"><i class="fas fa-eye"></i> Preview</button>
+                </div>
+            </div>
+            <div class="preview-container">
+                <div class="dashboard-preview" id="dashboardPreview">
+                    <!-- Preview akan di-render di sini -->
+                    <div class="empty-preview">
+                        <p>Drag komponen ke sini untuk mulai membangun</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel Properti -->
+        <section class="properties-panel">
+            <h2>Properti</h2>
+            <div id="propertyForm" class="empty-properties">
+                <p>Pilih komponen untuk mengedit properti</p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="app-footer">
+        <p>2BCycle Framework Prototype - Dibangun dengan ♥ untuk Ekosistem Teknologi Merakyat</p>
+    </footer>
+
+    <script>
+        // State aplikasi
+        const state = {
+            components: [],
+            selectedComponent: null,
+            nextId: 1
+        };
+
+        // Inisialisasi drag and drop
+        function initDragAndDrop() {
+            const componentItems = document.querySelectorAll('.component-item');
+            const previewArea = document.getElementById('dashboardPreview');
+
+            componentItems.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.dataset.type);
+                });
+            });
+
+            previewArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                previewArea.classList.add('drag-over');
+            });
+
+            previewArea.addEventListener('dragleave', () => {
+                previewArea.classList.remove('drag-over');
+            });
+
+            previewArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                previewArea.classList.remove('drag-over');
+                
+                const componentType = e.dataTransfer.getData('text/plain');
+                addComponentToPreview(componentType, e.offsetX, e.offsetY);
+            });
+        }
+
+        // Fungsi untuk menambahkan komponen ke preview
+        function addComponentToPreview(type, x, y) {
+            const id = `comp-${state.nextId++}`;
+            const newComponent = {
+                id: id,
+                type: type,
+                properties: getDefaultProperties(type)
+            };
+            
+            state.components.push(newComponent);
+            renderPreview();
+            selectComponent(newComponent);
+        }
+
+        // Properti default untuk setiap tipe komponen
+        function getDefaultProperties(type) {
+            const defaults = {
+                header: {
+                    title: 'Smart Wallet ID - Dashboard',
+                    showWallet: true,
+                    showBalance: true
+                },
+                card: {
+                    title: 'Card Title',
+                    subtitle: 'Card subtitle',
+                    content: 'Card content goes here...'
+                },
+                button: {
+                    text: 'Button',
+                    icon: 'none',
+                    action: 'none'
+                },
+                'nft-passport': {
+                    name: 'Nama Pengguna',
+                    role: 'Anggota Aktif',
+                    license: 'Eco-Warrior Level 1',
+                    image: 'https://randomuser.me/api/portraits/men/41.jpg'
+                },
+                'activity-feed': {
+                    title: 'Aktivitas Terbaru',
+                    limit: 5
+                },
+                footer: {
+                    items: [
+                        { icon: 'home', label: 'Beranda' },
+                        { icon: 'chart-line', label: 'Aktivitas' },
+                        { icon: 'id-card', label: 'NFT' },
+                        { icon: 'cog', label: 'Pengaturan' }
+                    ]
+                },
+                text: {
+                    content: 'Teks contoh',
+                    size: 'medium'
+                },
+                image: {
+                    src: 'https://via.placeholder.com/150',
+                    alt: 'Gambar'
+                }
+            };
+            
+            return { ...defaults[type] };
+        }
+
+        // Render preview dashboard
+        function renderPreview() {
+            const previewArea = document.getElementById('dashboardPreview');
+            previewArea.innerHTML = '';
+            
+            if (state.components.length === 0) {
+                previewArea.innerHTML = `
+                    <div class="empty-preview">
+                        <i class="fas fa-box-open fa-3x" style="margin-bottom: 20px; color: #ccc;"></i>
+                        <p>Drag komponen ke sini untuk mulai membangun</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            state.components.forEach(comp => {
+                const compElement = createComponentElement(comp);
+                previewArea.appendChild(compElement);
+            });
+        }
+
+        // Buat elemen DOM untuk komponen
+        function createComponentElement(component) {
+            const element = document.createElement('div');
+            element.id = component.id;
+            element.className = 'preview-component';
+            element.draggable = false;
+            element.innerHTML = getComponentHTML(component);
+            
+            element.addEventListener('click', () => selectComponent(component));
+            
+            return element;
+        }
+
+        // HTML untuk setiap tipe komponen
+        function getComponentHTML(component) {
+            const props = component.properties;
+            
+            switch(component.type) {
+                case 'header':
+                    return `
+                        <div class="wallet-header" style="background: linear-gradient(135deg, #2c3e50, #1a2530); color: white; padding: 20px; border-radius: 0 0 20px 20px;">
+                            <div class="wallet-top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <div class="wallet-address" style="display: flex; align-items: center; gap: 10px;">
+                                    <span>0xa527...81f9</span>
+                                    <button style="background: none; border: none; color: white; cursor: pointer;">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                                <button style="background: rgba(255,255,255,0.2); border: none; border-radius: 4px; color: white; padding: 8px 16px; cursor: pointer;">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </div>
+                            <div class="balance-container" style="text-align: center; margin-bottom: 20px;">
+                                <div style="font-size: 0.9rem; opacity: 0.8;">Total Saldo</div>
+                                <div style="font-size: 2rem; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 5px;">
+                                    <span>1.6183</span>
+                                    <span>ETH</span>
+                                </div>
+                            </div>
+                            <div class="action-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; padding: 12px; color: white; cursor: pointer;">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">Kirim</div>
+                                </button>
+                                <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; padding: 12px; color: white; cursor: pointer;">
+                                    <i class="fas fa-download"></i>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">Terima</div>
+                                </button>
+                                <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; padding: 12px; color: white; cursor: pointer;">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">Tukar</div>
+                                </button>
+                                <button style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; padding: 12px; color: white; cursor: pointer;">
+                                    <i class="fas fa-qrcode"></i>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">Bayar</div>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                case 'nft-passport':
+                    return `
+                        <div class="card" style="background: white; border-radius: 16px; padding: 20px; margin: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h2 style="font-size: 1.2rem; font-weight: 600;">ID Passport Digital</h2>
+                                <button style="background: #eafaf1; color: #2ecc71; border: none; border-radius: 4px; padding: 6px 12px; font-weight: 500; cursor: pointer;">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div class="nft-passport" style="text-align: center;">
+                                <div style="position: relative; margin-bottom: 20px;">
+                                    <div style="position: absolute; top: 0; right: 50px; background: white; border-radius: 50%; padding: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                        <img src="https://ipfs.io/ipfs/QmfR65e5Y2fgDWduwMhSX1GrT3gYweXT9dsb6Qonh5VMNi/0.jpg" alt="Community Logo" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    </div>
+                                    <img id="nftImage" src="${props.image}" alt="User Avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #2ecc71;">
+                                </div>
+                                <h3 style="font-size: 1.3rem; margin-bottom: 10px;">${props.name}</h3>
+                                <p style="color: #7f8c8d; margin-bottom: 20px;">Pemilik Wallet Terverifikasi</p>
+                                <div style="background: #eaf7ff; color: #3498db; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 20px;">
+                                    <i class="fas fa-link"></i> Jaringan Base
+                                </div>
+                                <div class="nft-details" style="text-align: left;">
+                                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #7f8c8d;">ID Passport</span>
+                                        <span style="font-weight: 500;">#PASSPORT-A527432D</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #7f8c8d;">Role Komunitas</span>
+                                        <span style="font-weight: 500;">${props.role}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #7f8c8d;">Lisensi Program</span>
+                                        <span style="font-weight: 500;">${props.license}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                        <span style="color: #7f8c8d;">Media Sosial</span>
+                                        <span>
+                                            <a href="#" style="color: #3498db; margin: 0 5px;"><i class="fab fa-twitter"></i></a>
+                                            <a href="#" style="color: #e1306c; margin: 0 5px;"><i class="fab fa-instagram"></i></a>
+                                            <a href="#" style="color: #0a66c2; margin: 0 5px;"><i class="fab fa-linkedin"></i></a>
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                        <span style="color: #7f8c8d;">Tags</span>
+                                        <span>
+                                            <span style="background: #eafaf1; color: #27ae60; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 5px;">Waste</span>
+                                            <span style="background: #fff8e1; color: #f39c12; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 5px;">Energy</span>
+                                            <span style="background: #e6f7ff; color: #3498db; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 5px;">Circular</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                default:
+                    return `<div style="padding: 20px; background: #f8f9fa; border: 1px dashed #ccc; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-${component.type} fa-2x" style="margin-bottom: 10px; color: #6c757d;"></i>
+                        <h3>${component.type}</h3>
+                        <p>Komponen ${component.type}</p>
+                    </div>`;
+            }
+        }
+
+        // Pilih komponen untuk diedit
+        function selectComponent(component) {
+            state.selectedComponent = component;
+            renderPropertyPanel();
+            highlightSelectedComponent();
+        }
+
+        // Render panel properti
+        function renderPropertyPanel() {
+            const propertyPanel = document.getElementById('propertyForm');
+            
+            if (!state.selectedComponent) {
+                propertyPanel.innerHTML = '<div class="empty-properties"><p>Pilih komponen untuk mengedit properti</p></div>';
+                return;
+            }
+            
+            const props = state.selectedComponent.properties;
+            let html = '';
+            
+            switch(state.selectedComponent.type) {
+                case 'nft-passport':
+                    html = `
+                        <div class="form-group">
+                            <label for="nftName">Nama Pengguna</label>
+                            <input type="text" id="nftName" value="${props.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nftRole">Role Komunitas</label>
+                            <input type="text" id="nftRole" value="${props.role}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nftLicense">Lisensi</label>
+                            <input type="text" id="nftLicense" value="${props.license}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nftImage">URL Gambar</label>
+                            <input type="text" id="nftImage" value="${props.image}">
+                        </div>
+                        <button id="saveProps" style="background: var(--primary); color: white; border: none; padding: 10px; border-radius: 4px; width: 100%; margin-top: 20px; cursor: pointer;">Simpan Perubahan</button>
+                    `;
+                    break;
+                    
+                default:
+                    html = `<div class="form-group">
+                        <label>Komponen ${state.selectedComponent.type}</label>
+                        <p style="color: #777; margin-top: 10px;">Tidak ada properti yang dapat dikonfigurasi untuk komponen ini.</p>
+                    </div>`;
+            }
+            
+            propertyPanel.innerHTML = html;
+            
+            // Tambahkan event listener untuk tombol simpan
+            const saveBtn = document.getElementById('saveProps');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveProperties);
+            }
+        }
+
+        // Highlight komponen yang dipilih di preview
+        function highlightSelectedComponent() {
+            document.querySelectorAll('.preview-component').forEach(comp => {
+                comp.style.outline = 'none';
+            });
+            
+            if (state.selectedComponent) {
+                const selectedEl = document.getElementById(state.selectedComponent.id);
+                if (selectedEl) {
+                    selectedEl.style.outline = '2px solid #3498db';
+                }
+            }
+        }
+
+        // Simpan perubahan properti
+        function saveProperties() {
+            if (!state.selectedComponent) return;
+            
+            switch(state.selectedComponent.type) {
+                case 'nft-passport':
+                    state.selectedComponent.properties.name = document.getElementById('nftName').value;
+                    state.selectedComponent.properties.role = document.getElementById('nftRole').value;
+                    state.selectedComponent.properties.license = document.getElementById('nftLicense').value;
+                    state.selectedComponent.properties.image = document.getElementById('nftImage').value;
+                    break;
+            }
+            
+            renderPreview();
+            selectComponent(state.selectedComponent);
+        }
+
+        // Ekspor ke JSON
+        function exportToJSON() {
+            const jsonData = {
+                metadata: {
+                    title: "Dashboard yang Dibangun dengan 2BCycle Builder",
+                    created: new Date().toISOString().split('T')[0],
+                    components: state.components.map(c => c.type)
+                },
+                components: state.components
+            };
+            
+            const dataStr = JSON.stringify(jsonData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = '2bcycle-dashboard.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Inisialisasi aplikasi
+        document.getElementById('exportBtn').addEventListener('click', exportToJSON);
+        document.getElementById('previewBtn').addEventListener('click', () => {
+            alert('Fitur preview penuh akan tersedia di versi selanjutnya!');
+        });
+
+        // Jalankan setelah DOM siap
+        document.addEventListener('DOMContentLoaded', () => {
+            initDragAndDrop();
+            renderPreview();
+        });
+    </script>
+</body>
+</html>
