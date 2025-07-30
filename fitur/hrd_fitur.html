@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusChain - Smart Contract & Digital Identity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <script src="https://unpkg.com/@thirdweb-dev/sdk@3.0.0/dist/sdk.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #0ea5e9;
+            --dark: #0f172a;
+            --darker: #020617;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --contract-color: #8b5cf6;
+            --wallet-color: #06b6d4;
+            --nft-color: #ec4899;
+            --hr-color: #f97316;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background-color: rgba(30, 41, 59, 0.8);
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-right: 40px;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: auto;
+        }
+        
+        .connect-wallet-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .connect-wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        /* Main Dashboard */
+        .dashboard {
+            max-width: 1600px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-title i {
+            color: var(--primary);
+        }
+        
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+        
+        .menu-item:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), transparent);
+            color: var(--text-primary);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .menu-item i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .hr-section {
+            margin-top: 30px;
+        }
+        
+        .hr-section .sidebar-title i {
+            color: var(--hr-color);
+        }
+        
+        .hr-section .menu-item.active {
+            border-left: 3px solid var(--hr-color);
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.2), transparent);
+        }
+        
+        .hr-section .menu-item:hover {
+            background-color: rgba(249, 115, 22, 0.1);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(14, 165, 233, 0.1));
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+        }
+        
+        .welcome-content {
+            grid-column: 1;
+        }
+        
+        .welcome-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .org-chart {
+            grid-column: 2;
+            width: 350px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .org-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--hr-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .org-levels {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .org-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .org-item {
+            background: linear-gradient(135deg, var(--hr-color), #f97316aa);
+            border-radius: 12px;
+            padding: 12px 15px;
+            min-width: 120px;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        .org-item.ceo {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        
+        .org-connector {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 20px;
+            width: 2px;
+            background: var(--text-secondary);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .contract-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title i {
+            color: var(--contract-color);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--contract-color), var(--accent));
+        }
+        
+        .contract-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contract-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .contract-item:hover {
+            border-color: var(--contract-color);
+            transform: translateY(-3px);
+        }
+        
+        .contract-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--contract-color), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .contract-info {
+            flex: 1;
+        }
+        
+        .contract-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .contract-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .contract-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .contract-btn {
+            padding: 8px 15px;
+            border-radius: 8px;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary);
+        }
+        
+        .contract-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* HR Dashboard */
+        .hr-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .employees-card {
+            grid-column: span 2;
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .employee-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .employee-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .employee-card:hover {
+            border-color: var(--hr-color);
+            transform: translateY(-3px);
+        }
+        
+        .employee-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--hr-color), #f97316aa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .employee-info {
+            flex: 1;
+        }
+        
+        .employee-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .employee-position {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .employee-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .employee-status.contract {
+            background-color: rgba(249, 115, 22, 0.15);
+            color: var(--hr-color);
+        }
+        
+        .leave-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .leave-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .leave-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .leave-info {
+            flex: 1;
+        }
+        
+        .leave-employee {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .leave-dates {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .leave-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        
+        .status-approved {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .status-rejected {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+        
+        .payroll-card {
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .payroll-chart {
+            height: 250px;
+            margin-top: 20px;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(15, 23, 42, 0.5);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            padding: 14px 25px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-hr {
+            background: linear-gradient(135deg, var(--hr-color), #f97316aa);
+        }
+        
+        .btn-hr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+        
+        .btn-block {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .org-chart {
+                width: 100%;
+                margin-top: 20px;
+            }
+            
+            .hr-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .welcome-card, .stat-card, .contract-card, .employees-card, .leave-card, .payroll-card {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .contract-card { animation-delay: 0.4s; }
+        .employees-card { animation-delay: 0.5s; }
+        .leave-card { animation-delay: 0.6s; }
+        .payroll-card { animation-delay: 0.7s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <i class="fas fa-link"></i>
+            <span>Nexus<span>Chain</span></span>
+        </a>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link active">Dashboard</a>
+            <a href="#" class="nav-link">Kontrak</a>
+            <a href="#" class="nav-link">Wallet</a>
+            <a href="#" class="nav-link">NFT</a>
+            <a href="#" class="nav-link">HR Management</a>
+        </div>
+        
+        <div class="header-actions">
+            <button class="connect-wallet-btn" id="connectWalletBtn">
+                <i class="fas fa-wallet"></i> Hubungkan Wallet
+            </button>
+            <div class="user-profile">
+                <div class="user-avatar">AJ</div>
+                <div>
+                    <div>Andi Jaya</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">HR Manager</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <h3 class="sidebar-title">
+                <i class="fas fa-briefcase"></i> Template Kontrak
+            </h3>
+            <div class="sidebar-menu">
+                <div class="menu-item active">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Perjanjian Kerja</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-handshake"></i>
+                    <span>Kontrak Vendor</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Sewa Properti</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-copyright"></i>
+                    <span>Hak Cipta</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-gem"></i>
+                    <span>Kontrak NFT</span>
+                </div>
+            </div>
+            
+            <div class="hr-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-users"></i> Manajemen HR
+                </h3>
+                <div class="sidebar-menu">
+                    <div class="menu-item active">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Daftar Pegawai</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-sitemap"></i>
+                        <span>Struktur Organisasi</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Pengajuan Cuti</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Penggajian</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analitik</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Manajemen Perusahaan Berbasis Blockchain</h1>
+                    <p class="welcome-subtitle">
+                        NexusChain HR menghadirkan solusi manajemen sumber daya manusia terintegrasi dengan teknologi blockchain. Kelola kontrak kerja, absensi, penggajian, dan dokumen resmi perusahaan dengan sistem terdesentralisasi yang aman dan transparan.
+                    </p>
+                    <div class="welcome-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-file-contract"></i> Buat Kontrak Kerja
+                        </button>
+                        <button class="btn btn-hr">
+                            <i class="fas fa-user-plus"></i> Tambah Pegawai
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="org-chart">
+                    <h3 class="org-title">
+                        <i class="fas fa-sitemap"></i> Struktur Organisasi
+                    </h3>
+                    <div class="org-levels">
+                        <div class="org-row">
+                            <div class="org-item ceo">
+                                <div>Direktur</div>
+                                <div>Budi Santoso</div>
+                            </div>
+                        </div>
+                        <div class="org-connector"></div>
+                        <div class="org-row">
+                            <div class="org-item">
+                                <div>HR Manager</div>
+                                <div>Andi Jaya</div>
+                            </div>
+                            <div class="org-item">
+                                <div>IT Manager</div>
+                                <div>Citra Dewi</div>
+                            </div>
+                            <div class="org-item">
+                                <div>Finance</div>
+                                <div>Dian Sari</div>
+                            </div>
+                        </div>
+                        <div class="org-connector"></div>
+                        <div class="org-row">
+                            <div class="org-item">Staff HR</div>
+                            <div class="org-item">Developer</div>
+                            <div class="org-item">Akuntan</div>
+                            <div class="org-item">Marketing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">
+                        <i class="fas fa-users"></i>
+                        <span>Total Pegawai</span>
+                    </div>
+                    <div class="stat-value">42</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Kontrak Aktif</span>
+                    </div>
+                    <div class="stat-value">38</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Cuti Bulan Ini</span>
+                    </div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Penggajian (ETH)</span>
+                    </div>
+                    <div class="stat-value">8.24</div>
+                </div>
+            </div>
+            
+            <div class="employees-card">
+                <h3 class="section-title">
+                    <i class="fas fa-user-tie"></i> Daftar Pegawai
+                </h3>
+                
+                <div class="tabs">
+                    <div class="tab active">Semua</div>
+                    <div class="tab">Tetap</div>
+                    <div class="tab">Kontrak</div>
+                    <div class="tab">Probation</div>
+                </div>
+                
+                <div class="employee-list">
+                    <div class="employee-card">
+                        <div class="employee-avatar">CD</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Citra Dewi</div>
+                            <div class="employee-position">IT Manager</div>
+                            <div class="employee-status">Tetap</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="employee-card">
+                        <div class="employee-avatar">RS</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Rudi Santoso</div>
+                            <div class="employee-position">Senior Developer</div>
+                            <div class="employee-status">Tetap</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="employee-card">
+                        <div class="employee-avatar">AP</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Ayu Putri</div>
+                            <div class="employee-position">UI/UX Designer</div>
+                            <div class="employee-status contract">Kontrak</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="employee-card">
+                        <div class="employee-avatar">DS</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Dian Sari</div>
+                            <div class="employee-position">Finance Manager</div>
+                            <div class="employee-status">Tetap</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="employee-card">
+                        <div class="employee-avatar">MJ</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Maya Juwita</div>
+                            <div class="employee-position">HR Staff</div>
+                            <div class="employee-status">Tetap</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                    
+                    <div class="employee-card">
+                        <div class="employee-avatar">BW</div>
+                        <div class="employee-info">
+                            <div class="employee-name">Budi Wibowo</div>
+                            <div class="employee-position">Marketing Specialist</div>
+                            <div class="employee-status contract">Kontrak</div>
+                        </div>
+                        <i class="fas fa-ellipsis-v" style="color: var(--text-secondary); cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hr-dashboard">
+                <div class="leave-card">
+                    <h3 class="section-title">
+                        <i class="fas fa-calendar-alt"></i> Pengajuan Cuti
+                    </h3>
+                    
+                    <div class="leave-list">
+                        <div class="leave-item">
+                            <div class="leave-info">
+                                <div class="leave-employee">Rudi Santoso</div>
+                                <div class="leave-dates">12 - 15 Juli 2023 (4 hari)</div>
+                            </div>
+                            <div class="leave-status status-pending">Menunggu</div>
+                        </div>
+                        
+                        <div class="leave-item">
+                            <div class="leave-info">
+                                <div class="leave-employee">Ayu Putri</div>
+                                <div class="leave-dates">18 - 20 Juli 2023 (3 hari)</div>
+                            </div>
+                            <div class="leave-status status-approved">Disetujui</div>
+                        </div>
+                        
+                        <div class="leave-item">
+                            <div class="leave-info">
+                                <div class="leave-employee">Budi Wibowo</div>
+                                <div class="leave-dates">25 - 28 Juli 2023 (4 hari)</div>
+                            </div>
+                            <div class="leave-status status-rejected">Ditolak</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-hr" style="margin-top: 20px; width: 100%;">
+                        <i class="fas fa-plus"></i> Ajukan Cuti
+                    </button>
+                </div>
+                
+                <div class="payroll-card">
+                    <h3 class="section-title">
+                        <i class="fas fa-money-bill-wave"></i> Penggajian
+                    </h3>
+                    
+                    <div class="payroll-chart">
+                        <canvas id="payrollChart"></canvas>
+                    </div>
+                    
+                    <div class="form-row" style="margin-top: 20px;">
+                        <button class="btn btn-hr" style="flex: 1;">
+                            <i class="fas fa-file-invoice-dollar"></i> Proses Gaji
+                        </button>
+                        <button class="btn" style="flex: 1; background: rgba(255, 255, 255, 0.05);">
+                            <i class="fas fa-history"></i> Riwayat
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Wallet Connect Modal -->
+    <div class="modal" id="walletModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Hubungkan Wallet</div>
+                <div class="modal-close" onclick="closeModal()">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Pilih Provider Wallet</label>
+                    <select class="form-control" id="walletProvider">
+                        <option value="metamask">MetaMask</option>
+                        <option value="coinbase">Coinbase Wallet</option>
+                        <option value="walletconnect">WalletConnect</option>
+                        <option value="phantom">Phantom</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="connectWallet()">
+                    <i class="fas fa-plug"></i> Hubungkan
+                </button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; text-align: center;">
+                    <p style="margin-bottom: 10px;">Belum punya wallet?</p>
+                    <button class="btn" style="background: rgba(37, 99, 235, 0.1); color: var(--primary); width: 100%;">
+                        <i class="fas fa-plus"></i> Buat Wallet Baru
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Employee Modal -->
+    <div class="modal" id="employeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Tambah Pegawai Baru</div>
+                <div class="modal-close" onclick="closeModal()">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Depan</label>
+                        <input type="text" class="form-control" placeholder="Nama depan">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Belakang</label>
+                        <input type="text" class="form-control" placeholder="Nama belakang">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" placeholder="email@perusahaan.com">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jabatan</label>
+                        <select class="form-control">
+                            <option>Pilih Jabatan</option>
+                            <option>Manager</option>
+                            <option>Supervisor</option>
+                            <option>Staff</option>
+                            <option>Developer</option>
+                            <option>Designer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Departemen</label>
+                        <select class="form-control">
+                            <option>Pilih Departemen</option>
+                            <option>HR</option>
+                            <option>IT</option>
+                            <option>Finance</option>
+                            <option>Marketing</option>
+                            <option>Operasional</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tanggal Mulai</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control">
+                            <option>Tetap</option>
+                            <option>Kontrak</option>
+                            <option>Probation</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Wallet Address</label>
+                    <input type="text" class="form-control" placeholder="Alamat wallet blockchain">
+                </div>
+                
+                <button class="btn btn-hr btn-block" style="margin-top: 20px;">
+                    <i class="fas fa-user-plus"></i> Tambah Pegawai
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // =======================[ STATE MANAGEMENT ]=======================
+        let walletConnected = false;
+        let currentAddress = "";
+        let walletBalance = 0;
+        
+        // =======================[ DOM ELEMENTS ]=======================
+        const connectWalletBtn = document.getElementById('connectWalletBtn');
+        const walletModal = document.getElementById('walletModal');
+        const employeeModal = document.getElementById('employeeModal');
+        const payrollChart = document.getElementById('payrollChart');
+        
+        // =======================[ CHART INITIALIZATION ]=======================
+        function initPayrollChart() {
+            const ctx = payrollChart.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                    datasets: [{
+                        label: 'Total Penggajian (ETH)',
+                        data: [5.2, 6.1, 7.3, 6.8, 7.5, 8.2],
+                        backgroundColor: 'rgba(249, 115, 22, 0.7)',
+                        borderColor: 'rgba(249, 115, 22, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // =======================[ MODAL FUNCTIONS ]=======================
+        function openModal(modalType) {
+            if (!walletConnected && modalType !== 'connect') {
+                openModal('connect');
+                return;
+            }
+            
+            if (modalType === 'connect') {
+                walletModal.classList.add('active');
+            } else if (modalType === 'employee') {
+                employeeModal.classList.add('active');
+            }
+            
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            walletModal.classList.remove('active');
+            employeeModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // =======================[ WALLET FUNCTIONS ]=======================
+        function connectWallet() {
+            // Simulate wallet connection
+            walletConnected = true;
+            currentAddress = "0x2bCYCLE1234567890abcdefABCDEF1234567890";
+            walletBalance = 42.18;
+            
+            // Update UI
+            connectWalletBtn.innerHTML = '<i class="fas fa-check"></i> Terhubung';
+            
+            // Show notification
+            showNotification('Wallet berhasil terhubung! Identitas HR Manager telah diverifikasi di blockchain.', 'success');
+            
+            // Close modal
+            closeModal();
+        }
+        
+        // =======================[ NOTIFICATION FUNCTION ]=======================
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.backgroundColor = 'var(--danger)';
+            } else if (type === 'warning') {
+                notification.style.backgroundColor = 'var(--warning)';
+                notification.style.color = 'var(--dark)';
+            } else {
+                notification.style.backgroundColor = 'var(--success)';
+            }
+            
+            // Position and style
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '12px';
+            notification.style.color = 'white';
+            notification.style.fontWeight = '500';
+            notification.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
+            notification.style.zIndex = '3000';
+            notification.style.transform = 'translateX(150%)';
+            notification.style.transition = 'transform 0.3s ease';
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(150%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // =======================[ EVENT LISTENERS ]=======================
+        connectWalletBtn.addEventListener('click', () => {
+            openModal('connect');
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (walletModal.classList.contains('active') && e.target === walletModal) {
+                closeModal();
+            }
+            if (employeeModal.classList.contains('active') && e.target === employeeModal) {
+                closeModal();
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize chart
+            initPayrollChart();
+            
+            // Simulate loading
+            setTimeout(() => {
+                showNotification('Selamat datang di NexusChain HR! Mulai dengan menghubungkan wallet Anda.', 'success');
+            }, 1000);
+            
+            // Add employee button
+            document.querySelector('.btn-hr').addEventListener('click', function() {
+                if (!walletConnected) {
+                    showNotification('Harap hubungkan wallet terlebih dahulu', 'warning');
+                    openModal('connect');
+                } else {
+                    openModal('employee');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
