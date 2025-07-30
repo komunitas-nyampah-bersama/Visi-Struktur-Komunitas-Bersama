@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2BCycle Architecture | BlockCycle (Backend) + BurnCycle (Frontend)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --backend-color: #0f4c75;
+            --frontend-color: #1bcc9c;
+            --dark: #1b262c;
+            --light: #f8f9fa;
+            --gradient-start: #0f2027;
+            --gradient-end: #203a43;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end), #2c5364);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--frontend-color), var(--backend-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .architecture-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .principle-card {
+            background: rgba(11, 15, 23, 0.6);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .principle-card.backend {
+            border-top: 4px solid var(--backend-color);
+        }
+        
+        .principle-card.frontend {
+            border-top: 4px solid var(--frontend-color);
+        }
+        
+        .principle-card h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .backend h3 {
+            color: var(--backend-color);
+        }
+        
+        .frontend h3 {
+            color: var(--frontend-color);
+        }
+        
+        .architecture-diagram {
+            background: rgba(11, 15, 23, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .diagram-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .backend-section, .frontend-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .backend-section {
+            border-right: 2px dashed var(--backend-color);
+            padding-right: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            display: inline-block;
+        }
+        
+        .backend-section .section-title {
+            color: var(--backend-color);
+            border-color: var(--backend-color);
+        }
+        
+        .frontend-section .section-title {
+            color: var(--frontend-color);
+            border-color: var(--frontend-color);
+        }
+        
+        .components {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .component {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .component:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .backend-component {
+            border-left: 3px solid var(--backend-color);
+        }
+        
+        .frontend-component {
+            border-left: 3px solid var(--frontend-color);
+        }
+        
+        .connection {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .connection-line {
+            height: 2px;
+            background: linear-gradient(to right, var(--backend-color), var(--frontend-color));
+            flex-grow: 1;
+        }
+        
+        .connection-label {
+            background: rgba(11, 15, 23, 0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .implementation-section {
+            margin: 50px 0;
+        }
+        
+        .implementation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .code-block {
+            background: rgba(11, 15, 23, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-title {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .backend-code {
+            border-left: 3px solid var(--backend-color);
+        }
+        
+        .frontend-code {
+            border-left: 3px solid var(--frontend-color);
+        }
+        
+        .json-key { color: #36a2eb; }
+        .json-string { color: #1bcc9c; }
+        .json-number { color: #ff9f40; }
+        .json-boolean { color: #9966ff; }
+        
+        .principles-summary {
+            background: rgba(11, 15, 23, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .principle-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .principle-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .backend-icon {
+            background: rgba(15, 76, 117, 0.3);
+            color: var(--backend-color);
+        }
+        
+        .frontend-icon {
+            background: rgba(27, 204, 156, 0.3);
+            color: var(--frontend-color);
+        }
+        
+        .principle-content h4 {
+            margin-bottom: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .backend-section {
+                border-right: none;
+                border-bottom: 2px dashed var(--backend-color);
+                padding-right: 0;
+                padding-bottom: 30px;
+                margin-bottom: 30px;
+            }
+            
+            .diagram-container {
+                flex-direction: column;
+            }
+            
+            .implementation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>2BCycle Architecture</h1>
+            </div>
+            <p>BlockCycle (Backend) + BurnCycle (Frontend) - Pendekatan Terpisah untuk Efisiensi dan Skalabilitas</p>
+        </header>
+        
+        <div class="architecture-principles">
+            <div class="principle-card backend">
+                <h3><i class="fas fa-server"></i> BlockCycle (Backend)</h3>
+                <p>Fokus pada logika bisnis, validasi data, penyimpanan, dan eksekusi operasi blockchain. Bertanggung jawab atas keamanan, konsistensi, dan manajemen data.</p>
+            </div>
+            
+            <div class="principle-card frontend">
+                <h3><i class="fas fa-desktop"></i> BurnCycle (Frontend)</h3>
+                <p>Fokus pada pengalaman pengguna, presentasi data, interaksi, dan visualisasi. Bertanggung jawab atas responsivitas, aksesibilitas, dan kemudahan penggunaan.</p>
+            </div>
+            
+            <div class="principle-card">
+                <h3><i class="fas fa-sync-alt"></i> Prinsip Integrasi</h3>
+                <p>Komunikasi melalui API yang terdefinisi dengan baik. Frontend hanya berinteraksi dengan backend melalui endpoint yang telah ditentukan, menjaga separasi yang jelas.</p>
+            </div>
+        </div>
+        
+        <div class="architecture-diagram">
+            <h2><i class="fas fa-project-diagram"></i> Arsitektur Sistem</h2>
+            <p>Desain terpisah dengan interface yang jelas antara BlockCycle dan BurnCycle</p>
+            
+            <div class="diagram-container">
+                <div class="backend-section">
+                    <h3 class="section-title">BlockCycle (Backend)</h3>
+                    <div class="components">
+                        <div class="component backend-component">
+                            <i class="fas fa-cube"></i>
+                            <div>
+                                <h4>Smart Contracts</h4>
+                                <p>Logika bisnis di blockchain</p>
+                            </div>
+                        </div>
+                        <div class="component backend-component">
+                            <i class="fas fa-database"></i>
+                            <div>
+                                <h4>Database & IPFS</h4>
+                                <p>Penyimpanan data terdesentralisasi</p>
+                            </div>
+                        </div>
+                        <div class="component backend-component">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>Validation Engine</h4>
+                                <p>Validasi data dan transaksi</p>
+                            </div>
+                        </div>
+                        <div class="component backend-component">
+                            <i class="fas fa-bolt"></i>
+                            <div>
+                                <h4>API Services</h4>
+                                <p>Endpoint untuk komunikasi frontend</p>
+                            </div>
+                        </div>
+                        <div class="component backend-component">
+                            <i class="fas fa-exchange-alt"></i>
+                            <div>
+                                <h4>Blockchain Gateway</h4>
+                                <p>Interaksi dengan jaringan blockchain</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="frontend-section">
+                    <h3 class="section-title">BurnCycle (Frontend)</h3>
+                    <div class="components">
+                        <div class="component frontend-component">
+                            <i class="fas fa-terminal"></i>
+                            <div>
+                                <h4>Terminal UI</h4>
+                                <p>Antarmuka berbasis perintah</p>
+                            </div>
+                        </div>
+                        <div class="component frontend-component">
+                            <i class="fas fa-wallet"></i>
+                            <div>
+                                <h4>Wallet Integration</h4>
+                                <p>Koneksi ke dompet kripto</p>
+                            </div>
+                        </div>
+                        <div class="component frontend-component">
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <h4>Dashboard & Visualisasi</h4>
+                                <p>Representasi data interaktif</p>
+                            </div>
+                        </div>
+                        <div class="component frontend-component">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div>
+                                <h4>Responsive Design</h4>
+                                <p>Pengalaman multi-perangkat</p>
+                            </div>
+                        </div>
+                        <div class="component frontend-component">
+                            <i class="fas fa-plug"></i>
+                            <div>
+                                <h4>API Client</h4>
+                                <p>Komunikasi dengan backend</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connection">
+                <div class="connection-line"></div>
+                <div class="connection-label">
+                    <i class="fas fa-exchange-alt"></i> API Interface
+                </div>
+            </div>
+        </div>
+        
+        <div class="principles-summary">
+            <h2><i class="fas fa-lightbulb"></i> Prinsip Desain Arsitektur</h2>
+            <p>Pedoman untuk memastikan implementasi yang efektif dan konsisten</p>
+            
+            <div class="principles-grid">
+                <div class="principle-item">
+                    <div class="principle-icon backend-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Keamanan Backend</h4>
+                        <p>Validasi ketat semua input, otentikasi kuat, dan kontrol akses granular</p>
+                    </div>
+                </div>
+                
+                <div class="principle-item">
+                    <div class="principle-icon frontend-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Pengalaman Pengguna</h4>
+                        <p>Antarmuka intuitif, responsif, dan aksesibel untuk semua pengguna</p>
+                    </div>
+                </div>
+                
+                <div class="principle-item">
+                    <div class="principle-icon backend-icon">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Skalabilitas Backend</h4>
+                        <p>Desain untuk menangani peningkatan beban dan pengguna</p>
+                    </div>
+                </div>
+                
+                <div class="principle-item">
+                    <div class="principle-icon frontend-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Kinerja Frontend</h4>
+                        <p>Optimasi waktu muat, rendering, dan responsivitas</p>
+                    </div>
+                </div>
+                
+                <div class="principle-item">
+                    <div class="principle-icon backend-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Modularitas Backend</h4>
+                        <p>Komponen terpisah untuk fungsionalitas spesifik</p>
+                    </div>
+                </div>
+                
+                <div class="principle-item">
+                    <div class="principle-icon frontend-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <div class="principle-content">
+                        <h4>Komposabilitas Frontend</h4>
+                        <p>Komponen UI independen yang dapat digunakan kembali</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="implementation-section">
+            <h2><i class="fas fa-code"></i> Contoh Implementasi</h2>
+            <p>Struktur kode yang mencerminkan pemisahan backend dan frontend</p>
+            
+            <div class="implementation-grid">
+                <div class="code-block backend-code">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <i class="fas fa-server"></i> BlockCycle API (Backend)
+                        </div>
+                        <span>Solidity + Node.js</span>
+                    </div>
+                    <pre>
+// Endpoint: POST /api/execute-command
+router.post('/execute-command', async (req, res) => {
+    // Validasi input dari frontend
+    const { command, params, walletAddress } = req.body;
+    
+    <span class="json-key">try</span> {
+        // Validasi struktur perintah
+        <span class="json-key">if</span> (!validateCommandSchema(command, params)) {
+            <span class="json-key">return</span> res.status(400).json({ error: "Invalid command structure" });
+        }
+        
+        // Verifikasi kepemilikan wallet
+        <span class="json-key">if</span> (!verifyWalletOwnership(walletAddress)) {
+            <span class="json-key">return</span> res.status(403).json({ error: "Wallet verification failed" });
+        }
+        
+        // Proses perintah di blockchain
+        const txHash = await blockchainService.executeCommand(
+            command, 
+            params, 
+            walletAddress
+        );
+        
+        // Simpan log transaksi
+        await db.saveTransactionLog({
+            command,
+            params,
+            walletAddress,
+            txHash,
+            status: "pending"
+        });
+        
+        // Kirim respons ke frontend
+        res.json({ 
+            success: true, 
+            txHash,
+            message: "Command executed successfully"
+        });
+        
+    } <span class="json-key">catch</span> (error) {
+        console.error("API Error:", error);
+        res.status(500).json({ 
+            error: "Internal server error",
+            details: error.message 
+        });
+    }
+});</pre>
+                </div>
+                
+                <div class="code-block frontend-code">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <i class="fas fa-desktop"></i> BurnCycle UI (Frontend)
+                        </div>
+                        <span>React + Ethers.js</span>
+                    </div>
+                    <pre>
+// Komponen Terminal UI
+function CommandTerminal() {
+    const [input, setInput] = useState('');
+    const [output, setOutput] = useState([]);
+    const { wallet } = useWallet();
+    
+    const executeCommand = async (command) => {
+        // Parse perintah pengguna
+        const parsed = parseCommand(command);
+        
+        <span class="json-key">try</span> {
+            // Tampilkan perintah di output
+            addOutput(`> ${command}`, 'command');
+            
+            // Kirim ke backend BlockCycle
+            const response = await api.post('/execute-command', {
+                command: parsed.action,
+                params: parsed.params,
+                walletAddress: wallet.address
+            });
+            
+            <span class="json-key">if</span> (response.success) {
+                addOutput(`[✔] ${response.message}`, 'success');
+                addOutput(`Transaction: ${response.txHash}`, 'info');
+            } else {
+                addOutput(`[✖] Error: ${response.error}`, 'error');
+            }
+            
+        } <span class="json-key">catch</span> (error) {
+            addOutput(`[✖] API Error: ${error.message}`, 'error');
+        }
+    };
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        executeCommand(input);
+        setInput('');
+    };
+    
+    return (
+        &lt;div className="terminal"&gt;
+            &lt;div className="output"&gt;
+                {output.map((item, i) => (
+                    &lt;pre key={i} className={item.type}&gt;{item.text}&lt;/pre&gt;
+                ))}
+            &lt;/div&gt;
+            &lt;form onSubmit={handleSubmit}&gt;
+                &lt;input 
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Enter command..."
+                /&gt;
+                &lt;button type="submit"&gt;Execute&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    );
+}</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="implementation-section">
+            <h2><i class="fas fa-exchange-alt"></i> Struktur Komunikasi API</h2>
+            <p>Format JSON untuk komunikasi antara BurnCycle dan BlockCycle</p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-title">
+                        <i class="fas fa-file-code"></i> API Request/Response Format
+                    </div>
+                    <span>JSON Schema</span>
+                </div>
+                <pre>
+<span class="json-key">// Request dari Frontend (BurnCycle)</span>
+{
+  "<span class="json-key">command</span>": "<span class="json-string">burnCycle</span>",
+  "<span class="json-key">params</span>": {
+    "<span class="json-key">material</span>": "<span class="json-string">organic-waste</span>",
+    "<span class="json-key">amount</span>": <span class="json-number">2.5</span>,
+    "<span class="json-key">unit</span>": "<span class="json-string">kg</span>",
+    "<span class="json-key">location</span>": {
+      "<span class="json-key">lat</span>": <span class="json-number">-2.976073</span>,
+      "<span class="json-key">lng</span>": <span class="json-number">104.775430</span>
+    }
+  },
+  "<span class="json-key">walletAddress</span>": "<span class="json-string">0x742d...Cc4A</span>",
+  "<span class="json-key">timestamp</span>": "<span class="json-string">2025-07-18T10:30:00Z</span>"
+}
+
+<span class="json-key">// Response dari Backend (BlockCycle)</span>
+{
+  "<span class="json-key">success</span>": <span class="json-boolean">true</span>,
+  "<span class="json-key">message</span>": "<span class="json-string">Command executed successfully</span>",
+  "<span class="json-key">txHash</span>": "<span class="json-string">0x4a2b...c8d9</span>",
+  "<span class="json-key">data</span>": {
+    "<span class="json-key">carbonSaved</span>": <span class="json-number">1.75</span>,
+    "<span class="json-key">tokensEarned</span>": <span class="json-number">2.14</span>,
+    "<span class="json-key">nftMinted</span>": {
+      "<span class="json-key">id</span>": "<span class="json-string">#12345</span>",
+      "<span class="json-key">ipfsUrl</span>": "<span class="json-string">ipfs://QmXyZ...</span>"
+    }
+  },
+  "<span class="json-key">timestamp</span>": "<span class="json-string">2025-07-18T10:31:22Z</span>"
+}</pre>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 2BCycle Framework | Arsitektur Terpisah BlockCycle (Backend) + BurnCycle (Frontend)</p>
+            <p>Dibangun dengan prinsip: Keamanan, Skalabilitas, dan Kemudahan Penggunaan</p>
+        </footer>
+    </div>
+</body>
+</html>
