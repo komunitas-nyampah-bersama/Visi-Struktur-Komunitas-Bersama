@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor Passport NFT</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    /* VARIABEL WARNA & GLOBAL STYLING */
+    :root {
+      --main-bg: #f6f8fb;
+      --primary: #2242c7;
+      --accent: #18b875;
+      --passport: #40485a;
+      --danger: #e94353;
+      --success: #2bc01e;
+      --font-main: "Segoe UI", Arial, sans-serif;
+      --font-mono: Menlo, Consolas, monospace;
+      --border: 1.5px solid #e3e7ed;
+    }
+    
+    body {
+      background: var(--main-bg);
+      font-family: var(--font-main);
+      margin: 0;
+      color: #232536;
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+    
+    /* LAYOUT EDITOR */
+    .editor-container {
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: 20px;
+      height: 100vh;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+    
+    /* SIDEBAR KIRI - TOOLBOX */
+    .editor-toolbox {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .toolbox-section {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .toolbox-title {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin: 0 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .toolbox-title i {
+      font-size: 1.2em;
+    }
+    
+    .tool-item {
+      background: #f8f9ff;
+      border: 1px solid #e0e5ff;
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .tool-item:hover {
+      background: #eef1ff;
+      transform: translateY(-2px);
+    }
+    
+    /* AREA PREVIEW UTAMA */
+    .editor-preview {
+      display: flex;
+      flex-direction: column;
+      background: #f0f2f5;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    
+    .preview-header {
+      background: #fff;
+      padding: 15px 25px;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .preview-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      padding: 20px;
+    }
+    
+    /* SIDEBAR KANAN - PROPERTI */
+    .editor-properties {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .property-group {
+      margin-bottom: 25px;
+    }
+    
+    .property-title {
+      font-size: 1.1rem;
+      color: var(--passport);
+      margin: 0 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .property-control {
+      margin-bottom: 15px;
+    }
+    
+    .property-control label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .property-control input[type="text"],
+    .property-control input[type="color"],
+    .property-control input[type="url"],
+    .property-control select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: var(--font-main);
+      font-size: 1em;
+    }
+    
+    .color-preview {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+      border: 1px solid #ddd;
+    }
+    
+    /* PASSPORT PREVIEW */
+    .passport-container {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 7px 36px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 650px;
+      overflow: hidden;
+      transform: scale(0.85);
+      transition: transform 0.3s;
+    }
+    
+    .passport-container.editing {
+      transform: scale(0.95);
+      box-shadow: 0 10px 50px rgba(0,0,0,0.2);
+    }
+    
+    .editable {
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .editable:hover {
+      outline: 2px dashed var(--accent);
+    }
+    
+    .editable.active {
+      outline: 2px solid var(--primary);
+      background: rgba(34, 66, 199, 0.05);
+    }
+    
+    /* BUTTONS & CONTROLS */
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      background: #1a36b0;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: #f0f2f5;
+      color: #555;
+    }
+    
+    .btn-icon {
+      padding: 8px 12px;
+    }
+    
+    /* UTILITY CLASSES */
+    .hidden {
+      display: none !important;
+    }
+    
+    .icon {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <!-- SIDEBAR KIRI - TOOLBOX -->
+    <div class="editor-toolbox">
+      <div class="toolbox-section">
+        <h2 class="toolbox-title">📁 File</h2>
+        <div class="tool-item" id="btn-new">
+          <i class="icon">🆕</i> Desain Baru
+        </div>
+        <div class="tool-item" id="btn-save">
+          <i class="icon">💾</i> Simpan Desain
+        </div>
+        <div class="tool-item" id="btn-load">
+          <i class="icon">📂</i> Muat Desain
+        </div>
+        <div class="tool-item" id="btn-export">
+          <i class="icon">📤</i> Ekspor HTML
+        </div>
+      </div>
+      
+      <div class="toolbox-section">
+        <h2 class="toolbox-title">✏️ Elemen</h2>
+        <div class="tool-item" data-element="text">
+          <i class="icon">🔤</i> Tambah Teks
+        </div>
+        <div class="tool-item" data-element="image">
+          <i class="icon">🖼️</i> Tambah Gambar
+        </div>
+        <div class="tool-item" data-element="badge">
+          <i class="icon">🪙</i> Tambah Badge
+        </div>
+        <div class="tool-item" data-element="divider">
+          <i class="icon">➖</i> Tambah Garis
+        </div>
+      </div>
+      
+      <div class="toolbox-section">
+        <h2 class="toolbox-title">🎨 Tema</h2>
+        <div class="tool-item" data-theme="default">
+          <i class="icon">🎨</i> Tema Default
+        </div>
+        <div class="tool-item" data-theme="dark">
+          <i class="icon">🌙</i> Tema Gelap
+        </div>
+        <div class="tool-item" data-theme="professional">
+          <i class="icon">👔</i> Tema Profesional
+        </div>
+        <div class="tool-item" data-theme="vibrant">
+          <i class="icon">🌈</i> Tema Cerah
+        </div>
+      </div>
+    </div>
+    
+    <!-- AREA PREVIEW UTAMA -->
+    <div class="editor-preview">
+      <div class="preview-header">
+        <h2 style="margin:0;">Editor Passport NFT</h2>
+        <div>
+          <button class="btn btn-secondary btn-icon" id="btn-zoom-out">🔍➖</button>
+          <button class="btn btn-secondary btn-icon" id="btn-zoom-reset">🔍100%</button>
+          <button class="btn btn-secondary btn-icon" id="btn-zoom-in">🔍➕</button>
+        </div>
+      </div>
+      <div class="preview-area">
+        <!-- PASSPORT PREVIEW AKAN DIMASUKKAN DI SINI -->
+        <div id="passport-preview"></div>
+      </div>
+    </div>
+    
+    <!-- SIDEBAR KANAN - PROPERTI -->
+    <div class="editor-properties">
+      <div class="property-group">
+        <h3 class="property-title">⚙️ Properti Elemen</h3>
+        <div class="property-control">
+          <label>Jenis Elemen</label>
+          <input type="text" id="element-type" readonly>
+        </div>
+        <div class="property-control" id="text-content-control">
+          <label>Konten</label>
+          <input type="text" id="element-content">
+        </div>
+        <div class="property-control" id="image-url-control">
+          <label>URL Gambar</label>
+          <input type="url" id="element-image">
+        </div>
+        <div class="property-control">
+          <label>Warna Teks</label>
+          <div style="display:flex;gap:10px;">
+            <input type="color" id="element-color" value="#40485a">
+            <span id="color-value">#40485a</span>
+            <div class="color-preview" id="color-preview" style="background:#40485a"></div>
+          </div>
+        </div>
+        <div class="property-control">
+          <label>Ukuran Font</label>
+          <select id="element-font-size">
+            <option value="1em">Normal</option>
+            <option value="1.2em">Sedang</option>
+            <option value="1.4em">Besar</option>
+            <option value="0.9em">Kecil</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="property-group">
+        <h3 class="property-title">🎨 Warna Global</h3>
+        <div class="property-control">
+          <label>Background Utama</label>
+          <input type="color" id="global-bg" value="#f6f8fb">
+        </div>
+        <div class="property-control">
+          <label>Warna Primer</label>
+          <input type="color" id="global-primary" value="#2242c7">
+        </div>
+        <div class="property-control">
+          <label>Warna Aksen</label>
+          <input type="color" id="global-accent" value="#18b875">
+        </div>
+        <div class="property-control">
+          <label>Warna Teks</label>
+          <input type="color" id="global-text" value="#40485a">
+        </div>
+      </div>
+      
+      <div class="property-group">
+        <h3 class="property-title">💾 Simpan & Ekspor</h3>
+        <button class="btn" id="btn-apply-changes">
+          <i class="icon">✓</i> Terapkan Perubahan
+        </button>
+        <button class="btn" id="btn-reset-element">
+          <i class="icon">↺</i> Reset Elemen
+        </button>
+        <button class="btn btn-secondary" id="btn-delete-element">
+          <i class="icon">🗑️</i> Hapus Elemen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data desain saat ini
+    let currentDesign = {
+      elements: {},
+      theme: {
+        mainBg: '#f6f8fb',
+        primary: '#2242c7',
+        accent: '#18b875',
+        passport: '#40485a'
+      }
+    };
+    
+    // Elemen yang sedang dipilih
+    let selectedElement = null;
+    
+    // Fungsi inisialisasi editor
+    function initEditor() {
+      // Load template passport
+      loadTemplate();
+      
+      // Setup event listeners
+      setupEventListeners();
+      
+      // Set default theme
+      updateGlobalTheme();
+    }
+    
+    // Load template passport HTML
+    function loadTemplate() {
+      const template = `
+        <div class="passport-container">
+          <div class="passport-header">
+            <div class="passport-icon editable" data-id="icon">🛂</div>
+            <div class="passport-title editable" data-id="title">NFT Passport: Research Identity</div>
+            <span class="passport-tag editable" data-id="tag">2BCycle Registry</span>
+            <div class="editable" data-id="subtitle" style="font-size: 1.08em; margin-top: 6px">
+              powered by Blockchain Base &amp; ORCID
+            </div>
+          </div>
+          
+          <div class="passport-content">
+            <div class="nft-meta-section">
+              <img src="https://ipfs.io/ipfs/bafybeihnr7gijvk3fj5yc2iuymgyulixdsnkejksly5yx3ahqjx6tkf3ra/NFT_Riset_ORCID.png" 
+                   class="nft-img editable" 
+                   data-id="nft-image"
+                   alt="NFT Research Identity" />
+              
+              <div class="nft-badge editable" data-id="badge1">NFT Credential</div>
+              <span class="nft-badge editable" data-id="badge2" style="background: var(--accent)">Verified</span>
+              
+              <div class="nft-attributes">
+                <ul>
+                  <li class="editable" data-id="name"><b>Nama:</b> Muhamad Oky Muhisin</li>
+                  <li class="editable" data-id="community"><b>Komunitas:</b> Nyampah Bersama</li>
+                  <li class="editable" data-id="orcid"><b>ORCID:</b> 0009-0003-5705-8107</li>
+                  <li class="editable" data-id="registry"><b>Registry:</b> 2BCycle Research Registry</li>
+                  <li class="editable" data-id="type"><b>Tipe Credential:</b> Decentralized Academic Identity</li>
+                  <li class="editable" data-id="date"><b>Issued:</b> 10 July 2025</li>
+                </ul>
+              </div>
+              
+              <a class="nft-link editable" data-id="link1" href="#" target="_blank">Lihat NFT di Explorer</a><br />
+              <a class="nft-link editable" data-id="link2" href="#" target="_blank">Metadata di IPFS</a>
+              
+              <div class="qr-section">
+                <div class="editable" data-id="qr-text"><b>Scan to verify:</b></div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=103x103&data=https://example.com" 
+                     class="editable" 
+                     data-id="qr-image"
+                     alt="QR NFT" />
+              </div>
+            </div>
+            
+            <div style="flex: 2">
+              <div class="section-title editable" data-id="utility-title">Fungsi & Utility NFT Passport</div>
+              
+              <div class="passport-utility-block editable" data-id="utility1">
+                <div class="utility-title">Bukti Keikutsertaan Proyek/Komunitas</div>
+                <div class="utility-desc">Bagikan NFT ini sebagai bukti digital anggota aktif di komunitas atau riset.</div>
+              </div>
+              
+              <div class="passport-utility-block editable" data-id="utility2">
+                <div class="utility-title">Traceability & Metadata Akademik Onchain</div>
+                <div class="utility-desc">Semua atribut tercatat transparan di IPFS & Blockchain.</div>
+              </div>
+              
+              <div class="passport-utility-block editable" data-id="utility3">
+                <div class="utility-title">Bukti Ownership & Rekam Jejak Open</div>
+                <div class="utility-desc">Riwayat kepemilikan dapat diakses publik.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="padding: 18px 28px 5px 28px">
+            <div class="section-title editable" data-id="code-title">Kode Verifikasi Onchain (Python)</div>
+            <div class="code-section">
+              <pre class="editable" data-id="code-content">from web3 import Web3
+# ... contoh kode ...</pre>
+            </div>
+          </div>
+          
+          <div class="passport-footer editable" data-id="footer">
+            NFT 2BCycle Registry | ERC-721 Smart Contract: 0xDD4BEa21...DC2869
+          </div>
+        </div>`;
+      
+      document.getElementById('passport-preview').innerHTML = template;
+      initEditableElements();
+    }
+    
+    // Inisialisasi elemen yang bisa diedit
+    function initEditableElements() {
+      const editables = document.querySelectorAll('.editable');
+      
+      editables.forEach(el => {
+        el.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Hapus seleksi sebelumnya
+          if (selectedElement) {
+            selectedElement.classList.remove('active');
+          }
+          
+          // Set elemen baru yang dipilih
+          selectedElement = this;
+          this.classList.add('active');
+          
+          // Isi panel properti
+          populatePropertiesPanel(this);
+        });
+      });
+    }
+    
+    // Isi panel properti dengan data elemen
+    function populatePropertiesPanel(element) {
+      const type = element.tagName.toLowerCase();
+      const id = element.dataset.id || '';
+      
+      // Set tipe elemen
+      document.getElementById('element-type').value = `${type}${id ? ` (${id})` : ''}`;
+      
+      // Konten khusus tipe elemen
+      if (type === 'img') {
+        document.getElementById('element-image').value = element.src;
+        document.getElementById('image-url-control').classList.remove('hidden');
+        document.getElementById('text-content-control').classList.add('hidden');
+      } else {
+        document.getElementById('element-content').value = 
+          type === 'input' ? element.value : element.textContent;
+        document.getElementById('text-content-control').classList.remove('hidden');
+        document.getElementById('image-url-control').classList.add('hidden');
+      }
+      
+      // Warna
+      const color = getComputedStyle(element).color;
+      document.getElementById('element-color').value = rgbToHex(color);
+      document.getElementById('color-value').textContent = rgbToHex(color);
+      document.getElementById('color-preview').style.backgroundColor = color;
+      
+      // Ukuran font
+      const fontSize = getComputedStyle(element).fontSize;
+      document.getElementById('element-font-size').value = fontSize;
+    }
+    
+    // Konversi RGB ke Hex
+    function rgbToHex(rgb) {
+      const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      if (!match) return '#000000';
+      
+      const r = parseInt(match[1]).toString(16).padStart(2, '0');
+      const g = parseInt(match[2]).toString(16).padStart(2, '0');
+      const b = parseInt(match[3]).toString(16).padStart(2, '0');
+      
+      return `#${r}${g}${b}`;
+    }
+    
+    // Update tema global
+    function updateGlobalTheme() {
+      document.documentElement.style.setProperty('--main-bg', currentDesign.theme.mainBg);
+      document.documentElement.style.setProperty('--primary', currentDesign.theme.primary);
+      document.documentElement.style.setProperty('--accent', currentDesign.theme.accent);
+      document.documentElement.style.setProperty('--passport', currentDesign.theme.passport);
+      
+      // Update input color pickers
+      document.getElementById('global-bg').value = currentDesign.theme.mainBg;
+      document.getElementById('global-primary').value = currentDesign.theme.primary;
+      document.getElementById('global-accent').value = currentDesign.theme.accent;
+      document.getElementById('global-text').value = currentDesign.theme.passport;
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+      // Event untuk elemen yang bisa diedit
+      document.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('editable') && selectedElement) {
+          selectedElement.classList.remove('active');
+          selectedElement = null;
+        }
+      });
+      
+      // Event untuk properti elemen
+      document.getElementById('element-content').addEventListener('input', function() {
+        if (selectedElement) {
+          if (selectedElement.tagName === 'INPUT') {
+            selectedElement.value = this.value;
+          } else {
+            selectedElement.textContent = this.value;
+          }
+        }
+      });
+      
+      document.getElementById('element-image').addEventListener('input', function() {
+        if (selectedElement && selectedElement.tagName === 'IMG') {
+          selectedElement.src = this.value;
+        }
+      });
+      
+      document.getElementById('element-color').addEventListener('input', function() {
+        if (selectedElement) {
+          selectedElement.style.color = this.value;
+          document.getElementById('color-value').textContent = this.value;
+          document.getElementById('color-preview').style.backgroundColor = this.value;
+        }
+      });
+      
+      document.getElementById('element-font-size').addEventListener('change', function() {
+        if (selectedElement) {
+          selectedElement.style.fontSize = this.value;
+        }
+      });
+      
+      // Event untuk tema global
+      document.getElementById('global-bg').addEventListener('input', function() {
+        currentDesign.theme.mainBg = this.value;
+        updateGlobalTheme();
+      });
+      
+      document.getElementById('global-primary').addEventListener('input', function() {
+        currentDesign.theme.primary = this.value;
+        updateGlobalTheme();
+      });
+      
+      document.getElementById('global-accent').addEventListener('input', function() {
+        currentDesign.theme.accent = this.value;
+        updateGlobalTheme();
+      });
+      
+      document.getElementById('global-text').addEventListener('input', function() {
+        currentDesign.theme.passport = this.value;
+        updateGlobalTheme();
+      });
+      
+      // Event untuk tombol aksi
+      document.getElementById('btn-apply-changes').addEventListener('click', function() {
+        alert('Perubahan diterapkan!');
+      });
+      
+      document.getElementById('btn-delete-element').addEventListener('click', function() {
+        if (selectedElement && confirm('Hapus elemen ini?')) {
+          selectedElement.remove();
+          selectedElement = null;
+        }
+      });
+      
+      // Event untuk toolbox
+      document.querySelectorAll('.tool-item[data-theme]').forEach(item => {
+        item.addEventListener('click', function() {
+          const theme = this.dataset.theme;
+          
+          switch(theme) {
+            case 'dark':
+              currentDesign.theme = {
+                mainBg: '#1a1a2e',
+                primary: '#6a67ce',
+                accent: '#0f3460',
+                passport: '#e6e6e6'
+              };
+              break;
+            case 'professional':
+              currentDesign.theme = {
+                mainBg: '#f0f2f5',
+                primary: '#2c3e50',
+                accent: '#3498db',
+                passport: '#2c3e50'
+              };
+              break;
+            case 'vibrant':
+              currentDesign.theme = {
+                mainBg: '#fff8e1',
+                primary: '#ff5722',
+                accent: '#ff9800',
+                passport: '#5d4037'
+              };
+              break;
+            default:
+              currentDesign.theme = {
+                mainBg: '#f6f8fb',
+                primary: '#2242c7',
+                accent: '#18b875',
+                passport: '#40485a'
+              };
+          }
+          
+          updateGlobalTheme();
+          alert(`Tema "${theme}" diterapkan!`);
+        });
+      });
+      
+      // Event untuk zoom
+      const passportContainer = document.querySelector('.passport-container');
+      let currentZoom = 0.85;
+      
+      document.getElementById('btn-zoom-in').addEventListener('click', function() {
+        currentZoom = Math.min(currentZoom + 0.1, 1.2);
+        passportContainer.style.transform = `scale(${currentZoom})`;
+      });
+      
+      document.getElementById('btn-zoom-out').addEventListener('click', function() {
+        currentZoom = Math.max(currentZoom - 0.1, 0.5);
+        passportContainer.style.transform = `scale(${currentZoom})`;
+      });
+      
+      document.getElementById('btn-zoom-reset').addEventListener('click', function() {
+        currentZoom = 0.85;
+        passportContainer.style.transform = `scale(${currentZoom})`;
+      });
+    }
+    
+    // Inisialisasi editor saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', initEditor);
+  </script>
+</body>
+</html>
