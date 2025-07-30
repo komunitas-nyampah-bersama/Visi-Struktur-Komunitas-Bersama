@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyampah Bersama - Transformasi Sampah untuk Masa Depan Berkelanjutan</title>
+    <link rel="icon" href="https://ipfs.io/ipfs/bafkreifhit57ao36xh5ftnryybc775vcihdp2ywuw32lklouarqgxgdiwq" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #28a745; /* Green for sustainability */
+            --secondary-color: #007bff; /* Blue for technology/innovation */
+            --text-color: #333;
+            --bg-light: #f8f9fa;
+            --bg-dark: #343a40;
+            --white: #ffffff;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://unsplash.com/photos/a-pile-of-garbage-is-sitting-on-the-ground-h_y1BqA8XQ0') center/cover no-repeat; /* Placeholder image, consider a custom one */
+            color: var(--white);
+            text-align: center;
+            padding: 100px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        .hero h2 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            margin-left: 20px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 60px 20px;
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--bg-light);
+        }
+
+        h2.section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        h2.section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- About Us --- */
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* --- Our Focus --- */
+        .focus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .focus-item {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .focus-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .focus-item h3 {
+            color: var(--secondary-color);
+            margin-top: 15px;
+            font-size: 1.4em;
+        }
+
+        .focus-item p {
+            font-size: 0.95em;
+        }
+
+        /* --- Initiatives --- */
+        .initiatives-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .initiatives-list li {
+            background-color: var(--white);
+            padding: 25px;
+            border-left: 5px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: border-left-color 0.3s ease;
+        }
+        .initiatives-list li:hover {
+            border-left-color: var(--secondary-color);
+        }
+
+        /* --- Collaboration --- */
+        .collaboration-content {
+            text-align: center;
+        }
+        .collaboration-content p {
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .external-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .external-links a {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .external-links a:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Contact --- */
+        .contact-info {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .contact-info strong {
+            color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--white);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        footer .social-links a {
+            color: var(--white);
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- EU Standard Compliance / Administrative Info --- */
+        .eu-compliance {
+            background-color: #e9ecef;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #495057;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .eu-compliance h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .eu-compliance p {
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 15px;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .hero h2 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9em;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-text, .about-image {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .focus-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .initiatives-list {
+                grid-template-columns: 1fr;
+            }
+
+            .external-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <img src="https://ipfs.io/ipfs/bafkreifhit57ao36xh5ftnryybc775vcihdp2ywuw32lklouarqgxgdiwq" alt="Nyampah Bersama Logo">
+                <h1>Nyampah Bersama</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#tentang-kami">Tentang Kami</a></li>
+                    <li><a href="#fokus-kami">Fokus Kami</a></li>
+                    <li><a href="#inisiatif">Inisiatif</a></li>
+                    <li><a href="#kolaborasi">Kolaborasi</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Mewujudkan Masa Depan Bersih dan Berdaya Melalui Inovasi dan Kolaborasi</h2>
+            <p>Nyampah Bersama adalah komunitas akar rumput yang menjembatani aksi nyata pengelolaan sampah dengan teknologi mutakhir, menciptakan ekosistem berkelanjutan dari jalanan hingga jaringan global.</p>
+            <a href="#tentang-kami" class="btn">Pelajari Lebih Lanjut</a>
+            <a href="#kolaborasi" class="btn btn-secondary">Bergabung dengan Kami</a>
+        </div>
+    </section>
+
+    <hr>
+
+    <section id="tentang-kami" class="about-us">
+        <div class="container">
+            <h2 class="section-title">Tentang Nyampah Bersama</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p><strong>Nyampah Bersama</strong> lahir dari keresahan mendalam terhadap krisis lingkungan, ketimpangan ekonomi, dan potensi besar yang terabaikan dalam tumpukan sampah. Kami adalah gerakan masyarakat sipil yang didirikan pada tahun 2023, bergerak dari jalanan hingga jaringan, dari pemulung hingga blockchain — membangun jembatan antara aksi nyata dan teknologi masa depan.</p>
+                    <p>Kami bukan hanya sebuah nama, tetapi simbol transformasi yang berakar pada pengalaman hidup masyarakat sehari-hari. Lahir dari kesadaran kolektif akan degradasi lingkungan, ketidakseimbangan ekonomi, dan potensi aksi akar rumput yang belum dimanfaatkan, komunitas ini didirikan untuk menawarkan cara berpikir baru, menjembatani kesenjangan antara kepedulian lingkungan dan inovasi teknologi.</p>
+                    <p>Gerakan kami dirancang berdasarkan prinsip-prinsip inklusi, keberlanjutan, dan pemberdayaan teknologi. Kami percaya bahwa setiap individu, terlepas dari latar belakang mereka, memiliki hak untuk berpartisipasi dalam membangun dunia yang lebih bersih dan adil.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://unsplash.com/photos/a-man-is-sitting-on-the-ground-next-to-a-pile-of-trash-V5XzR9p2V1s" alt="Aktivitas Nyampah Bersama"> </div>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section id="fokus-kami">
+        <div class="container">
+            <h2 class="section-title">Fokus Utama Kami</h2>
+            <div class="focus-grid">
+                <div class="focus-item">
+                    <h3>Edukasi Lingkungan & Digitalisasi Sampah</h3>
+                    <p>Meningkatkan kesadaran dan pengetahuan masyarakat tentang pentingnya pengelolaan sampah yang bertanggung jawab, didukung oleh platform digital untuk efisiensi.</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Teknologi Insentif Berbasis Token & NFT</h3>
+                    <p>Mengembangkan sistem penghargaan inovatif seperti NyampahCoin dan NFT Proof of Clean Act (PoCA) untuk memotivasi perilaku berkelanjutan.</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Riset Terbuka & Verifikasi Aksi Lingkungan</h3>
+                    <p>Mendorong partisipasi dalam riset terbuka dan membangun sistem Proof of Clean Act untuk memverifikasi dampak positif terhadap lingkungan secara transparan.</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Ekosistem Sosial Berbasis Web3</h3>
+                    <p>Membangun komunitas yang terdesentralisasi melalui Web3, DAO, dan smart contract untuk tata kelola yang adil dan transparan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section id="inisiatif">
+        <div class="container">
+            <h2 class="section-title">Inisiatif Unggulan Kami</h2>
+            <p style="text-align: center; margin-bottom: 40px;">Kami percaya bahwa keberlanjutan harus bermanfaat, dan bahwa tindakan lingkungan harus terlihat dan dapat diverifikasi. Fokus kami pada verifikasi tokenisasi (melalui sistem Web3 dan IPFS) adalah inti dari misi kami. Beberapa inisiatif yang telah kami luncurkan meliputi:</p>
+            <ul class="initiatives-list">
+                <li>
+                    <h3>Akademi Nyampah</h3>
+                    <p>Platform edukasi yang memberdayakan masyarakat dengan pengetahuan dan keterampilan pengelolaan sampah.</p>
+                </li>
+                <li>
+                    <h3>2BCycle Framework (BlockCycle & BurnCycle)</h3>
+                    <p>Kerangka kerja inovatif untuk mengoptimalkan siklus pengelolaan sampah secara digital dan berkelanjutan.</p>
+                </li>
+                <li>
+                    <h3>Paspor Digital Sampah</h3>
+                    <p>Sistem pencatatan digital untuk melacak asal, jenis, dan tujuan akhir sampah, meningkatkan transparansi dan akuntabilitas.</p>
+                </li>
+                <li>
+                    <h3>Eksperimen AI, IPFS, & Blockchain</h3>
+                    <p>Riset dan pengembangan berkelanjutan untuk memanfaatkan teknologi terkini demi solusi pengelolaan sampah yang lebih cerdas dan efisien.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <hr>
+
+    <section id="kolaborasi">
+        <div class="container collaboration-content">
+            <h2 class="section-title">Bergabung dalam Ekosistem Kolaborasi Global</h2>
+            <p>Nyampah Bersama berkolaborasi dengan sekolah, peneliti akademis, pengembang blockchain, LSM, dan entitas pemerintah untuk memastikan keselarasan misi sosial dengan kelayakan teknologi. Platform digital kami memanfaatkan alat sumber terbuka, asisten AI, dan identitas terdesentralisasi untuk membangun transparansi dan ketertelusuran.</p>
+            <p>Kami bekerja untuk memungkinkan pelaku sampah lokal — termasuk keluarga, pekerja informal, dan usaha kecil — untuk bergabung dengan ekonomi sirkular global dengan hambatan minimal.</p>
+            <p>Kami mengundang institusi, penyandang dana, mitra akademis, dan sesama visioner untuk terlibat bersama kami dalam membangun masa depan di mana limbah bukan lagi masalah, tetapi solusi — kunci yang membuka pintu menuju pemberdayaan, kesetaraan, dan keseimbangan ekologis.</p>
+            <div class="external-links">
+                <a href="https://webgate.ec.europa.eu/app-forms/af-ui-forms-2025-esc-rx/#/forms/ESC50-QLA-E0E754A0/2025-1-ESC50-QLA/context" target="_blank">Aplikasi Komisi Eropa</a>
+                <a href="https://ipfs.io/ipfs/bafkreifhit57ao36xh5ftnryybc775vcihdp2ywuw32lklouarqgxgdiwq" target="_blank">Lihat Logo di IPFS</a>
+                <a href="https://zenodo.org/communities/nyampahbersama" target="_blank">Komunitas Zenodo Kami</a>
+                <a href="https://github.com/enterprises/komunitas-nyampah-bersama" target="_blank">GitHub Kami</a>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="eu-compliance">
+        <div class="container">
+            <h3>Informasi Administratif & Kepatuhan EU</h3>
+            <p>Dengan ini, Nyampah Bersama menyatakan bahwa komunitas ini adalah gerakan masyarakat sipil yang didirikan pada tahun 2023, nirlaba, dan sepenuhnya digerakkan oleh komunitas.</p>
+            <p>Sertifikat ini dikeluarkan sebagai pernyataan resmi komitmen dan kehadiran operasional kami, untuk mendukung aplikasi kami sebagai operator terdaftar dalam sistem IMSOC/TRACES Komisi Eropa. Ini juga berfungsi untuk memberikan kejelasan administratif untuk kolaborasi masa depan yang melibatkan keberlanjutan, kepercayaan digital, verifikasi lingkungan, dan kerja sama lintas batas.</p>
+            <p><strong>Nama Komunitas:</strong> Nyampah Bersama</p>
+            <p><strong>Bidang Kegiatan:</strong> Pengelolaan Sampah, Pendidikan Lingkungan, Teknologi Sosial dan Ekonomi Kerakyatan</p>
+            <p><strong>NPWP:</strong> 397576190016000</p>
+            <p><strong>ORCID Pendiri:</strong> <a href="http://orcid.org/0009-0003-5705-8107" target="_blank">http://orcid.org/0009-0003-5705-8107</a></p>
+            <p><strong>EU Login uID:</strong> n00jcciv</p>
+            <p>Palembang, 10 Juli 2025</p>
+            <p>Dengan Hormat,</p>
+            <p><strong>Muhamad Oky Muhisin</strong><br>Pendiri & Manajer Komunitas Nyampah Bersama</p>
+        </div>
+    </section>
+
+    <hr>
+
+    <section id="kontak">
+        <div class="container">
+            <h2 class="section-title">Hubungi Kami</h2>
+            <div class="contact-info">
+                <p>Kami selalu terbuka untuk kolaborasi, pertanyaan, dan ide-ide inovatif.</p>
+                <p><strong>Alamat:</strong> Jl. Talang Keramat, 30151 Palembang, Sumatera Selatan</p>
+                <p><strong>Nomor Telepon:</strong> <a href="tel:+6283177828139">+62 831-7782-8139</a></p>
+                <p>Untuk pertanyaan umum atau kemitraan, silakan hubungi kami melalui telepon atau kunjungi langsung alamat kami.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nyampah Bersama. Semua Hak Dilindungi.</p>
+            <div class="social-links">
+                </div>
+        </div>
+    </footer>
+
+</body>
+</html>
