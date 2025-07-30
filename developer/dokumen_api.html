@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi API - Platform Publikasi Bersama</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1683d9;
+            --primary-dark: #126db3;
+            --secondary: #2ecc71;
+            --warning: #e74c3c;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #eef2f7;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f5ff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--primary), #0d5a9a);
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: #ffd43b;
+        }
+
+        .nav-items {
+            margin-top: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 15px;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: #ffd43b;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(120deg, var(--primary), #1a6bac);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* API Documentation Styles */
+        .api-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .api-description {
+            background: rgba(22, 131, 217, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+
+        .api-access-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .access-level {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--warning);
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-zenodo {
+            background: #1683d9;
+            color: white;
+        }
+
+        .btn-zenodo:hover {
+            background: #126db3;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .api-endpoints {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .endpoint-card {
+            background: white;
+            border: 1px solid #e6eef7;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .endpoint-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .method {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .method.get {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .method.post {
+            background: rgba(241, 196, 15, 0.2);
+            color: #d35400;
+        }
+
+        .method.put {
+            background: rgba(52, 152, 219, 0.2);
+            color: #2980b9;
+        }
+
+        .method.delete {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+
+        .endpoint-url {
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .endpoint-description {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .endpoint-params {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .param-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .param-header {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .api-try-container {
+            background: var(--gray);
+            padding: 25px;
+            border-radius: var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group select {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+        }
+
+        .api-response {
+            margin-top: 20px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            max-height: 300px;
+            line-height: 1.5;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+        }
+
+        /* Admin Section */
+        .group-card {
+            background: white;
+            border: 1px solid #e6eef7;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .group-card:hover {
+            border-color: var(--primary);
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .group-header h5 {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .group-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .member {
+            background: var(--gray);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-leaf"></i> EcoPublish</h1>
+                <p>Platform Publikasi Ilmiah</p>
+            </div>
+            
+            <div class="nav-items">
+                <div class="nav-item" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-section="publications">
+                    <i class="fas fa-book"></i>
+                    <span>Publikasi</span>
+                </div>
+                <div class="nav-item" data-section="collaboration">
+                    <i class="fas fa-users"></i>
+                    <span>Kolaborasi</span>
+                </div>
+                <div class="nav-item active" data-section="api">
+                    <i class="fas fa-code"></i>
+                    <span>Dokumentasi API</span>
+                </div>
+                <div class="nav-item" data-section="wasteData">
+                    <i class="fas fa-recycle"></i>
+                    <span>Data Sampah</span>
+                </div>
+                <div class="nav-item" data-section="education">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Edukasi</span>
+                </div>
+                <div class="nav-item" data-section="admin">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </div>
+                <div class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Dokumentasi API</h2>
+                <div class="user-info">
+                    <div class="user-avatar">AH</div>
+                    <div>
+                        <div>Aktivis Hijau</div>
+                        <div style="font-size: 0.9rem; color: #666;">Peneliti Lingkungan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Documentation Card -->
+            <div class="card" id="apiSection">
+                <div class="card-header">
+                    <h3 class="card-title">Dokumentasi API</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="api-container">
+                        <div class="api-description">
+                            <p>Dokumentasi API untuk integrasi dengan Zenodo dan platform publikasi ilmiah lainnya. API ini menyediakan akses ke berbagai data publikasi, pengajuan penelitian, serta data pengelolaan sampah.</p>
+                            <div class="api-access-control">
+                                <div class="access-level">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Akses Terbatas: Hanya anggota terdaftar</span>
+                                </div>
+                                <button class="btn btn-zenodo" id="requestAccess">
+                                    <i class="fas fa-key"></i> Minta Akses API
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <h3 class="section-title">Endpoint Utama</h3>
+                        <div class="api-endpoints">
+                            <div class="endpoint-card">
+                                <div class="endpoint-header">
+                                    <span class="method get">GET</span>
+                                    <span class="endpoint-url">/api/publications</span>
+                                </div>
+                                <div class="endpoint-description">
+                                    Mendapatkan daftar publikasi ilmiah komunitas. Dapat difilter berdasarkan tahun, topik, dan penulis.
+                                </div>
+                                <div class="endpoint-params">
+                                    <div class="param-row param-header">
+                                        <div>Parameter</div>
+                                        <div>Tipe</div>
+                                        <div>Deskripsi</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>year</div>
+                                        <div>integer</div>
+                                        <div>Tahun publikasi (contoh: 2023)</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>topic</div>
+                                        <div>string</div>
+                                        <div>Topik penelitian (contoh: "daur ulang")</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>author</div>
+                                        <div>string</div>
+                                        <div>Nama penulis</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="endpoint-card">
+                                <div class="endpoint-header">
+                                    <span class="method post">POST</span>
+                                    <span class="endpoint-url">/api/submit</span>
+                                </div>
+                                <div class="endpoint-description">
+                                    Mengirimkan publikasi baru ke platform. Memerlukan autentikasi dan izin khusus.
+                                </div>
+                                <div class="endpoint-params">
+                                    <div class="param-row param-header">
+                                        <div>Parameter</div>
+                                        <div>Tipe</div>
+                                        <div>Deskripsi</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>title</div>
+                                        <div>string</div>
+                                        <div>Judul publikasi (wajib)</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>authors</div>
+                                        <div>array</div>
+                                        <div>Daftar penulis (wajib)</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>abstract</div>
+                                        <div>string</div>
+                                        <div>Abstrak penelitian (wajib)</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>keywords</div>
+                                        <div>array</div>
+                                        <div>Kata kunci penelitian</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>file</div>
+                                        <div>file</div>
+                                        <div>File PDF publikasi (wajib)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="endpoint-card">
+                                <div class="endpoint-header">
+                                    <span class="method get">GET</span>
+                                    <span class="endpoint-url">/api/waste-data</span>
+                                </div>
+                                <div class="endpoint-description">
+                                    Mengakses data pengelolaan sampah terbaru. Menyediakan statistik daur ulang, pengurangan sampah, dan dampak lingkungan.
+                                </div>
+                                <div class="endpoint-params">
+                                    <div class="param-row param-header">
+                                        <div>Parameter</div>
+                                        <div>Tipe</div>
+                                        <div>Deskripsi</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>region</div>
+                                        <div>string</div>
+                                        <div>Filter berdasarkan wilayah (contoh: "jawa-barat")</div>
+                                    </div>
+                                    <div class="param-row">
+                                        <div>period</div>
+                                        <div>string</div>
+                                        <div>Periode waktu (monthly, quarterly, yearly)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="section-title">Coba API</h3>
+                        <div class="api-try-container">
+                            <div class="form-group">
+                                <label>Endpoint</label>
+                                <div class="input-group">
+                                    <select id="apiEndpoint">
+                                        <option value="/api/publications">GET /api/publications</option>
+                                        <option value="/api/waste-data">GET /api/waste-data</option>
+                                        <option value="/api/education">GET /api/education</option>
+                                    </select>
+                                    <button class="btn btn-primary" id="tryApi">
+                                        <i class="fas fa-play"></i> Jalankan
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Parameter (Opsional)</label>
+                                <div class="input-group">
+                                    <input type="text" id="apiParams" placeholder="year=2023&topic=daur ulang" style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: var(--border-radius);">
+                                </div>
+                            </div>
+                            
+                            <div class="api-response">
+                                <pre id="apiResponse">{
+  "status": "Pilih endpoint dan klik Jalankan"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Section -->
+            <div class="card" id="adminSection" style="display: none;">
+                <div class="card-header">
+                    <h3 class="card-title">Admin - Manajemen Akses</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="access-groups">
+                        <h4>Grup Akses Dokumentasi</h4>
+                        
+                        <div class="group-card">
+                            <div class="group-header">
+                                <h5>Tim Inti</h5>
+                                <span class="badge">5 anggota</span>
+                            </div>
+                            <div class="group-description">
+                                Akses penuh ke semua dokumentasi dan API
+                            </div>
+                            <div class="group-members">
+                                <span class="member">Aktivis Hijau</span>
+                                <span class="member">Admin Utama</span>
+                                <span class="member">Koordinator Riset</span>
+                                <span class="member">Manajer Data</span>
+                                <span class="member">Pengembang</span>
+                            </div>
+                        </div>
+                        
+                        <div class="group-card">
+                            <div class="group-header">
+                                <h5>Jurnalis Lingkungan</h5>
+                                <span class="badge">15 anggota</span>
+                            </div>
+                            <div class="group-description">
+                                Akses ke dokumentasi publikasi dan data sampah
+                            </div>
+                        </div>
+                        
+                        <div class="group-card">
+                            <div class="group-header">
+                                <h5>Mitra Eksternal</h5>
+                                <span class="badge">8 anggota</span>
+                            </div>
+                            <div class="group-description">
+                                Akses terbatas ke API publik
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-plus-circle"></i> Tambah Grup Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Pesan notifikasi</span>
+    </div>
+
+    <script>
+        // Fungsi untuk navigasi menu
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Hapus kelas active dari semua item
+                document.querySelectorAll('.nav-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Tambahkan kelas active ke item yang diklik
+                this.classList.add('active');
+                
+                const sectionId = this.dataset.section;
+                
+                // Sembunyikan semua section
+                document.querySelectorAll('.card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                
+                // Tampilkan section yang dipilih
+                if(sectionId === 'api') {
+                    document.getElementById('apiSection').style.display = 'block';
+                } else if(sectionId === 'admin') {
+                    document.getElementById('adminSection').style.display = 'block';
+                } else {
+                    document.getElementById('apiSection').style.display = 'block';
+                }
+            });
+        });
+
+        // Simulasi API
+        document.getElementById('tryApi').addEventListener('click', function() {
+            const endpoint = document.getElementById('apiEndpoint').value;
+            let response;
+            
+            // Tampilkan loading
+            document.getElementById('apiResponse').textContent = "Memuat data...";
+            
+            // Simulasi loading
+            setTimeout(() => {
+                if(endpoint === '/api/publications') {
+                    response = {
+                        status: "success",
+                        count: 2,
+                        data: [
+                            {
+                                id: "pub-2023-001",
+                                title: "Dampak Pengelolaan Sampah Berbasis Masyarakat",
+                                authors: ["Aktivis Hijau", "Dr. Lingkungan"],
+                                published: "2023-06-15",
+                                doi: "10.1234/zenodo.123456",
+                                abstract: "Penelitian ini mengkaji efektivitas model pengelolaan sampah berbasis partisipasi masyarakat di perkotaan.",
+                                keywords: ["sampah", "daur ulang", "komunitas"]
+                            },
+                            {
+                                id: "pub-2023-045",
+                                title: "Inovasi Daur Ulang Plastik Menjadi Bahan Konstruksi",
+                                authors: ["Tim Riset Sampah"],
+                                published: "2023-08-22",
+                                doi: "10.1234/zenodo.789012",
+                                abstract: "Studi terbaru tentang pemanfaatan limbah plastik sebagai bahan bangunan ramah lingkungan.",
+                                keywords: ["plastik", "konstruksi", "inovasi"]
+                            }
+                        ]
+                    };
+                } else if(endpoint === '/api/waste-data') {
+                    response = {
+                        status: "success",
+                        last_updated: "2023-10-15",
+                        data: {
+                            total_recycled: "1250 kg",
+                            plastic: {
+                                amount: "562 kg",
+                                percentage: "45%"
+                            },
+                            paper: {
+                                amount: "375 kg",
+                                percentage: "30%"
+                            },
+                            glass: {
+                                amount: "187 kg",
+                                percentage: "15%"
+                            },
+                            electronic: {
+                                amount: "126 kg",
+                                percentage: "10%"
+                            },
+                            co2_reduction: "2.8 ton"
+                        }
+                    };
+                } else if(endpoint === '/api/education') {
+                    response = {
+                        status: "success",
+                        data: [
+                            {
+                                id: "edu-001",
+                                title: "Panduan Daur Ulang Sampah Rumah Tangga",
+                                category: "Pemula",
+                                duration: "30 menit"
+                            },
+                            {
+                                id: "edu-045",
+                                title: "Teknik Komposting Modern",
+                                category: "Menengah",
+                                duration: "45 menit"
+                            }
+                        ]
+                    };
+                }
+                
+                document.getElementById('apiResponse').textContent = JSON.stringify(response, null, 2);
+            }, 1000);
+        });
+
+        // Request akses API
+        document.getElementById('requestAccess').addEventListener('click', function() {
+            showToast('Permintaan akses API telah dikirim ke admin');
+        });
+
+        // Fungsi toast notifikasi
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Simulasi login Zenodo
+        document.querySelector('.api-access-control').addEventListener('click', function(e) {
+            if(e.target.closest('#requestAccess')) {
+                showToast('Permintaan akses API telah dikirim ke admin');
+            }
+        });
+
+        // Aktifkan halaman API secara default
+        document.getElementById('apiSection').style.display = 'block';
+    </script>
+</body>
+</html>
