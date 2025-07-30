@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor Notion Style + Supabase</title>
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --secondary: #8338ec;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9fbfd;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #editor {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      min-height: 500px;
+    }
+    .block {
+      margin: 15px 0;
+      padding: 12px;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .block:focus {
+      border-left-color: var(--primary);
+      background: #f8fbff;
+      outline: none;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    button:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+    button.secondary {
+      background: #f0f4f8;
+      color: #4a5568;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      background: #f8fafc;
+    }
+    video {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+      background: #000;
+    }
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: #4caf50;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 100;
+    }
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    #doc-id {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+      color: #718096;
+    }
+    #doc-id input {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      width: 250px;
+      text-align: center;
+    }
+    .camera-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .camera-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+  <!-- Supabase SDK -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>✍️ Editor Notion + Supabase</h1>
+      <p>Simpan kontenmu di cloud dan akses di mana saja!</p>
+    </header>
+    
+    <div id="editor">
+      <div contenteditable="true" class="block">✨ Selamat datang di editor Notion-style versi kamu! 🥰</div>
+      <div contenteditable="true" class="block">📝 Klik tombol di bawah untuk menambahkan berbagai jenis konten...</div>
+    </div>
+    
+    <div class="controls">
+      <button onclick="addBlock('text')">
+        <i>📝</i> Teks
+      </button>
+      <button onclick="addBlock('heading')">
+        <i>🔤</i> Heading
+      </button>
+      <button onclick="addBlock('list')">
+        <i>📋</i> List
+      </button>
+      <button onclick="addBlock('image')">
+        <i>🖼️</i> Gambar
+      </button>
+      <button onclick="addBlock('embed')">
+        <i>🌐</i> Embed
+      </button>
+      <button onclick="startCamera()">
+        <i>📷</i> Selfie
+      </button>
+      <button onclick="saveContent()" style="background:#10b981;">
+        <i>💾</i> Simpan
+      </button>
+      <button onclick="loadContent()" class="secondary">
+        <i>📂</i> Muat
+      </button>
+    </div>
+    
+    <div id="doc-id">
+      <p>ID Dokumen:</p>
+      <input type="text" id="doc-id-input" placeholder="Kosongkan untuk dokumen baru">
+    </div>
+    
+    <div class="camera-container">
+      <video id="video" autoplay playsinline style="display:none;"></video>
+      <canvas id="canvas" style="display:none;"></canvas>
+      <div class="camera-actions">
+        <button id="capture-btn" style="display:none;" onclick="capturePhoto()">
+          <i>📸</i> Ambil Foto
+        </button>
+        <button id="close-camera" style="display:none;" onclick="closeCamera()">
+          <i>❌</i> Tutup Kamera
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">Pesan notifikasi</div>
+
+  <script>
+    // Inisialisasi Supabase
+    const SUPABASE_URL = 'https://YOUR_SUPABASE_ID.supabase.co';
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let currentDocId = '';
+    const notification = document.getElementById('notification');
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, isSuccess = true) {
+      notification.textContent = message;
+      notification.style.background = isSuccess ? '#4caf50' : '#f44336';
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Fungsi untuk menambahkan blok konten
+    function addBlock(type) {
+      const editor = document.getElementById("editor");
+      const block = document.createElement("div");
+      block.className = "block";
+      block.contentEditable = true;
+      block.setAttribute('data-type', type);
+
+      if (type === "heading") {
+        block.innerHTML = "Judul Section";
+        block.style.fontSize = "24px";
+        block.style.fontWeight = "bold";
+      } else if (type === "list") {
+        block.innerHTML = "• Item 1<br>• Item 2";
+      } else if (type === "image") {
+        const url = prompt("Masukkan URL gambar:");
+        if (url) {
+          const img = document.createElement("img");
+          img.src = url;
+          img.style.maxWidth = "100%";
+          img.style.borderRadius = "8px";
+          img.style.marginTop = "10px";
+          block.appendChild(img);
+        } else {
+          return;
+        }
+      } else if (type === "embed") {
+        const url = prompt("Masukkan URL iframe/embed (YouTube, website):");
+        if (url) {
+          const iframe = document.createElement("iframe");
+          iframe.src = url;
+          block.appendChild(iframe);
+        } else {
+          return;
+        }
+      } else {
+        block.innerHTML = "Tulis sesuatu di sini...";
+      }
+
+      editor.appendChild(block);
+      block.focus();
+    }
+
+    // Fungsi kamera
+    function startCamera() {
+      const video = document.getElementById('video');
+      const captureBtn = document.getElementById('capture-btn');
+      const closeBtn = document.getElementById('close-camera');
+      
+      video.style.display = 'block';
+      captureBtn.style.display = 'block';
+      closeBtn.style.display = 'block';
+      
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          video.srcObject = stream;
+        })
+        .catch(err => {
+          showNotification("Gagal membuka kamera: " + err.message, false);
+        });
+    }
+    
+    function capturePhoto() {
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Konversi ke data URL
+      const dataUrl = canvas.toDataURL('image/png');
+      
+      // Tambahkan gambar ke editor
+      const block = document.createElement("div");
+      block.className = "block";
+      block.setAttribute('data-type', 'image');
+      
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      img.style.maxWidth = "100%";
+      img.style.borderRadius = "8px";
+      img.style.marginTop = "10px";
+      block.appendChild(img);
+      
+      document.getElementById("editor").appendChild(block);
+      
+      closeCamera();
+      showNotification("Foto berhasil ditambahkan!");
+    }
+    
+    function closeCamera() {
+      const video = document.getElementById('video');
+      const captureBtn = document.getElementById('capture-btn');
+      const closeBtn = document.getElementById('close-camera');
+      const stream = video.srcObject;
+      
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      
+      video.style.display = 'none';
+      captureBtn.style.display = 'none';
+      closeBtn.style.display = 'none';
+      video.srcObject = null;
+    }
+    
+    // Fungsi untuk menyimpan konten ke Supabase
+    async function saveContent() {
+      const editor = document.getElementById('editor');
+      const docIdInput = document.getElementById('doc-id-input');
+      const content = editor.innerHTML;
+      
+      try {
+        let result;
+        
+        if (docIdInput.value) {
+          // Update dokumen yang sudah ada
+          result = await supabase
+            .from('documents')
+            .update({ content })
+            .eq('id', docIdInput.value);
+        } else {
+          // Buat dokumen baru
+          result = await supabase
+            .from('documents')
+            .insert([{ content }]);
+        }
+        
+        if (result.error) throw result.error;
+        
+        if (!docIdInput.value && result.data) {
+          docIdInput.value = result.data[0].id;
+        }
+        
+        showNotification("Dokumen berhasil disimpan!");
+      } catch (error) {
+        console.error("Error menyimpan dokumen:", error);
+        showNotification("Gagal menyimpan: " + error.message, false);
+      }
+    }
+    
+    // Fungsi untuk memuat konten dari Supabase
+    async function loadContent() {
+      const editor = document.getElementById('editor');
+      const docIdInput = document.getElementById('doc-id-input');
+      
+      if (!docIdInput.value) {
+        showNotification("Masukkan ID dokumen terlebih dahulu", false);
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase
+          .from('documents')
+          .select('content')
+          .eq('id', docIdInput.value)
+          .single();
+        
+        if (error) throw error;
+        if (!data) throw new Error("Dokumen tidak ditemukan");
+        
+        editor.innerHTML = data.content;
+        showNotification("Dokumen berhasil dimuat!");
+      } catch (error) {
+        console.error("Error memuat dokumen:", error);
+        showNotification("Gagal memuat: " + error.message, false);
+      }
+    }
+    
+    // Inisialisasi
+    document.addEventListener('DOMContentLoaded', () => {
+      // Cek apakah ada ID dokumen di URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const docId = urlParams.get('id');
+      
+      if (docId) {
+        document.getElementById('doc-id-input').value = docId;
+        setTimeout(loadContent, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
