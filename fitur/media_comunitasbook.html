@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusBook - Platform Sosial Media Generasi Baru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <script src="https://unpkg.com/@thirdweb-dev/sdk@3.0.0/dist/sdk.min.js"></script>
+    <style>
+        :root {
+            --primary: #1877f2;
+            --secondary: #42b72a;
+            --dark: #18191a;
+            --darker: #121212;
+            --card-bg: #242526;
+            --text-primary: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --accent: #2d88ff;
+            --divider: #3a3b3c;
+            --success: #31a24c;
+            --warning: #f7b928;
+            --danger: #f02849;
+            --ml-color: #9c27b0;
+            --blockchain-color: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 20px;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 50px;
+            border: none;
+            background-color: #3a3b3c;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 8px;
+            margin: 0 15px;
+        }
+        
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-icon:hover, .nav-icon.active {
+            background-color: #3a3b3c;
+            color: var(--primary);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .user-profile:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 80px auto 20px;
+            padding: 0 15px;
+            gap: 20px;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        .sidebar-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .menu-item i {
+            width: 30px;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .menu-item.active {
+            background-color: rgba(24, 119, 242, 0.2);
+        }
+        
+        .menu-item.active i {
+            color: var(--primary);
+        }
+        
+        .friend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .friend-item:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .friend-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+        }
+        
+        .friend-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        /* Feed Styles */
+        .feed {
+            flex: 1;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .create-post {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+        }
+        
+        .post-input {
+            flex: 1;
+            background-color: #3a3b3c;
+            border-radius: 50px;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        
+        .post-input:hover {
+            background-color: #4e4f50;
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--divider);
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+        
+        .post-action:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .post {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 12px;
+        }
+        
+        .post-user-info {
+            flex: 1;
+        }
+        
+        .post-user-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .post-menu {
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .post-menu:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .post-content {
+            padding: 0 15px 15px;
+            line-height: 1.5;
+        }
+        
+        .post-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+        }
+        
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .post-actions-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 5px 0;
+        }
+        
+        .post-reaction {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .post-reaction:hover {
+            background-color: #3a3b3c;
+        }
+        
+        /* Right Sidebar Styles */
+        .right-sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        .sponsored-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .sponsored-item:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .sponsored-img {
+            width: 120px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--blockchain-color), var(--ml-color));
+        }
+        
+        .sponsored-content {
+            flex: 1;
+        }
+        
+        .sponsored-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .sponsored-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .birthday-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 15px;
+        }
+        
+        .birthday-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--warning), #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .contacts-header {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        
+        .contact-item:hover {
+            background-color: #3a3b3c;
+        }
+        
+        .online-indicator {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success);
+            border: 2px solid var(--card-bg);
+            bottom: 0;
+            right: 0;
+        }
+        
+        .contact-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+        }
+        
+        .avatar-1 { background: linear-gradient(45deg, var(--primary), #2d88ff); }
+        .avatar-2 { background: linear-gradient(45deg, var(--secondary), #31a24c); }
+        .avatar-3 { background: linear-gradient(45deg, var(--ml-color), #7b1fa2); }
+        .avatar-4 { background: linear-gradient(45deg, var(--blockchain-color), #e65100); }
+        .avatar-5 { background: linear-gradient(45deg, #f7b928, #ff6b6b); }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--divider);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #3a3b3c;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #0a8a5f);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.4);
+        }
+        
+        .btn-block {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-container {
+                padding: 0 10px;
+            }
+            
+            .feed {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .nav-icons {
+                display: none;
+            }
+            
+            .search-container {
+                max-width: 200px;
+            }
+            
+            .header {
+                padding: 0 10px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .post, .sidebar-section, .create-post {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .post:nth-child(2) { animation-delay: 0.1s; }
+        .post:nth-child(3) { animation-delay: 0.2s; }
+        .post:nth-child(4) { animation-delay: 0.3s; }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background-color: var(--success);
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        .notification.warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        /* NFT Section */
+        .nft-section {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(156, 39, 176, 0.1));
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        .nft-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--blockchain-color);
+        }
+        
+        .nft-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .nft-item {
+            aspect-ratio: 1/1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: linear-gradient(45deg, #ff9800, #9c27b0);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .nft-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <i class="fas fa-book"></i>
+            <span>NexusBook</span>
+        </a>
+        
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Cari di NexusBook">
+        </div>
+        
+        <div class="nav-icons">
+            <div class="nav-icon active">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-gamepad"></i>
+            </div>
+        </div>
+        
+        <div class="nav-icons">
+            <div class="nav-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+        </div>
+        
+        <div class="user-profile">
+            <div class="user-avatar"></div>
+            <div class="user-name">Alex Johnson</div>
+        </div>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="menu-item active">
+                    <i class="fas fa-user"></i>
+                    <span>Alex Johnson</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Teman</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Grup</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-store"></i>
+                    <span>Marketplace</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-video"></i>
+                    <span>Video</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Acara</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Disimpan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-flag"></i>
+                    <span>Halaman</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chevron-down"></i>
+                    <span>Lihat Selengkapnya</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Singkatanku</h3>
+                <div class="friend-list">
+                    <div class="friend-item">
+                        <div class="friend-avatar"></div>
+                        <div class="friend-name">Sarah Williams</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar"></div>
+                        <div class="friend-name">Mike Chen</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar"></div>
+                        <div class="friend-name">Emma Rodriguez</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar"></div>
+                        <div class="friend-name">David Kim</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar"></div>
+                        <div class="friend-name">Lisa Anderson</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Grup</h3>
+                <div class="menu-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Buat Grup Baru</span>
+                </div>
+                <div class="friend-list">
+                    <div class="friend-item">
+                        <div class="friend-avatar" style="background: linear-gradient(45deg, #9c27b0, #673ab7);"></div>
+                        <div class="friend-name">Teknologi Web 3.0</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar" style="background: linear-gradient(45deg, #ff9800, #f44336);"></div>
+                        <div class="friend-name">Pengembang Blockchain</div>
+                    </div>
+                    <div class="friend-item">
+                        <div class="friend-avatar" style="background: linear-gradient(45deg, #4caf50, #8bc34a);"></div>
+                        <div class="friend-name">Komunitas AI</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nft-section">
+                <h3 class="nft-title">
+                    <i class="fas fa-coins"></i>
+                    <span>NFT Saya</span>
+                </h3>
+                <div class="nft-grid">
+                    <div class="nft-item">
+                        <div class="nft-overlay">Recycle #123</div>
+                    </div>
+                    <div class="nft-item">
+                        <div class="nft-overlay">Eco #456</div>
+                    </div>
+                    <div class="nft-item">
+                        <div class="nft-overlay">Green #789</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Feed -->
+        <div class="feed">
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="post-header">
+                    <div class="post-avatar"></div>
+                    <div class="post-input">Apa yang sedang Anda pikirkan, Alex?</div>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action" onclick="openModal('media')">
+                        <i class="fas fa-video" style="color: var(--danger);"></i>
+                        <span>Video Langsung</span>
+                    </div>
+                    <div class="post-action" onclick="openModal('photo')">
+                        <i class="fas fa-images" style="color: var(--success);"></i>
+                        <span>Foto/Video</span>
+                    </div>
+                    <div class="post-action" onclick="openModal('feeling')">
+                        <i class="fas fa-smile" style="color: var(--warning);"></i>
+                        <span>Perasaan/Aktivitas</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 1 -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar avatar-1"></div>
+                    <div class="post-user-info">
+                        <div class="post-user-name">Sarah Williams</div>
+                        <div class="post-time">2 jam yang lalu · <i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Baru saja menghadiri konferensi blockchain yang luar biasa! Teknologi Web3 benar-benar akan mengubah dunia. Siapa yang sudah mulai membangun di blockchain?</p>
+                </div>
+                <img src="#" class="post-image" style="background: linear-gradient(45deg, #0d47a1, #311b92); height: 300px;">
+                <div class="post-stats">
+                    <div><i class="fas fa-thumbs-up"></i> 245</div>
+                    <div>78 Komentar · 32 Bagikan</div>
+                </div>
+                <div class="post-actions-container">
+                    <div class="post-reaction">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Suka</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-comment"></i>
+                        <span>Komentar</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-share"></i>
+                        <span>Bagikan</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 2 -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar avatar-2"></div>
+                    <div class="post-user-info">
+                        <div class="post-user-name">Mike Chen</div>
+                        <div class="post-time">5 jam yang lalu · <i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Baru saja merilis versi beta dari aplikasi AI terbaru kami! 🤖 Dengan TensorFlow.js, kami membuat model prediktif yang berjalan langsung di browser. Coba sekarang di tautan di bawah!</p>
+                    <p><a href="#" style="color: var(--accent);">https://nexus-ai-demo.app</a></p>
+                </div>
+                <div class="post-stats">
+                    <div><i class="fas fa-thumbs-up"></i> 421</div>
+                    <div>123 Komentar · 45 Bagikan</div>
+                </div>
+                <div class="post-actions-container">
+                    <div class="post-reaction">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Suka</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-comment"></i>
+                        <span>Komentar</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-share"></i>
+                        <span>Bagikan</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Post 3 -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar avatar-3"></div>
+                    <div class="post-user-info">
+                        <div class="post-user-name">Emma Rodriguez</div>
+                        <div class="post-time">Kemarin pukul 19:30 · <i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>NFT terbaru koleksi saya! Setiap NFT mewakili material daur ulang yang telah diselamatkan dari laut. 🌊🐢</p>
+                    <p>#EcoFriendly #BlockchainForGood</p>
+                </div>
+                <img src="#" class="post-image" style="background: linear-gradient(45deg, #004d40, #00796b); height: 400px;">
+                <div class="post-stats">
+                    <div><i class="fas fa-thumbs-up"></i> 587</div>
+                    <div>142 Komentar · 89 Bagikan</div>
+                </div>
+                <div class="post-actions-container">
+                    <div class="post-reaction">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Suka</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-comment"></i>
+                        <span>Komentar</span>
+                    </div>
+                    <div class="post-reaction">
+                        <i class="fas fa-share"></i>
+                        <span>Bagikan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Sponsored</h3>
+                <div class="sponsored-item">
+                    <div class="sponsored-img"></div>
+                    <div class="sponsored-content">
+                        <div class="sponsored-title">Nexus AI Terminal</div>
+                        <div class="sponsored-desc">Platform AI dengan integrasi blockchain untuk pengembang Web3</div>
+                    </div>
+                </div>
+                <div class="sponsored-item">
+                    <div class="sponsored-img"></div>
+                    <div class="sponsored-content">
+                        <div class="sponsored-title">EcoChain Marketplace</div>
+                        <div class="sponsored-desc">Jual/beli NFT yang mewakili material daur ulang</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="birthday-item">
+                    <div class="birthday-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div>
+                        <strong>David Kim</strong> hari ini ulang tahun. Kirimkan ucapan!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contacts-header">
+                <h3 class="sidebar-title">Kontak</h3>
+                <div>
+                    <i class="fas fa-video"></i>
+                    <i class="fas fa-search"></i>
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>
+            
+            <div class="friend-list">
+                <div class="contact-item">
+                    <div class="contact-avatar avatar-1">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="friend-name">Sarah Williams</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-avatar avatar-2">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="friend-name">Mike Chen</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-avatar avatar-3">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="friend-name">Emma Rodriguez</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-avatar avatar-4">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="friend-name">David Kim</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-avatar avatar-5">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="friend-name">Lisa Anderson</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Post Modal -->
+    <div class="modal" id="createPostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Buat Postingan</div>
+                <div class="modal-close" onclick="closeModal()">&times;</div>
+            </div>
+            <div class="modal-body">
+                <div class="post-header" style="padding: 0 0 15px;">
+                    <div class="post-avatar"></div>
+                    <div class="post-user-info">
+                        <div class="post-user-name">Alex Johnson</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Apa yang sedang Anda pikirkan, Alex?" rows="4" id="postContent"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <button class="btn" onclick="addMedia()" style="flex: 1; background: #3a3b3c; color: var(--text-primary);">
+                            <i class="fas fa-images"></i> Tambah Media
+                        </button>
+                        <button class="btn" onclick="addFeeling()" style="flex: 1; background: #3a3b3c; color: var(--text-primary);">
+                            <i class="fas fa-smile"></i> Tambah Perasaan
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div id="postPreview"></div>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="createPost()">Posting</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        Postingan berhasil dibuat!
+    </div>
+    
+    <script>
+        // =======================[ STATE MANAGEMENT ]=======================
+        let currentUser = {
+            name: "Alex Johnson",
+            avatar: "avatar",
+            friends: 342,
+            posts: 78
+        };
+        
+        let posts = [];
+        let isModalOpen = false;
+        
+        // =======================[ DOM ELEMENTS ]=======================
+        const createPostModal = document.getElementById('createPostModal');
+        const notification = document.getElementById('notification');
+        const postContent = document.getElementById('postContent');
+        const postPreview = document.getElementById('postPreview');
+        
+        // =======================[ MODAL FUNCTIONS ]=======================
+        function openModal(type) {
+            createPostModal.classList.add('active');
+            isModalOpen = true;
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            createPostModal.classList.remove('active');
+            isModalOpen = false;
+            document.body.style.overflow = 'auto';
+            postContent.value = '';
+            postPreview.innerHTML = '';
+        }
+        
+        // =======================[ POST FUNCTIONS ]=======================
+        function addMedia() {
+            postPreview.innerHTML = `
+                <div style="margin-top: 15px; border: 2px dashed #3a3b3c; border-radius: 8px; padding: 20px; text-align: center; color: var(--text-secondary);">
+                    <i class="fas fa-images" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <p>Upload foto atau video</p>
+                    <button class="btn" style="background: #3a3b3c; color: var(--text-primary); margin-top: 10px;">
+                        Pilih File
+                    </button>
+                </div>
+            `;
+        }
+        
+        function addFeeling() {
+            postPreview.innerHTML = `
+                <div style="margin-top: 15px; background: #3a3b3c; border-radius: 8px; padding: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-smile" style="color: var(--warning); font-size: 1.2rem;"></i>
+                        <span>Merasa: <span id="feelingText" style="font-weight: 500;">Bahagia</span></span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;">
+                        <div class="feeling-option" onclick="selectFeeling('Bahagia', '😊')">😊 Bahagia</div>
+                        <div class="feeling-option" onclick="selectFeeling('Bersemangat', '🤩')">🤩 Bersemangat</div>
+                        <div class="feeling-option" onclick="selectFeeling('Kreatif', '🎨')">🎨 Kreatif</div>
+                        <div class="feeling-option" onclick="selectFeeling('Lelah', '😩')">😩 Lelah</div>
+                        <div class="feeling-option" onclick="selectFeeling('Terinspirasi', '✨')">✨ Terinspirasi</div>
+                        <div class="feeling-option" onclick="selectFeeling('Bangga', '😌')">😌 Bangga</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function selectFeeling(feeling, emoji) {
+            document.getElementById('feelingText').textContent = feeling;
+        }
+        
+        function createPost() {
+            const content = postContent.value.trim();
+            if (!content) {
+                showNotification('Silakan tulis sesuatu untuk diposting', 'error');
+                return;
+            }
+            
+            // Create new post object
+            const newPost = {
+                id: Date.now(),
+                user: {
+                    name: currentUser.name,
+                    avatar: currentUser.avatar
+                },
+                content: content,
+                time: 'Baru saja',
+                likes: 0,
+                comments: 0,
+                shares: 0
+            };
+            
+            // Add to posts array (in a real app, this would go to a database)
+            posts.unshift(newPost);
+            
+            // Close modal and show notification
+            closeModal();
+            showNotification('Postingan berhasil dibuat!');
+            
+            // In a real app, you would update the feed here
+            // For demo, we'll simulate adding the post
+            setTimeout(() => {
+                showNotification('Postingan muncul di feed!', 'success');
+            }, 1000);
+        }
+        
+        // =======================[ NOTIFICATION FUNCTION ]=======================
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+            } else {
+                notification.classList.add('success');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // =======================[ INITIALIZATION ]=======================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize TensorFlow.js
+            tf.ready().then(() => {
+                console.log('TensorFlow.js loaded:', tf.version.tfjs);
+            });
+            
+            // Initialize Thirdweb SDK
+            try {
+                const sdk = new ThirdwebSDK.ThirdwebSDK("polygon");
+                console.log('Thirdweb SDK initialized');
+            } catch (error) {
+                console.error('Failed to initialize Thirdweb:', error);
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (isModalOpen && e.target === createPostModal) {
+                    closeModal();
+                }
+            });
+        });
+        
+        // =======================[ MOCK DATA ]=======================
+        // Simulate loading posts
+        setTimeout(() => {
+            showNotification('Feed diperbarui dengan 3 postingan baru', 'success');
+        }, 2000);
+    </script>
+</body>
+</html>
