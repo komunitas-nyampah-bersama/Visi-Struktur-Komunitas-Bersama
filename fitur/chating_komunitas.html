@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2BCycleChain: Chat Aktivis Berbasis Wallet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+        
+        .post-container, .chat-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        
+        .post-container {
+            flex: 1;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 700px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input[type="file"],
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        
+        /* Chat Styles */
+        .chat-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            position: relative;
+        }
+        
+        .message.sent {
+            background-color: #dcf8c6;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        
+        .message.received {
+            background-color: #ffffff;
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+            border: 1px solid #eee;
+        }
+        
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 0.8em;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .message-content {
+            word-wrap: break-word;
+        }
+        
+        .message-time {
+            font-size: 0.75em;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .send-button {
+            padding: 12px 25px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .send-button:hover {
+            background-color: #27ad60;
+        }
+        
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .wallet-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .wallet-details {
+            flex: 1;
+        }
+        
+        .wallet-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .connect-button {
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .chat-contacts {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .contact {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            min-width: 80px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .contact:hover {
+            background: #e9ecef;
+        }
+        
+        .contact.active {
+            background: #d1e7dd;
+            border: 1px solid #2ecc71;
+        }
+        
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2ecc71;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        
+        .contact-name {
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        .encryption-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #28a745;
+        }
+        
+        .encryption-icon {
+            width: 12px;
+            height: 12px;
+            background: #28a745;
+            border-radius: 50%;
+        }
+        
+        .message-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            font-size: 0.75em;
+            color: #6c757d;
+        }
+        
+        .status-icon {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-icon.delivered {
+            background: #28a745;
+        }
+        
+        .status-icon.read {
+            background: #007bff;
+        }
+        
+        .no-messages {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .app-container {
+                flex-direction: column;
+            }
+        }
+        https://lb.drpc.org/base-sepolia/At0PG7ZkhkrxoEe8dLR2luSS9PvIZlMR8K8eEklbR4ac
+        At0PG7ZkhkrxoEe8dLR2luSS9PvIZlMR8K8eEklbR4ac
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="post-container">
+            <h1>Posting Aksi Baru</h1>
+            
+            <!-- Form posting aksi (disingkat untuk fokus ke fitur chat) -->
+            <div class="form-group">
+                <label for="aksiTitle">Judul Aksi:</label>
+                <input type="text" id="aksiTitle" placeholder="Misal: Pembersihan Pantai Cemara" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="aksiDescription">Deskripsi Aksi:</label>
+                <textarea id="aksiDescription" placeholder="Jelaskan detail aksi Anda..." required></textarea>
+            </div>
+            
+            <button class="submit-button" id="postActionButton">Posting Aksi & Mint NFT</button>
+        </div>
+        
+        <div class="chat-container">
+            <h1>Chat Antar Aktivis</h1>
+            
+            <div class="wallet-info">
+                <div class="wallet-avatar" id="userAvatar">A</div>
+                <div class="wallet-details">
+                    <div class="wallet-name" id="userName">Aktivis Anonim</div>
+                    <div class="wallet-address" id="userAddress">0x0000...0000</div>
+                </div>
+                <button class="connect-button" id="connectWallet">Hubungkan Wallet</button>
+            </div>
+            
+            <div class="chat-contacts">
+                <div class="contact active" data-address="0x1234567890123456789012345678901234567890">
+                    <div class="contact-avatar">B</div>
+                    <div class="contact-name">Budi</div>
+                </div>
+                <div class="contact" data-address="0xabcdefabcdefabcdefabcdefabcdefabcdefabcd">
+                    <div class="contact-avatar">C</div>
+                    <div class="contact-name">Citra</div>
+                </div>
+                <div class="contact" data-address="0x0987654321098765432109876543210987654321">
+                    <div class="contact-avatar">D</div>
+                    <div class="contact-name">Dewi</div>
+                </div>
+                <div class="contact" data-address="0x1a2b3c4d5e6f1a2b3c4d5e6f1a2b3c4d5e6f1a2b">
+                    <div class="contact-avatar">E</div>
+                    <div class="contact-name">Eko</div>
+                </div>
+            </div>
+            
+            <div class="chat-header">
+                <div id="chatPartner">Sedang chat dengan: Budi</div>
+                <div class="encryption-status">
+                    <div class="encryption-icon"></div>
+                    <span>Pesan dienkripsi end-to-end</span>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message received">
+                    <div class="message-header">
+                        <span>Budi</span>
+                        <span class="wallet-address">0x1234...7890</span>
+                    </div>
+                    <div class="message-content">Hai! Apakah kamu akan ikut aksi pembersihan pantai besok?</div>
+                    <div class="message-time">10:30 AM</div>
+                    <div class="message-status">
+                        <div class="status-icon delivered"></div>
+                        <span>Terkirim</span>
+                    </div>
+                </div>
+                
+                <div class="message sent">
+                    <div class="message-header">
+                        <span>Anda</span>
+                        <span class="wallet-address">0x0000...0000</span>
+                    </div>
+                    <div class="message-content">Ya, saya akan datang. Jam berapa kita mulai?</div>
+                    <div class="message-time">10:32 AM</div>
+                    <div class="message-status">
+                        <div class="status-icon read"></div>
+                        <span>Dibaca</span>
+                    </div>
+                </div>
+                
+                <div class="message received">
+                    <div class="message-header">
+                        <span>Budi</span>
+                        <span class="wallet-address">0x1234...7890</span>
+                    </div>
+                    <div class="message-content">Kita mulai jam 8 pagi. Jangan lupa bawa sarung tangan dan kantong sampah!</div>
+                    <div class="message-time">10:33 AM</div>
+                    <div class="message-status">
+                        <div class="status-icon delivered"></div>
+                        <span>Terkirim</span>
+                    </div>
+                </div>
+                
+                <div class="message sent">
+                    <div class="message-header">
+                        <span>Anda</span>
+                        <span class="wallet-address">0x0000...0000</span>
+                    </div>
+                    <div class="message-content">Siap! Saya akan bawa beberapa alat tambahan juga.</div>
+                    <div class="message-time">10:35 AM</div>
+                    <div class="message-status">
+                        <div class="status-icon delivered"></div>
+                        <span>Terkirim</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="messageInput" placeholder="Ketik pesan...">
+                <button class="send-button" id="sendButton">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === WALLET CONNECTION ===
+        const connectWalletButton = document.getElementById('connectWallet');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const userAddress = document.getElementById('userAddress');
+        
+        // Simulate wallet connection
+        connectWalletButton.addEventListener('click', () => {
+            // In a real app, this would connect to a wallet like MetaMask
+            const fakeAddress = '0x1f5B2d9C1234567890abcdefABCDEF123456789';
+            const name = 'Aktivis Hijau';
+            const initial = name.charAt(0);
+            
+            userAvatar.textContent = initial;
+            userName.textContent = name;
+            userAddress.textContent = truncateAddress(fakeAddress);
+            
+            connectWalletButton.textContent = 'Terhubung';
+            connectWalletButton.disabled = true;
+            
+            // Update UI
+            document.querySelectorAll('.sent .wallet-address').forEach(el => {
+                el.textContent = truncateAddress(fakeAddress);
+            });
+            
+            // Simulate loading messages
+            setTimeout(() => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = `
+                    <div class="message received">
+                        <div class="message-header">
+                            <span>Budi</span>
+                            <span class="wallet-address">0x1234...7890</span>
+                        </div>
+                        <div class="message-content">Selamat datang di jaringan aktivis, ${name}!</div>
+                        <div class="message-time">Baru saja</div>
+                        <div class="message-status">
+                            <div class="status-icon delivered"></div>
+                            <span>Terkirim</span>
+                        </div>
+                    </div>
+                    ${chatMessages.innerHTML}
+                `;
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        });
+        
+        function truncateAddress(address, start = 6, end = 4) {
+            if (!address) return '';
+            return `${address.substring(0, start)}...${address.substring(address.length - end)}`;
+        }
+        
+        // === CHAT FUNCTIONALITY ===
+        const contacts = document.querySelectorAll('.contact');
+        const chatPartner = document.getElementById('chatPartner');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        // Contact selection
+        contacts.forEach(contact => {
+            contact.addEventListener('click', () => {
+                // Remove active class from all contacts
+                contacts.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked contact
+                contact.classList.add('active');
+                
+                // Update chat partner info
+                const contactName = contact.querySelector('.contact-name').textContent;
+                const contactAddress = contact.dataset.address;
+                chatPartner.textContent = `Sedang chat dengan: ${contactName}`;
+                
+                // In a real app, we would load messages for this contact
+                simulateMessageReceipt(contactName, contactAddress);
+            });
+        });
+        
+        // Send message
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Create message element
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message sent';
+            messageElement.innerHTML = `
+                <div class="message-header">
+                    <span>Anda</span>
+                    <span class="wallet-address">${userAddress.textContent}</span>
+                </div>
+                <div class="message-content">${message}</div>
+                <div class="message-time">Baru saja</div>
+                <div class="message-status">
+                    <div class="status-icon delivered"></div>
+                    <span>Terkirim</span>
+                </div>
+            `;
+            
+            // Add to chat
+            chatMessages.appendChild(messageElement);
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate response
+            setTimeout(() => {
+                simulateMessageReceipt(
+                    document.querySelector('.contact.active .contact-name').textContent,
+                    document.querySelector('.contact.active').dataset.address
+                );
+            }, 2000);
+        }
+        
+        function simulateMessageReceipt(contactName, contactAddress) {
+            const responses = [
+                "Terima kasih! Saya akan mempertimbangkannya.",
+                "Ide yang bagus! Kapan kita bisa mulai?",
+                "Saya akan menghubungi teman-teman yang lain.",
+                "Apakah kamu punya rencana lebih rinci?",
+                "Saya setuju dengan pendapatmu.",
+                "Kita perlu lebih banyak relawan untuk aksi ini.",
+                "Sudah saya cek, lokasinya cocok untuk aksi kita.",
+                "Saya akan membuat poster untuk promosi.",
+                "Bagaimana kalau kita mulai jam 9 pagi?",
+                "Saya akan membawa peralatan tambahan."
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message received';
+            messageElement.innerHTML = `
+                <div class="message-header">
+                    <span>${contactName}</span>
+                    <span class="wallet-address">${truncateAddress(contactAddress)}</span>
+                </div>
+                <div class="message-content">${randomResponse}</div>
+                <div class="message-time">Baru saja</div>
+                <div class="message-status">
+                    <div class="status-icon delivered"></div>
+                    <span>Terkirim</span>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // === SIMULATED ENCRYPTION ===
+        // In a real implementation, we would use wallet-based encryption
+        function encryptMessage(message, publicKey) {
+            // Simulate encryption
+            return `🔒${CryptoJS.AES.encrypt(message, 'secret-key').toString()}🔒`;
+        }
+        
+        function decryptMessage(encryptedMessage, privateKey) {
+            // Simulate decryption
+            if (!encryptedMessage.startsWith('🔒') || !encryptedMessage.endsWith('🔒')) {
+                return encryptedMessage; // Not encrypted
+            }
+            
+            const ciphertext = encryptedMessage.slice(1, -1);
+            return CryptoJS.AES.decrypt(ciphertext, 'secret-key').toString(CryptoJS.enc.Utf8);
+        }
+    </script>
+</body>
+</html>
