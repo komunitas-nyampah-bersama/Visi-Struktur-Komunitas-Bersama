@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyampah Bersama - Dashboard</title>
+    <meta name="description" content="Dashboard Aplikasi Nyampah Bersama 2BCycle. Akses layanan, program, marketplace, reward, dan pantau emisi karbon Anda.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #2196F3; /* Biru mirip gambar */
+            --light-blue: #BBDEFB; /* Biru terang untuk latar belakang */
+            --text-color: #333;
+            --light-text-color: #777;
+            --card-bg: #fff;
+            --border-color: #eee;
+            --nyampahcoin-gold: #FFC107; /* Kuning keemasan */
+            --green-carbon: #4CAF50; /* Hijau untuk emisi karbon */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif; /* Menggunakan Poppins jika dimuat */
+        }
+
+        body {
+            background-color: var(--light-blue);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-container {
+            max-width: 450px; /* Lebar khas tampilan mobile */
+            margin: 0 auto;
+            background-color: var(--white);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            min-height: 100vh; /* Agar dashboard memenuhi tinggi viewport */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Top Bar (Status Bar Mockup) --- */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            color: var(--light-text-color);
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .status-bar .time { font-weight: 600; }
+        .status-bar .network-info { display: flex; align-items: center; }
+        .status-bar .network-info span { margin-left: 5px; }
+
+        /* --- Header / Navbar App --- */
+        .app-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-header .menu-icon {
+            font-size: 1.5em;
+            color: var(--light-text-color);
+            margin-right: 15px;
+        }
+
+        .app-header .title {
+            font-size: 1.2em;
+            font-weight: 600;
+            flex-grow: 1; /* Mengisi ruang */
+            text-align: center; /* Memposisikan judul di tengah */
+            padding-right: 30px; /* Kompensasi untuk ikon menu */
+        }
+
+        /* --- Top Service Buttons --- */
+        .top-services {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 10px;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap; /* Untuk responsif jika ada banyak tombol */
+        }
+
+        .service-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8em;
+            font-weight: 500;
+            padding: 10px 5px;
+            margin: 5px;
+            flex: 1 1 20%; /* Fleksibel, 4 tombol per baris */
+            max-width: 80px; /* Batasan lebar */
+        }
+        .service-btn .icon-circle {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .service-btn .icon-circle i {
+            font-size: 1.3em;
+            color: var(--primary-blue);
+        }
+
+        /* --- NyampahCoin Section --- */
+        .nyampahcoin-section {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+        .nyampahcoin-section .coin-icon {
+            font-size: 2.5em;
+            color: var(--nyampahcoin-gold);
+            margin-right: 15px;
+        }
+        .nyampahcoin-section .text-content {
+            flex-grow: 1;
+        }
+        .nyampahcoin-section .text-content h3 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .nyampahcoin-section .text-content p {
+            font-size: 0.8em;
+            color: var(--light-text-color);
+        }
+        .nyampahcoin-section .arrow-icon {
+            font-size: 1.2em;
+            color: var(--light-text-color);
+            position: absolute; /* Posisikan absolut ke kanan */
+            right: 15px;
+        }
+
+        /* --- Nyampah Dulu Section (Hero Background) --- */
+        .nyampah-hero {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://via.placeholder.com/450x300/66BB6A/FFFFFF?text=Ilustrasi+Latar+Hijau') no-repeat center center/cover; /* Placeholder, ganti */
+            padding: 30px 20px;
+            color: var(--white);
+            text-align: center;
+            min-height: 200px; /* Minimum height to see background */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .nyampah-hero h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .nyampah-hero p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .card-program {
+            background-color: rgba(255,255,255,0.95);
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px; /* Adjust margin to place it over background */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            width: 90%;
+            text-align: left;
+        }
+        .card-program h3 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: var(--primary-blue);
+        }
+        .card-program p {
+            font-size: 0.85em;
+            color: var(--light-text-color);
+            line-height: 1.4;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            width: 90%;
+            margin-top: 25px; /* Adjust margin to place it over background */
+        }
+        .hero-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .hero-btn i {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        .hero-btn.login {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+        .hero-btn.login:hover {
+            background-color: #1976D2;
+        }
+        .hero-btn.carbon-emission {
+            background-color: var(--white);
+            color: var(--green-carbon);
+            border: 1px solid var(--green-carbon);
+        }
+        .hero-btn.carbon-emission:hover {
+            background-color: #E8F5E9;
+        }
+
+        /* --- Bottom Grid Buttons --- */
+        .bottom-grid {
+            padding: 20px 15px;
+            background-color: var(--white);
+            flex-grow: 1; /* Mengisi sisa ruang */
+        }
+
+        .grid-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .grid-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px 10px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9em;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .grid-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .grid-btn i {
+            font-size: 2.2em;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+        /* Specific icon colors if needed */
+        .grid-btn.green i { color: var(--green-carbon); }
+        .grid-btn.orange i { color: var(--nyampahcoin-gold); }
+
+
+        /* --- Bottom Navigation Bar --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background-color: var(--white);
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            position: sticky; /* Sticky to bottom */
+            bottom: 0;
+            width: 100%; /* Full width */
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-text-color);
+            font-size: 0.75em;
+            flex: 1;
+            padding: 5px 0;
+        }
+
+        .nav-item i {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        .nav-item.active i {
+            color: var(--primary-blue);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="status-bar">
+            <span class="time">23.55 🌙</span>
+            <div class="network-info">
+                <span><i class="fas fa-signal"></i> LTE</span>
+                <span><i class="fas fa-battery-half"></i> 58%</span>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <i class="fas fa-bars menu-icon"></i>
+            <h1 class="title">Dasboard</h1>
+        </div>
+
+        <div class="top-services">
+            <a href="YOUR_LAYANAN_URL_HERE" class="service-btn">
+                <div class="icon-circle"><i class="fas fa-concierge-bell"></i></div>
+                <span>Layanan</span>
+            </a>
+            <a href="YOUR_PROGRAM_URL_HERE" class="service-btn">
+                <div class="icon-circle"><i class="fas fa-rocket"></i></div>
+                <span>Program</span>
+            </a>
+            <a href="YOUR_MARKETPLACE_URL_HERE" class="service-btn">
+                <div class="icon-circle"><i class="fas fa-store"></i></div>
+                <span>Marketplace</span>
+            </a>
+            <a href="YOUR_REWARD_URL_HERE" class="service-btn">
+                <div class="icon-circle"><i class="fas fa-gift"></i></div>
+                <span>Reward</span>
+            </a>
+        </div>
+
+        <a href="YOUR_NYAMPAHCOIN_ACTIVATION_URL_HERE" class="nyampahcoin-section">
+            <i class="fas fa-coin coin-icon"></i>
+            <div class="text-content">
+                <h3>NYAMPAHCOIN</h3>
+                <p>Aktifkan Dompet Digital &rarr;</p>
+            </div>
+            <i class="fas fa-angle-right arrow-icon"></i>
+        </a>
+
+        <div class="nyampah-hero">
+            <h2>Nyampah dulu!!!</h2>
+            <p>Kasi tau aku kalo udah. Biar Karbonnya ilang</p>
+
+            <div class="card-program">
+                <h3>Bergabung di Program</h3>
+                <h3>Nyampah Ak...</h3>
+                <p>Naikan Level anda, <br> Untuk lebih banyak cuan</p>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="YOUR_LOGIN_URL_HERE" class="hero-btn login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="YOUR_EMISI_KARBON_URL_HERE" class="hero-btn carbon-emission"><i class="fas fa-cloud-meatball"></i> Emisi Karbon</a>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="grid-row">
+                <a href="YOUR_ENERGY_SAMPAH_URL_HERE" class="grid-btn green">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Energy Sampah</span>
+                </a>
+                <a href="YOUR_DAUR_ULANG_URL_HERE" class="grid-btn">
+                    <i class="fas fa-recycle"></i>
+                    <span>Daur Ulang</span>
+                </a>
+            </div>
+            <div class="grid-row">
+                <a href="YOUR_SETOR_PLASTIK_URL_HERE" class="grid-btn">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Setor Plastik</span>
+                </a>
+                <a href="YOUR_SETOR_KERTAS_URL_HERE" class="grid-btn">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Setor Kertas</span>
+                </a>
+            </div>
+            </div>
+
+        <div class="bottom-nav">
+            <a href="YOUR_DASHBOARD_URL_HERE" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dasboard</span>
+            </a>
+            <a href="YOUR_AKTIVITAS_URL_HERE" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Aktifitas</span>
+            </a>
+            <a href="YOUR_DOMPET_SAYA_URL_HERE" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Dompet Saya</span>
+            </a>
+            <a href="YOUR_DATA_EMISI_URL_HERE" class="nav-item">
+                <i class="fas fa-cloud"></i>
+                <span>Data_Emisi_Na...</span>
+            </a>
+            <a href="YOUR_LOG_AKTIVITAS_URL_HERE" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Log_Aktivitas_...</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
