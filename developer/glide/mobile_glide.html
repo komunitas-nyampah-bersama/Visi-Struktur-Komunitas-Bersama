@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Mahasiswa - Sayang App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5; /* Light gray background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* App Container - Mimics Glide's mobile-first approach */
+        .app-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Typical mobile width */
+            min-height: 600px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background-color: #007bff; /* Primary blue for header */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: #007bff;
+        }
+
+        /* Main Content / List */
+        .student-list {
+            flex-grow: 1; /* Takes remaining space */
+            padding: 20px;
+            overflow-y: auto; /* Scrollable content */
+        }
+
+        .student-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #007bff; /* Accent border */
+        }
+
+        .student-info {
+            flex-grow: 1;
+        }
+
+        .student-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+            color: #222;
+        }
+
+        .student-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Detail View (Hidden by default) */
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .detail-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .detail-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .detail-overlay.active .detail-card {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .detail-card .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .detail-card .close-btn:hover {
+            color: #333;
+        }
+
+        .detail-card img {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 3px solid #007bff;
+        }
+
+        .detail-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            color: #007bff;
+        }
+
+        .detail-card p {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #555;
+            text-align: center;
+        }
+
+        .detail-card .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95em;
+        }
+
+        .detail-card .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-card .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .detail-card .info-value {
+            font-weight: 400;
+            color: #333;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: #888;
+            padding: 50px 20px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            Profil Mahasiswa
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cari nama atau NIM...">
+        </div>
+
+        <div class="student-list" id="studentList">
+            <div class="empty-state" id="emptyState" style="display:none;">
+                Tidak ada mahasiswa yang ditemukan.
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-card" id="detailCard">
+            <button class="close-btn">&times;</button>
+            <img id="detailPhoto" src="" alt="Foto Mahasiswa">
+            <h2 id="detailNama"></h2>
+            <p id="detailNIM"></p>
+            <div class="info-row">
+                <span class="info-label">Jurusan:</span>
+                <span class="info-value" id="detailJurusan"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Angkatan:</span>
+                <span class="info-value" id="detailAngkatan"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Email:</span>
+                <span class="info-value" id="detailEmail"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">No. Telepon:</span>
+                <span class="info-value" id="detailTelepon"></span>
+            </div>
+            </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const students = [
+                {
+                    id: 1,
+                    nama: "Budi Santoso",
+                    nim: "2022001",
+                    jurusan: "Teknik Informatika",
+                    angkatan: 2022,
+                    email: "budi.santoso@email.com",
+                    telepon: "081234567890",
+                    photo: "https://via.placeholder.com/150/007bff/FFFFFF?text=BS" // Placeholder with initials
+                },
+                {
+                    id: 2,
+                    nama: "Siti Aminah",
+                    nim: "2021005",
+                    jurusan: "Sistem Informasi",
+                    angkatan: 2021,
+                    email: "siti.aminah@email.com",
+                    telepon: "087654321098",
+                    photo: "https://via.placeholder.com/150/28a745/FFFFFF?text=SA"
+                },
+                {
+                    id: 3,
+                    nama: "Joko Susilo",
+                    nim: "2023010",
+                    jurusan: "Ilmu Komunikasi",
+                    angkatan: 2023,
+                    email: "joko.susilo@email.com",
+                    telepon: "085012345678",
+                    photo: "https://via.placeholder.com/150/ffc107/333333?text=JS"
+                },
+                {
+                    id: 4,
+                    nama: "Dewi Lestari",
+                    nim: "2022015",
+                    jurusan: "Manajemen",
+                    angkatan: 2022,
+                    email: "dewi.lestari@email.com",
+                    telepon: "081122334455",
+                    photo: "https://via.placeholder.com/150/17a2b8/FFFFFF?text=DL"
+                },
+                {
+                    id: 5,
+                    nama: "Fahri Hamzah",
+                    nim: "2021020",
+                    jurusan: "Akuntansi",
+                    angkatan: 2021,
+                    email: "fahri.hamzah@email.com",
+                    telepon: "089988776655",
+                    photo: "https://via.placeholder.com/150/6c757d/FFFFFF?text=FH"
+                }
+            ];
+
+            const studentList = document.getElementById('studentList');
+            const searchInput = document.getElementById('searchInput');
+            const detailOverlay = document.getElementById('detailOverlay');
+            const detailCard = document.getElementById('detailCard');
+            const closeBtn = detailCard.querySelector('.close-btn');
+            const emptyState = document.getElementById('emptyState');
+
+            function renderStudentList(filteredStudents) {
+                studentList.innerHTML = ''; // Clear current list
+
+                if (filteredStudents.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                    filteredStudents.forEach(student => {
+                        const card = document.createElement('div');
+                        card.classList.add('student-card');
+                        card.dataset.id = student.id; // Store ID for detail lookup
+
+                        card.innerHTML = `
+                            <img src="${student.photo}" alt="${student.nama}">
+                            <div class="student-info">
+                                <h3>${student.nama}</h3>
+                                <p>NIM: ${student.nim}</p>
+                                <p>${student.jurusan}</p>
+                            </div>
+                        `;
+                        studentList.appendChild(card);
+                    });
+                }
+            }
+
+            function showStudentDetail(studentId) {
+                const student = students.find(s => s.id === studentId);
+                if (student) {
+                    document.getElementById('detailPhoto').src = student.photo;
+                    document.getElementById('detailPhoto').alt = `Foto ${student.nama}`;
+                    document.getElementById('detailNama').textContent = student.nama;
+                    document.getElementById('detailNIM').textContent = `NIM: ${student.nim}`;
+                    document.getElementById('detailJurusan').textContent = student.jurusan;
+                    document.getElementById('detailAngkatan').textContent = student.angkatan;
+                    document.getElementById('detailEmail').textContent = student.email;
+                    document.getElementById('detailTelepon').textContent = student.telepon;
+
+                    detailOverlay.classList.add('active');
+                }
+            }
+
+            function hideStudentDetail() {
+                detailOverlay.classList.remove('active');
+            }
+
+            // Event Listeners
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = students.filter(student =>
+                    student.nama.toLowerCase().includes(searchTerm) ||
+                    student.nim.toLowerCase().includes(searchTerm) ||
+                    student.jurusan.toLowerCase().includes(searchTerm)
+                );
+                renderStudentList(filtered);
+            });
+
+            studentList.addEventListener('click', (e) => {
+                const card = e.target.closest('.student-card');
+                if (card) {
+                    const studentId = parseInt(card.dataset.id);
+                    showStudentDetail(studentId);
+                }
+            });
+
+            closeBtn.addEventListener('click', hideStudentDetail);
+            detailOverlay.addEventListener('click', (e) => {
+                // Close when clicking outside the detail card
+                if (e.target === detailOverlay) {
+                    hideStudentDetail();
+                }
+            });
+
+            // Initial render
+            renderStudentList(students);
+        });
+    </script>
+</body>
+</html>
