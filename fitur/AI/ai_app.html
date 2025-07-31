@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot AI 2BCycle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --secondary: #3498db;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chatbot-container {
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: var(--light);
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .chat-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: var(--light);
+            padding: 12px 16px;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #7f8c8d;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="chat-header">
+            <h1>Chatbot AI 2BCycle</h1>
+            <p>Asisten Pintar Ekosistem Teknologi Merakyat</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Halo! Saya adalah EcoBot 🤖, asisten AI dari 2BCycle. Ada yang bisa saya bantu?
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Ketik pesan...">
+            <button id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Kecerdasan dasar chatbot
+        const AIResponses = {
+            greetings: {
+                patterns: ["halo", "hai", "hi", "hello", "selamat"],
+                responses: [
+                    "Halo! Ada yang bisa saya bantu?",
+                    "Hai! Bagaimana kabarmu hari ini?",
+                    "Halo! Senang bisa berbicara denganmu"
+                ]
+            },
+            framework: {
+                patterns: ["framework", "2bcycle", "teknologi merakyat", "prototype"],
+                responses: [
+                    "2BCycle adalah framework no-code untuk membangun aplikasi terdesentralisasi berbasis blockchain",
+                    "Kamu bisa membuat aplikasi web3 tanpa coding dengan 2BCycle!",
+                    "Framework ini memungkinkan siapa saja membuat aplikasi blockchain hanya dengan drag-and-drop"
+                ]
+            },
+            nft: {
+                patterns: ["nft", "passport", "digital identity"],
+                responses: [
+                    "NFT Passport adalah identitas digital berbasis blockchain yang bisa kamu miliki",
+                    "Dengan NFT Passport, kamu bisa membuktikan keanggotaan komunitas secara terdesentralisasi",
+                    "NFT di 2BCycle digunakan sebagai identitas digital dan bukti partisipasi"
+                ]
+            },
+            help: {
+                patterns: ["bantuan", "help", "tolong", "caranya"],
+                responses: [
+                    "Saya bisa membantu menjelaskan tentang: \n- Framework 2BCycle \n- NFT Passport \n- Teknologi blockchain \n- Cara membuat aplikasi tanpa coding",
+                    "Coba tanyakan tentang: \n• Teknologi merakyat \n• Pembuatan aplikasi tanpa coding \n• NFT sebagai identitas digital",
+                    "Saya ahli di: \n✓ 2BCycle Framework \n✓ Blockchain untuk komunitas \n✓ Desain aplikasi no-code"
+                ]
+            },
+            thanks: {
+                patterns: ["terima kasih", "thanks", "makasih"],
+                responses: [
+                    "Sama-sama! Senang bisa membantu",
+                    "Dengan senang hati!",
+                    "Jika ada pertanyaan lain, saya siap membantu"
+                ]
+            },
+            default: [
+                "Maaf saya belum mengerti, bisa diulangi?",
+                "Bisa dijelaskan lebih detail?",
+                "Saya masih belajar, coba tanyakan hal lain tentang 2BCycle"
+            ]
+        };
+
+        // Elemen DOM
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Fungsi untuk menambah pesan ke chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll ke bawah
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Menampilkan indikator mengetik
+        function showTyping() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Menyembunyikan indikator mengetik
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
+        }
+
+        // Mendapatkan respon AI
+        function getAIResponse(input) {
+            input = input.toLowerCase();
+            
+            // Cek kategori yang cocok
+            for (const [category, data] of Object.entries(AIResponses)) {
+                if (category !== 'default') {
+                    for (const pattern of data.patterns) {
+                        if (input.includes(pattern)) {
+                            const responses = data.responses;
+                            return responses[Math.floor(Math.random() * responses.length)];
+                        }
+                    }
+                }
+            }
+            
+            // Respon default jika tidak ada yang cocok
+            return AIResponses.default[Math.floor(Math.random() * AIResponses.default.length)];
+        }
+
+        // Proses input pengguna
+        function processUserInput() {
+            const inputText = userInput.value.trim();
+            if (!inputText) return;
+            
+            // Tambahkan pesan pengguna
+            addMessage(inputText, true);
+            userInput.value = '';
+            
+            // Tampilkan indikator mengetik
+            showTyping();
+            
+            // Simulasi pemrosesan AI dengan penundaan
+            setTimeout(() => {
+                hideTyping();
+                const response = getAIResponse(inputText);
+                addMessage(response);
+            }, 1500);
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', processUserInput);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                processUserInput();
+            }
+        });
+
+        // Contoh pertanyaan otomatis
+        setTimeout(() => {
+            addMessage("Coba tanyakan padaku tentang framework 2BCycle atau NFT Passport!");
+        }, 3000);
+    </script>
+</body>
+</html>
