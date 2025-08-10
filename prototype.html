@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyampah Bersama - Prototipe Lengkap</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --background: #f8f9fa;
+            --card: #ffffff;
+            --text: #333333;
+            --text-light: #777777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            padding-bottom: 80px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .logo img {
+            height: 40px;
+            border-radius: 50%;
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 3px 12px;
+        }
+        
+        /* DASHBOARD */
+        .dashboard {
+            margin: 20px 0;
+        }
+        
+        .balance-card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .balance-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .action-btn {
+            background: var(--card);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 5px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .action-btn i {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+        
+        /* PROGRAM SECTION */
+        .section-title {
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            color: var(--text);
+            font-size: 1.2rem;
+        }
+        
+        .program-card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        }
+        
+        .program-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .program-name {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            background: var(--primary);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* FORM SETOR SAMPAH */
+        .form-container {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin: 20px 0;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .radio-option input {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: block;
+            padding: 8px 12px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        
+        .radio-option input:checked + label {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .input-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-submit:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .photo-upload:hover {
+            border-color: var(--primary);
+        }
+        
+        .photo-upload i {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        /* NFT DISPLAY */
+        .nft-card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .nft-image {
+            max-width: 150px;
+            border-radius: 10px;
+            margin: 0 auto 15px;
+            display: block;
+        }
+        
+        .nft-meta {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        
+        /* FOOTER NAV */
+        .nav-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(46, 204, 113, 0.1);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+        }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 90%;
+            width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease-out;
+        }
+        
+        @keyframes modalIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        /* ICONS (Font Awesome) */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        
+        /* UTILITY CLASSES */
+        .hidden {
+            display: none !important;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+        
+        .mt-20 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="https://ipfs.io/ipfs/QmfR65e5Y2fgDWduwMhSX1GrT3gYweXT9dsb6Qonh5VMNi/0.jpg" alt="Logo Nyampah Bersama">
+            <h1>Nyampah Bersama</h1>
+        </div>
+        <div class="user-info">
+            <div class="user-badge" id="user-id">ID: USR-001</div>
+            <div class="user-badge" id="user-location">Palembang</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- DASHBOARD (Tab 1) -->
+        <div id="dashboard-tab">
+            <div class="dashboard">
+                <div class="balance-card">
+                    <div class="balance-label">Saldo POAV</div>
+                    <div class="balance-amount" id="poav-balance">0</div>
+                    <div class="level-badge" id="user-level">Pemula</div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="action-btn" id="btn-setor">
+                        <i class="fas fa-recycle"></i>
+                        <span>Setor Sampah</span>
+                    </div>
+                    <div class="action-btn" id="btn-tukar">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Tukar Poin</span>
+                    </div>
+                    <div class="action-btn" id="btn-riwayat">
+                        <i class="fas fa-history"></i>
+                        <span>Riwayat</span>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Program Aktif Saya</h2>
+                
+                <div class="program-card" id="program-bank">
+                    <div class="program-header">
+                        <div class="program-name">Bank Sampah Digital</div>
+                        <div class="level-badge" id="bank-progress">0/500 POAV</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="bank-progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Mulai: <span id="bank-start-date">-</span></span>
+                        <span id="bank-percentage">0%</span>
+                    </div>
+                </div>
+                
+                <div class="program-card" id="program-maggot">
+                    <div class="program-header">
+                        <div class="program-name">Produksi Maggot</div>
+                        <div class="level-badge" id="maggot-progress">0/300 POAV</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="maggot-progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Mulai: <span id="maggot-start-date">-</span></span>
+                        <span id="maggot-percentage">0%</span>
+                    </div>
+                </div>
+                
+                <h2 class="section-title mt-20">NFT Saya</h2>
+                
+                <div class="nft-card" id="nft-display">
+                    <p class="text-center">Anda belum memiliki NFT</p>
+                    <button class="btn-submit" id="btn-mint">Mint NFT Sekarang</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FORM SETOR SAMPAH (Tab 2) -->
+        <div id="setor-tab" class="hidden">
+            <div class="form-container">
+                <h2 class="form-title">Lapor Setor Sampah</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Jenis Sampah</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="sampah-type" id="type-organik" value="organik" checked>
+                            <label for="type-organik">Organik</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="sampah-type" id="type-anorganik" value="anorganik">
+                            <label for="type-anorganik">Anorganik</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="sampah-type" id="type-b3" value="b3">
+                            <label for="type-b3">B3</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="berat">Berat Sampah (kg)</label>
+                    <input type="number" class="input-control" id="berat" min="0.1" step="0.1" placeholder="Contoh: 2.5">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="lokasi">Lokasi Setor</label>
+                    <select class="input-control" id="lokasi">
+                        <option value="">Pilih Lokasi Bank Sampah</option>
+                        <option value="plaju">Plaju, Palembang</option>
+                        <option value="bantul">Bantul, Yogyakarta</option>
+                        <option value="wonokromo">Wonokromo, Surabaya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Upload Bukti</label>
+                    <div class="photo-upload" id="photo-upload">
+                        <i class="fas fa-camera"></i>
+                        <p>Klik untuk Ambil Foto</p>
+                    </div>
+                </div>
+                
+                <button class="btn-submit" id="btn-lapor" disabled>Laporkan Aktivitas</button>
+            </div>
+        </div>
+        
+        <!-- MARKETPLACE (Tab 3) -->
+        <div id="marketplace-tab" class="hidden">
+            <h2 class="section-title">Tukar Poin Anda</h2>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <div class="program-name">Kompos Organik</div>
+                    <div class="level-badge">500 POAV/kg</div>
+                </div>
+                <p class="mb-10">Kompos berkualitas dari sampah organik terpilih</p>
+                <button class="btn-submit">Tukar Sekarang</button>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <div class="program-name">Maggot Kering</div>
+                    <div class="level-badge">700 POAV/kg</div>
+                </div>
+                <p class="mb-10">Pakan ternak bernutrisi tinggi</p>
+                <button class="btn-submit">Tukar Sekarang</button>
+            </div>
+            
+            <div class="program-card">
+                <div class="program-header">
+                    <div class="program-name">Kerajinan Botol</div>
+                    <div class="level-badge">1,200 POAV</div>
+                </div>
+                <p class="mb-10">Pot bunga dari botol plastik daur ulang</p>
+                <button class="btn-submit">Tukar Sekarang</button>
+            </div>
+        </div>
+        
+        <!-- RIWAYAT (Tab 4) -->
+        <div id="history-tab" class="hidden">
+            <h2 class="section-title">Riwayat Aktivitas</h2>
+            
+            <div id="history-list">
+                <div class="program-card">
+                    <p class="text-center">Belum ada aktivitas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL NFT -->
+    <div class="modal" id="nft-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>NFT Paspor Digital</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="nft-card">
+                <img src="https://ipfs.io/ipfs/QmR4b7888dNfJY2gZ9vX7S8aK1BcD3eF4G5H6J7K8L9M0N/nft.png" alt="NFT Paspor Digital" class="nft-image">
+                <h3>Paspor Sampah Digital</h3>
+                <p>Program: Bank Sampah Digital</p>
+                
+                <div class="nft-meta">
+                    <p><strong>Token ID:</strong> <span id="nft-id">#1</span></p>
+                    <p><strong>Pemilik:</strong> <span id="nft-owner">USR-001</span></p>
+                    <p><strong>Tanggal Mint:</strong> <span id="nft-date">-</span></p>
+                    <p><strong>Metadata:</strong> <a href="#" id="nft-metadata-link">Lihat di IPFS</a></p>
+                </div>
+            </div>
+            <button class="btn-submit mt-20" id="btn-view-block">Lihat di Blockchain</button>
+        </div>
+    </div>
+    
+    <!-- NAVIGASI FOOTER -->
+    <div class="nav-footer">
+        <div class="nav-item active" data-tab="dashboard-tab">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </div>
+        <div class="nav-item" data-tab="setor-tab">
+            <i class="fas fa-plus-circle"></i>
+            <span>Setor</span>
+        </div>
+        <div class="nav-item" data-tab="marketplace-tab">
+            <i class="fas fa-store"></i>
+            <span>Market</span>
+        </div>
+        <div class="nav-item" data-tab="history-tab">
+            <i class="fas fa-history"></i>
+            <span>Riwayat</span>
+        </div>
+    </div>
+
+    <script>
+        // ==================== SMART CONTRACT SIMULATION ====================
+        class NyampahContract {
+            constructor() {
+                this.users = {};
+                this.activities = [];
+                this.nfts = [];
+                this.programs = {
+                    bank_sampah: {
+                        name: "Bank Sampah Digital",
+                        minScore: 500,
+                        startDate: new Date()
+                    },
+                    maggot: {
+                        name: "Produksi Maggot",
+                        minScore: 300,
+                        startDate: new Date()
+                    }
+                };
+                this.activityWeights = {
+                    organik: 10,
+                    anorganik: 15,
+                    b3: 30
+                };
+                this.currentUser = null;
+            }
+            
+            // Initialize user
+            initUser(userId, location) {
+                this.currentUser = {
+                    id: userId,
+                    location: location,
+                    poavBalance: 0,
+                    level: "Pemula",
+                    programs: {
+                        bank_sampah: { score: 0 },
+                        maggot: { score: 0 }
+                    },
+                    nfts: []
+                };
+                this.users[userId] = this.currentUser;
+            }
+            
+            // Mint NFT function
+            mintNFT(programId) {
+                if (!this.currentUser) return null;
+                
+                const nftId = this.nfts.length + 1;
+                const metadata = {
+                    name: `Paspor Sampah Digital - ${this.programs[programId].name}`,
+                    description: "Sertifikat partisipasi dalam program Komunitas Nyampah Bersama",
+                    image: "ipfs://QmR4b7888dNfJY2gZ9vX7S8aK1BcD3eF4G5H6J7K8L9M0N/nft.png",
+                    attributes: [
+                        { trait_type: "Program", value: this.programs[programId].name },
+                        { trait_type: "Level", value: this.currentUser.level }
+                    ]
+                };
+                
+                const nft = {
+                    id: nftId,
+                    owner: this.currentUser.id,
+                    program: programId,
+                    metadata: metadata,
+                    mintDate: new Date(),
+                    poavScore: 0
+                };
+                
+                this.nfts.push(nft);
+                this.currentUser.nfts.push(nftId);
+                
+                return nft;
+            }
+            
+            // Record activity function
+            recordActivity(activityType, weight, location) {
+                if (!this.currentUser) return null;
+                
+                const poavEarned = Math.floor(weight * this.activityWeights[activityType]);
+                this.currentUser.poavBalance += poavEarned;
+                
+                // Add to program score
+                this.currentUser.programs.bank_sampah.score += poavEarned;
+                
+                // Update user level based on POAV
+                if (this.currentUser.poavBalance >= 1000) {
+                    this.currentUser.level = "Pionir Perubahan";
+                } else if (this.currentUser.poavBalance >= 500) {
+                    this.currentUser.level = "Setia";
+                }
+                
+                const activity = {
+                    id: this.activities.length + 1,
+                    type: activityType,
+                    weight: weight,
+                    location: location,
+                    poav: poavEarned,
+                    date: new Date(),
+                    status: "Terverifikasi"
+                };
+                
+                this.activities.push(activity);
+                return activity;
+            }
+            
+            // Get user data
+            getUserData() {
+                return this.currentUser;
+            }
+            
+            // Get program data
+            getProgramData(programId) {
+                if (!this.currentUser || !this.programs[programId]) return null;
+                
+                const program = this.programs[programId];
+                const userProgram = this.currentUser.programs[programId];
+                const percentage = Math.min(100, Math.floor((userProgram.score / program.minScore) * 100));
+                
+                return {
+                    name: program.name,
+                    score: userProgram.score,
+                    minScore: program.minScore,
+                    percentage: percentage,
+                    startDate: program.startDate
+                };
+            }
+            
+            // Get user NFT
+            getUserNFT() {
+                if (!this.currentUser || this.currentUser.nfts.length === 0) return null;
+                return this.nfts.find(nft => nft.id === this.currentUser.nfts[0]);
+            }
+            
+            // Get user activities
+            getUserActivities() {
+                if (!this.currentUser) return [];
+                return this.activities;
+            }
+        }
+        
+        // ==================== UI CONTROLLER ====================
+        class NyampahController {
+            constructor() {
+                this.contract = new NyampahContract();
+                this.init();
+            }
+            
+            init() {
+                // Initialize user
+                this.contract.initUser("USR-001", "Palembang");
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Render initial UI
+                this.updateUI();
+            }
+            
+            setupEventListeners() {
+                // Navigation
+                const navItems = document.querySelectorAll('.nav-item');
+                const tabs = document.querySelectorAll('[id$="-tab"]');
+                
+                navItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const targetTab = item.getAttribute('data-tab');
+                        
+                        // Update nav active state
+                        navItems.forEach(nav => nav.classList.remove('active'));
+                        item.classList.add('active');
+                        
+                        // Show target tab
+                        tabs.forEach(tab => tab.classList.add('hidden'));
+                        if(targetTab) {
+                            document.getElementById(targetTab).classList.remove('hidden');
+                        }
+                    });
+                });
+                
+                // Quick actions
+                document.getElementById('btn-setor').addEventListener('click', () => {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    tabs.forEach(tab => tab.classList.add('hidden'));
+                    
+                    document.querySelector('[data-tab="setor-tab"]').classList.add('active');
+                    document.getElementById('setor-tab').classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                });
+                
+                // Mint NFT button
+                document.getElementById('btn-mint').addEventListener('click', () => {
+                    this.mintNFT();
+                });
+                
+                // Form validation
+                document.getElementById('berat').addEventListener('input', this.validateForm.bind(this));
+                document.getElementById('lokasi').addEventListener('change', this.validateForm.bind(this));
+                
+                // Submit activity
+                document.getElementById('btn-lapor').addEventListener('click', () => {
+                    this.recordActivity();
+                });
+                
+                // Modal close
+                document.querySelector('.modal-close').addEventListener('click', () => {
+                    document.getElementById('nft-modal').style.display = 'none';
+                });
+                
+                // View in blockchain
+                document.getElementById('btn-view-block').addEventListener('click', () => {
+                    alert("Di implementasi nyata, ini akan membuka block explorer");
+                });
+            }
+            
+            validateForm() {
+                const berat = document.getElementById('berat').value;
+                const lokasi = document.getElementById('lokasi').value;
+                const btnLapor = document.getElementById('btn-lapor');
+                
+                btnLapor.disabled = !(berat > 0 && lokasi);
+            }
+            
+            mintNFT() {
+                const nft = this.contract.mintNFT('bank_sampah');
+                
+                if (nft) {
+                    // Update NFT display
+                    const nftDisplay = document.getElementById('nft-display');
+                    nftDisplay.innerHTML = `
+                        <img src="${nft.metadata.image}" alt="NFT" class="nft-image">
+                        <h3>${nft.metadata.name}</h3>
+                        <p>Program: ${this.contract.programs.bank_sampah.name}</p>
+                        <button class="btn-submit mt-20" id="btn-view-nft">Lihat Detail</button>
+                    `;
+                    
+                    // Add event listener to view button
+                    document.getElementById('btn-view-nft').addEventListener('click', () => {
+                        this.showNFTDetail(nft);
+                    });
+                    
+                    // Enable activity submission
+                    document.getElementById('btn-lapor').disabled = false;
+                    
+                    // Update UI
+                    this.updateUI();
+                }
+            }
+            
+            showNFTDetail(nft) {
+                document.getElementById('nft-id').textContent = `#${nft.id}`;
+                document.getElementById('nft-owner').textContent = nft.owner;
+                document.getElementById('nft-date').textContent = nft.mintDate.toLocaleDateString();
+                document.getElementById('nft-metadata-link').href = `https://ipfs.io/ipfs/${nft.metadata.image.split('//')[1]}`;
+                
+                document.getElementById('nft-modal').style.display = 'flex';
+            }
+            
+            recordActivity() {
+                const jenis = document.querySelector('input[name="sampah-type"]:checked').value;
+                const berat = parseFloat(document.getElementById('berat').value);
+                const lokasi = document.getElementById('lokasi').value;
+                
+                const activity = this.contract.recordActivity(jenis, berat, lokasi);
+                
+                if (activity) {
+                    // Show success message
+                    alert(`Aktivitas berhasil dicatat!\nAnda mendapatkan ${activity.poav} POAV.`);
+                    
+                    // Reset form
+                    document.getElementById('berat').value = '';
+                    document.getElementById('lokasi').selectedIndex = 0;
+                    document.getElementById('btn-lapor').disabled = true;
+                    
+                    // Update UI
+                    this.updateUI();
+                    
+                    // Go back to dashboard
+                    document.querySelector('.nav-item[data-tab="dashboard-tab"]').click();
+                }
+            }
+            
+            updateUI() {
+                const user = this.contract.getUserData();
+                if (!user) return;
+                
+                // Update user info
+                document.getElementById('poav-balance').textContent = user.poavBalance.toLocaleString();
+                document.getElementById('user-level').textContent = user.level;
+                document.getElementById('user-id').textContent = `ID: ${user.id}`;
+                document.getElementById('user-location').textContent = user.location;
+                
+                // Update program progress
+                const bankProgram = this.contract.getProgramData('bank_sampah');
+                if (bankProgram) {
+                    document.getElementById('bank-progress').textContent = 
+                        `${bankProgram.score}/${bankProgram.minScore} POAV`;
+                    document.getElementById('bank-progress-bar').style.width = `${bankProgram.percentage}%`;
+                    document.getElementById('bank-percentage').textContent = `${bankProgram.percentage}%`;
+                    document.getElementById('bank-start-date').textContent = 
+                        bankProgram.startDate.toLocaleDateString();
+                }
+                
+                // Update history
+                this.updateHistory();
+            }
+            
+            updateHistory() {
+                const activities = this.contract.getUserActivities();
+                const historyList = document.getElementById('history-list');
+                
+                if (activities.length === 0) {
+                    historyList.innerHTML = '<div class="program-card"><p class="text-center">Belum ada aktivitas</p></div>';
+                    return;
+                }
+                
+                let html = '';
+                activities.slice().reverse().forEach(activity => {
+                    const date = new Date(activity.date).toLocaleDateString();
+                    const jenisMap = {
+                        organik: "Organik",
+                        anorganik: "Anorganik",
+                        b3: "B3"
+                    };
+                    
+                    html += `
+                        <div class="program-card">
+                            <div class="program-header">
+                                <div class="program-name">Setor Sampah ${jenisMap[activity.type]}</div>
+                                <div class="level-badge">+${activity.poav} POAV</div>
+                            </div>
+                            <div class="progress-text">
+                                <span>${date}</span>
+                                <span>${activity.weight} kg</span>
+                            </div>
+                            <p>Lokasi: ${activity.location}</p>
+                            <p>Status: ${activity.status}</p>
+                        </div>
+                    `;
+                });
+                
+                historyList.innerHTML = html;
+            }
+        }
+        
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new NyampahController();
+        });
+    </script>
+</body>
+</html>

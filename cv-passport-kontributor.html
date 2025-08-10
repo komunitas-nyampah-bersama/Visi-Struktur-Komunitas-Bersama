@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paspor Kontributor Interaktif</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f9f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+      color: #18b875;
+    }
+    .field {
+      margin: 12px 0;
+    }
+    .field label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .field div[contenteditable] {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fefefe;
+    }
+    .edit-btn {
+      background: #18b875;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .edit-btn:hover {
+      background: #149d66;
+    }
+    .signature {
+      text-align: right;
+      margin-top: 40px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="edit-btn" onclick="toggleEdit()">✏️ Aktifkan / Nonaktifkan Edit</button>
+    <h1 contenteditable="true">Paspor Kontributor</h1>
+
+    <div class="field">
+      <label>Nama Lengkap</label>
+      <div contenteditable="true">Tulis Nama Anda Di Sini</div>
+    </div>
+
+    <div class="field">
+      <label>Judul Karya / Publikasi</label>
+      <div contenteditable="true">Masukkan judul karya Anda di sini...</div>
+    </div>
+
+    <div class="field">
+      <label>Link Publikasi</label>
+      <div contenteditable="true">https://zenodo.org/record/....</div>
+    </div>
+
+    <div class="field">
+      <label>Deskripsi Singkat</label>
+      <div contenteditable="true">Tuliskan deskripsi singkat tentang karya ini...</div>
+    </div>
+
+    <div class="field">
+      <label>Portofolio / Riwayat Singkat</label>
+      <div contenteditable="true">Tuliskan latar belakang akademik atau kegiatan Anda...</div>
+    </div>
+
+    <div class="signature">
+      Ditandatangani oleh:<br/>
+      <strong>Bang Nyampahin</strong><br/>
+      Komunitas Nyampah Bersama
+    </div>
+  </div>
+
+  <script>
+    let isEditable = true;
+    function toggleEdit() {
+      isEditable = !isEditable;
+      document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.setAttribute('contenteditable', isEditable);
+      });
+    }
+  </script>
+</body>
+</html>

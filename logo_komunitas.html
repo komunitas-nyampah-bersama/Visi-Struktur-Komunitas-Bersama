@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Akademi Nyampah Bersama - EU Co-Branding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+        
+        h1 {
+            color: #003399;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-section:hover {
+            transform: translateY(-10px);
+        }
+        
+        .logo-section h2 {
+            color: #003399;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .eu-flag {
+            width: 80px;
+            height: 80px;
+            background: #003399;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            position: relative;
+        }
+        
+        .eu-star {
+            position: absolute;
+            color: #FFCC00;
+            font-size: 12px;
+            transform-origin: center;
+        }
+        
+        .program-name {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        
+        .erasmus-plus {
+            color: white;
+            background: #003399;
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .esc-name {
+            line-height: 1.3;
+        }
+        
+        .esc-european {
+            color: #003399;
+            font-size: 1.1em;
+        }
+        
+        .esc-solidarity {
+            color: #C5299B;
+            font-size: 1.3em;
+        }
+        
+        .esc-corps {
+            color: #0077B5;
+            font-size: 1.1em;
+        }
+        
+        .partner-logo {
+            margin: 30px 0;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .partner-logo-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .logo-icon i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .logo-text {
+            text-align: left;
+        }
+        
+        .logo-text h3 {
+            color: #003399;
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .logo-text p {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .tagline {
+            color: #555;
+            font-style: italic;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+            font-size: 0.9rem;
+        }
+        
+        .guidelines {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        
+        .guidelines h2 {
+            color: #003399;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        
+        .guidelines-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .guideline-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #003399;
+        }
+        
+        .guideline-card h3 {
+            color: #003399;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .guideline-card ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        
+        .guideline-card ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .guideline-card ul li:before {
+            content: "•";
+            color: #28a745;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .logo-section {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Akademi Nyampah Bersama</h1>
+        <p class="subtitle">Logo Co-Branding dengan Standar Uni Eropa</p>
+    </div>
+    
+    <div class="container">
+        <!-- Erasmus+ Version -->
+        <div class="logo-section">
+            <h2>Versi Erasmus+</h2>
+            <div class="eu-flag">
+                <!-- 12 EU stars arranged in a circle -->
+                <div class="eu-star" style="transform: rotate(0deg) translate(30px) rotate(0deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(30deg) translate(30px) rotate(-30deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(60deg) translate(30px) rotate(-60deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(90deg) translate(30px) rotate(-90deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(120deg) translate(30px) rotate(-120deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(150deg) translate(30px) rotate(-150deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(180deg) translate(30px) rotate(-180deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(210deg) translate(30px) rotate(-210deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(240deg) translate(30px) rotate(-240deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(270deg) translate(30px) rotate(-270deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(300deg) translate(30px) rotate(-300deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(330deg) translate(30px) rotate(-330deg);"><i class="fas fa-star"></i></div>
+            </div>
+            
+            <div class="program-name">
+                <span class="erasmus-plus">Erasmus+</span>
+            </div>
+            
+            <div class="partner-logo">
+                <div class="partner-logo-content">
+                    <div class="logo-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h3>Akademi<br>Nyampah Bersama</h3>
+                        <p>Transformasi Sampah, Menciptakan Nilai</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="tagline">Co-funded by the Erasmus+ Programme of the European Union</p>
+        </div>
+        
+        <!-- ESC Version -->
+        <div class="logo-section">
+            <h2>Versi European Solidarity Corps</h2>
+            <div class="eu-flag">
+                <div class="eu-star" style="transform: rotate(0deg) translate(30px) rotate(0deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(30deg) translate(30px) rotate(-30deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(60deg) translate(30px) rotate(-60deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(90deg) translate(30px) rotate(-90deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(120deg) translate(30px) rotate(-120deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(150deg) translate(30px) rotate(-150deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(180deg) translate(30px) rotate(-180deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(210deg) translate(30px) rotate(-210deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(240deg) translate(30px) rotate(-240deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(270deg) translate(30px) rotate(-270deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(300deg) translate(30px) rotate(-300deg);"><i class="fas fa-star"></i></div>
+                <div class="eu-star" style="transform: rotate(330deg) translate(30px) rotate(-330deg);"><i class="fas fa-star"></i></div>
+            </div>
+            
+            <div class="program-name">
+                <div class="esc-name">
+                    <span class="esc-european">EUROPEAN</span><br>
+                    <span class="esc-solidarity">SOLIDARITY</span><br>
+                    <span class="esc-corps">CORPS</span>
+                </div>
+            </div>
+            
+            <div class="partner-logo">
+                <div class="partner-logo-content">
+                    <div class="logo-icon" style="background: #0077B5;">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h3>Akademi<br>Nyampah Bersama</h3>
+                        <p>Solidaritas Lingkungan Berkelanjutan</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="tagline">Funded by the European Union</p>
+        </div>
+    </div>
+    
+    <div class="guidelines">
+        <h2>Panduan Penggunaan Logo</h2>
+        <div class="guidelines-content">
+            <div class="guideline-card">
+                <h3>Standar Erasmus+</h3>
+                <ul>
+                    <li>Warna biru EU (#003399) untuk background teks "Erasmus+"</li>
+                    <li>Warna teks putih untuk kontras optimal</li>
+                    <li>Bendera EU dengan 12 bintang kuning (#FFCC00)</li>
+                    <li>Proporsi bendera EU tetap 1:1</li>
+                    <li>Jarak antara bendera dan teks minimal 50% tinggi bendera</li>
+                    <li>Font sans-serif (Arial Bold/Open Sans Bold)</li>
+                </ul>
+            </div>
+            
+            <div class="guideline-card">
+                <h3>Standar ESC</h3>
+                <ul>
+                    <li>Warna teks spesifik: EUROPEAN (#003399), SOLIDARITY (#C5299B), CORPS (#0077B5)</li>
+                    <li>Bendera EU dengan 12 bintang kuning (#FFCC00)</li>
+                    <li>Font kapital semua, tebal, tanpa efek</li>
+                    <li>Proporsi bendera EU tetap 1:1</li>
+                    <li>Jarak antara bendera dan teks minimal 50% tinggi bendera</li>
+                    <li>Penggunaan warna sesuai panduan resmi</li>
+                </ul>
+            </div>
+            
+            <div class="guideline-card">
+                <h3>Panduan Co-Branding</h3>
+                <ul>
+                    <li>Logo partner maksimal 50% ukuran logo program EU</li>
+                    <li>Warna logo partner harus serasi dengan warna EU</li>
+                    <li>Tagline wajib "Co-funded by..." untuk Erasmus+</li>
+                    <li>Tagline "Funded by..." untuk ESC</li>
+                    <li>Area kosong minimal 20% di sekitar logo</li>
+                    <li>Dilarang mengubah bentuk atau warna bendera EU</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2025 Akademi Nyampah Bersama | Desain sesuai European Commission Visual Identity Guidelines</p>
+    </div>
+</body>
+</html>
