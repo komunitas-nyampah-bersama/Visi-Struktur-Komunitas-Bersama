@@ -1,0 +1,281 @@
+{
+  "appName": "2BCycle",
+  "tabs": [
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "active": true
+    },
+    {
+      "id": "chat",
+      "name": "Chat P2P"
+    },
+    {
+      "id": "kop",
+      "name": "Kop Surat"
+    },
+    {
+      "id": "ai",
+      "name": "AI Chatbot"
+    },
+    {
+      "id": "embed",
+      "name": "Embed"
+    },
+    {
+      "id": "builder",
+      "name": "Builder"
+    },
+    {
+      "id": "editor",
+      "name": "Editor"
+    }
+  ],
+  "dashboard": {
+    "topServices": [
+      {
+        "icon": "fas fa-concierge-bell",
+        "label": "Layanan"
+      },
+      {
+        "icon": "fas fa-rocket",
+        "label": "Program"
+      },
+      {
+        "icon": "fas fa-store",
+        "label": "Marketplace"
+      },
+      {
+        "icon": "fas fa-gift",
+        "label": "Reward"
+      }
+    ],
+    "nyampahcoin": {
+      "title": "NYAMPAHCOIN",
+      "description": "Aktifkan Dompet Digital →"
+    },
+    "heroSection": {
+      "title": "Nyampah dulu!!!",
+      "subtitle": "Kasi tau aku kalo udah. Biar Karbonnya ilang",
+      "buttons": [
+        {
+          "text": "Login",
+          "icon": "fas fa-sign-in-alt",
+          "style": "primary"
+        },
+        {
+          "text": "Emisi Karbon",
+          "icon": "fas fa-cloud-meatball",
+          "style": "secondary"
+        }
+      ]
+    },
+    "gridSections": [
+      [
+        {
+          "icon": "fas fa-lightbulb",
+          "label": "Energy Sampah",
+          "color": "green-carbon"
+        },
+        {
+          "icon": "fas fa-recycle",
+          "label": "Daur Ulang"
+        }
+      ],
+      [
+        {
+          "icon": "fas fa-trash-alt",
+          "label": "Setor Plastik"
+        },
+        {
+          "icon": "fas fa-file-alt",
+          "label": "Setor Kertas"
+        }
+      ]
+    ]
+  },
+  "chatP2P": {
+    "postSection": {
+      "title": "Posting Aksi Baru",
+      "fields": [
+        {
+          "label": "Judul Aksi:",
+          "placeholder": "Misal: Pembersihan Pantai Cemara"
+        },
+        {
+          "label": "Deskripsi Aksi:",
+          "placeholder": "Jelaskan detail aksi Anda..."
+        }
+      ],
+      "button": "Posting Aksi & Mint NFT"
+    },
+    "chatSection": {
+      "title": "Chat Antar Aktivis",
+      "walletInfo": {
+        "avatar": "A",
+        "name": "Aktivis Anonim",
+        "address": "0x0000...0000"
+      },
+      "contacts": [
+        {
+          "name": "Budi",
+          "address": "0x1234567890123456789012345678901234567890",
+          "active": true
+        },
+        {
+          "name": "Citra",
+          "address": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd"
+        },
+        {
+          "name": "Dewi",
+          "address": "0x0987654321098765432109876543210987654321"
+        },
+        {
+          "name": "Eko",
+          "address": "0x1a2b3c4d5e6f1a2b3c4d5e6f1a2b3c4d5e6f1a2b"
+        }
+      ],
+      "messages": [
+        {
+          "sender": "Budi",
+          "address": "0x1234...7890",
+          "content": "Hai! Apakah kamu akan ikut aksi pembersihan pantai besok?",
+          "time": "10:30 AM",
+          "status": "Terkirim",
+          "type": "received"
+        },
+        {
+          "sender": "Anda",
+          "address": "0x0000...0000",
+          "content": "Ya, saya akan datang. Jam berapa kita mulai?",
+          "time": "10:32 AM",
+          "status": "Dibaca",
+          "type": "sent"
+        }
+      ],
+      "encryptionStatus": "Pesan dienkripsi end-to-end"
+    }
+  },
+  "kopSurat": {
+    "communityName": "KOMUNITAS NYAMPAH BERSAMA",
+    "tagline": "Community-based Decentralized Research Organization",
+    "slogan": "Membangun Ekonomi Sirkular Berbasis Komunitas melalui Web3",
+    "contactInfo": [
+      {
+        "type": "Lokasi Kantor",
+        "details": "Palembang, Sumatera Selatan"
+      },
+      {
+        "type": "Kontak Resmi",
+        "details": "Telepon/WhatsApp: 0831-7782-8139\nEmail: nyampahbersama@newsletters.com"
+      },
+      {
+        "type": "Platform",
+        "details": "Linktree • IPFS • Wallet • ORCID"
+      }
+    ],
+    "letterContent": {
+      "subjectPlaceholder": "Masukkan perihal surat",
+      "bodyText": "Dengan hormat,\n\nMelalui surat ini... [isi surat]"
+    }
+  },
+  "aiChatbot": {
+    "name": "Chatbot AI 2BCycle",
+    "description": "Asisten Pintar Ekosistem Teknologi Merakyat",
+    "initialMessage": "Halo! Saya adalah EcoBot 🤖, asisten AI dari 2BCycle. Ada yang bisa saya bantu?",
+    "responses": {
+      "greetings": ["Halo! Ada yang bisa saya bantu?", "Hai! Bagaimana kabarmu hari ini?"],
+      "framework": ["2BCycle adalah framework no-code untuk membangun aplikasi terdesentralisasi berbasis blockchain"],
+      "default": ["Maaf saya belum mengerti, bisa diulangi?"]
+    }
+  },
+  "embed": {
+    "title": "YouTube Embedder",
+    "placeholder": "Masukkan link YouTube...",
+    "examples": [
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://youtu.be/dQw4w9WgXcQ"
+    ]
+  },
+  "builder": {
+    "components": [
+      {
+        "type": "header",
+        "icon": "fas fa-header",
+        "label": "Header"
+      },
+      {
+        "type": "card",
+        "icon": "fas fa-id-card",
+        "label": "Card"
+      },
+      {
+        "type": "nft-passport",
+        "icon": "fas fa-passport",
+        "label": "NFT Passport"
+      }
+    ]
+  },
+  "editor": {
+    "controls": [
+      {
+        "label": "Teks",
+        "icon": "📝"
+      },
+      {
+        "label": "Heading",
+        "icon": "🔤"
+      },
+      {
+        "label": "List",
+        "icon": "📋"
+      },
+      {
+        "label": "Gambar",
+        "icon": "🖼️"
+      },
+      {
+        "label": "Simpan",
+        "icon": "💾",
+        "style": "success"
+      },
+      {
+        "label": "Ambil Foto",
+        "icon": "📷",
+        "style": "warning"
+      }
+    ],
+    "initialContent": [
+      "✨ Selamat datang di editor! 🥰",
+      "📝 Klik tombol di bawah untuk menambahkan konten..."
+    ]
+  },
+  "bottomNav": [
+    {
+      "icon": "fas fa-home",
+      "label": "Dashboard",
+      "target": "dashboard"
+    },
+    {
+      "icon": "fas fa-comments",
+      "label": "Chat",
+      "target": "chat"
+    },
+    {
+      "icon": "fas fa-envelope",
+      "label": "Kop Surat",
+      "target": "kop"
+    },
+    {
+      "icon": "fas fa-robot",
+      "label": "AI",
+      "target": "ai"
+    }
+  ],
+  "styles": {
+    "primaryColor": "#2196F3",
+    "secondaryColor": "#3498db",
+    "accentColor": "#FFC107",
+    "successColor": "#27ae60"
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "journal_title": "The 2BQyde Framework",
+  "journal_subtitle": "Menuju Ekonomi Sirkular Berbasis Komunitas Global yang Berdaya",
+  "chapters": [
+    {
+      "chapter_number": "Bab 1",
+      "chapter_title": "Pendahuluan",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Latar Belakang",
+          "content": "Dunia saat ini menghadapi tantangan lingkungan yang semakin kompleks, dengan akumulasi sampah global yang diproyeksikan mencapai 3,4 miliar ton pada tahun 2050..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Solusi yang Diusulkan",
+          "content": "The 2BQyde Framework mengusulkan pendekatan revolusioner yang mengintegrasikan tiga pilar inovasi untuk menciptakan ekosistem ekonomi sirkular berbasis komunitas..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Struktur Jurnal",
+          "content": "Jurnal ini disusun untuk memberikan pemahaman komprehensif tentang The 2BQyde Framework melalui pendekatan multidisipliner yang menggabungkan ilmu lingkungan, ekonomi, dan teknologi blockchain..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Bab 2",
+      "chapter_title": "Tinjauan Pustaka",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Ekonomi Sirkular dan Pengelolaan Sampah",
+          "content": "Konsep ekonomi sirkular telah berkembang sebagai respons terhadap model ekonomi linear tradisional yang tidak berkelanjutan..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Blockchain untuk Dampak Sosial dan Global",
+          "content": "Teknologi blockchain telah muncul sebagai enabler utama dalam menciptakan sistem yang transparan dan akuntabel untuk dampak sosial..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Revolusi Kepemilikan Pengguna dengan Account Abstraction",
+          "content": "Account Abstraction (AA) merupakan terobosan penting dalam meningkatkan aksesibilitas teknologi blockchain..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "IPFS/Arweave sebagai Memori Proof of Attention Value",
+          "content": "InterPlanetary File System (IPFS) dan Arweave menyediakan solusi penyimpanan desentralisasi yang menjadi tulang punggung ekosistem Web3..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Bab 3",
+      "chapter_title": "Metodologi",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Filosofi Desain dan Arsitektur",
+          "content": "Smart Contract NexusEcosystem dirancang dengan filosofi inti desentralisasi, inklusivitas, dan keberlanjutan..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Komponen Inti Smart Contract",
+          "content": "NexusEcosystem terdiri dari beberapa komponen utama yang saling berinteraksi untuk menciptakan ekonomi sirkular yang kohesif..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Fungsi Utama dan Layanan",
+          "content": "Smart Contract NexusEcosystem menyediakan berbagai fungsi utama yang menggerakkan ekonomi sirkular..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "Peran dan Tanggung Jawab",
+          "content": "Sistem NexusEcosystem mengatur interaksi berbagai pemangku kepentingan melalui mekanisme peran berbasis smart contract..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Bab 4",
+      "chapter_title": "Studi Kasus Implementasi",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Profil Komunitas Nyampah Bersama",
+          "content": "Komunitas Nyampah Bersama (KNB) adalah gerakan lingkungan berbasis masyarakat yang berfokus pada pengelolaan sampah berkelanjutan di perkotaan..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Implementasi Smart Contract",
+          "content": "Smart contract diimplementasikan dengan fokus pada empat pilar utama yang mendukung operasional Komunitas Nyampah Bersama..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Pengalaman Pengguna Revolusioner dengan AA",
+          "content": "Account Abstraction (AA) menghadirkan pengalaman pengguna revolusioner yang membuat teknologi blockchain benar-benar dimiliki dan diakses oleh semua anggota komunitas..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "Dampak Berkelanjutan & Ekonomi Sirkular",
+          "content": "Implementasi smart contract menciptakan model ekonomi sirkular yang mandiri dan berkelanjutan..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Bab 5",
+      "chapter_title": "Strategi & Visi Masa Depan",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Strategi Ekspansi Komunitas Nyampah Bersama",
+          "content": "Komunitas Nyampah Bersama (KNB) akan melakukan ekspansi strategis dengan pendekatan berlapis yang berfokus pada tiga pilar utama..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Ekonomi Sirkular Global",
+          "content": "Penerapan ekonomi sirkular skala global memerlukan arsitektur teknis dan model insentif yang revolusioner..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Tokenomics Fundamental",
+          "content": "Token Nexus (NEX) dirancang sebagai fundamental ekonomi ekosistem dengan mekanisme canggih..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "Roadmap & Visi 2030",
+          "content": "Pada tahun 2030, NexusEcosystem bertujuan menjadi platform ekonomi sirkular global yang sepenuhnya mandiri..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Bab 6",
+      "chapter_title": "Desain Ekonomi Hijau & Kolaborasi Global",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Prinsip Desain Ekonomi Hijau",
+          "content": "Ekonomi hijau NexusEcosystem dibangun berdasarkan lima prinsip fundamental yang menjamin keberlanjutan dan inklusivitas..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Tantangan Implementasi",
+          "content": "Dalam perjalanan menuju ekonomi hijau global, kami menghadapi tantangan signifikan yang memerlukan kolaborasi..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Ajakan Kolaborasi Global",
+          "content": "Kami menyadari bahwa transformasi global hanya mungkin melalui sinergi multidisiplin dan lintas batas..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "Framework & Proof of Concept",
+          "content": "Kami menyajikan ulang framework NexusEcosystem sebagai fondasi untuk kolaborasi global..."
+        }
+      ]
+    },
+    {
+      "chapter_number": "Penutup",
+      "chapter_title": "Paradigma Baru Ekonomi Sirkular",
+      "sections": [
+        {
+          "section_number": "1",
+          "section_title": "Prinsip Desain Ekonomi Hijau",
+          "content": "Ekonomi hijau NexusEcosystem dibangun berdasarkan lima prinsip fundamental yang menjamin keberlanjutan dan inklusivitas..."
+        },
+        {
+          "section_number": "2",
+          "section_title": "Tantangan Implementasi",
+          "content": "Dalam perjalanan menuju ekonomi hijau global, kami menghadapi tantangan signifikan yang memerlukan kolaborasi..."
+        },
+        {
+          "section_number": "3",
+          "section_title": "Ajakan Kolaborasi Global",
+          "content": "Kami menyadari bahwa transformasi global hanya mungkin melalui sinergi multidisiplin dan lintas batas..."
+        },
+        {
+          "section_number": "4",
+          "section_title": "Framework & Proof of Concept",
+          "content": "Kami menyajikan ulang framework NexusEcosystem sebagai fondasi untuk kolaborasi global..."
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "doi": "10.5281/zenodo.1234567",
+    "smart_contract": "0x2bcycle...1234",
+    "year": "2023"
+  }
+}

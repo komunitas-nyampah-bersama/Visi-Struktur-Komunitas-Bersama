@@ -1,0 +1,32 @@
+{
+  "judul": "2BCycle: Peer-to-Peer Proof of Attention Value",
+  "sub_judul": "A New Trust Framework for Social Blockchain and Collective Memory",
+  "penulis": "Muhamad Oky Muhlisin",
+  "afiliasi": "Komunitas Nyampah Bersama",
+  "eu_login": "n00jcciv",
+  "abstrak": {
+    [span_0](start_span)"deskripsi": "Teknologi blockchain selama ini digunakan untuk memverifikasi nilai ekonomi berbasis energi atau modal, namun gagal mengakui nilai sosial, atensi, dan kepercayaan manusia[span_0](end_span). [span_1](start_span)2BCycle menawarkan sebuah sistem peer-to-peer baru yang berfungsi sebagai mesin pencatatan kolektif yang mengabadikan memori, trust, dan aksi nyata[span_1](end_span). [span_2](start_span)Setiap koin, blok, dan NFT adalah jejak hubungan abadi manusia di dunia nyata dan digital[span_2](end_span).",
+    "kata_kunci": null
+  },
+  "pengantar": {
+    "judul": "Introduction",
+    [span_3](start_span)"isi": "Di dunia modern, kepercayaan adalah infrastruktur utama, namun sejarah, harapan, dan kebaikan sosial sering hilang karena tidak ada sistem yang dapat mengabadikannya[span_3](end_span). [span_4](start_span)Bitcoin merevolusi digital cash dengan Proof of Work, Ethereum menghadirkan smart contract, dan 2BCycle lahir untuk memindahkan Proof of Attention menjadi TrustLedger, rantai kepercayaan peer-to-peer yang abadi dan universal[span_4](end_span)."
+  },
+  "dasar_teori": {
+    "judul": "Foundation: From BlockCycle to BurnCycle",
+    "blockcycle": {
+      [span_5](start_span)"deskripsi": "Segala aksi, kehadiran, dan perhatian dicatat dalam blok—akses, bukti, penciptaan, interaksi[span_5](end_span)."
+    },
+    "burncycle": {
+      [span_6](start_span)"deskripsi": "Segala yang tercatat bisa dikonversi menjadi nilai (token, NFT), reward, catatan memori, atau warisan[span_6](end_span)."
+    },
+    [span_7](start_span)"prinsip": "Tidak ada aksi yang tidak bermakna, setiap orang layak diakui jejaknya, dan kepercayaan adalah unit nilai ('trust is the unit of value')[span_7](end_span)."
+  },
+  "peer_to_peer_trust_chain": {
+    "judul": "Peer-to-Peer Trust Chain",
+    "genesis_nft": {
+      "judul": "Genesis NFT - TrustNode of Collective Memory",
+      [span_8](start_span)"deskripsi": "Satu NFT Genesis di-blockchain (Base) menjadi root registry, panggung semua trust, dan pointer CID ke seluruh aplikasi, whitepaper, dashboard, dan logika governance[span_8](end_span). [span_9](start_span)Setiap NFT turunan (PoAccess, badge, proof) yang dicetak peer-to-peer secara otomatis membentuk blok baru di trust chain, yang memperkuat node kepercayaan[span_9](end_span)."
+    }
+  }
+}

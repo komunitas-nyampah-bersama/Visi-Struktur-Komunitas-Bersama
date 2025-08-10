@@ -1,0 +1,271 @@
+{
+  "nama_ekosistem": "Pusat Komando Ekosistem Nyampah Bersama",
+  "deskripsi": "Semua alat, aset, akses, strategi, dan sistem digital komunitas kamu — dalam satu halaman pusat. Didesain untuk founder 🔥",
+  "inti_ekosistem": [
+    {
+      "platform": "Replit",
+      "fungsi_utama": "Frontend UI dan trigger tombol",
+      "status": "✅ Aktif",
+      "link_id": "[Link Replit]"
+    },
+    {
+      "platform": "Vercel",
+      "fungsi_utama": "Hosting app (Next.js / Viewer NFT)",
+      "status": "✅ Aktif",
+      "link_id": "[Link Vercel]"
+    },
+    {
+      "platform": "GitHub",
+      "fungsi_utama": "Penyimpanan kode dan smart contract",
+      "status": "✅ Aktif",
+      "link_id": "[Repo kamu]"
+    },
+    {
+      "platform": "Notion",
+      "fungsi_utama": "Dokumentasi, Proposal, Tokenomics",
+      "status": "✅ Aktif",
+      "link_id": "ini halaman ini!"
+    },
+    {
+      "platform": "Supabase",
+      "fungsi_utama": "Backend, Database, Auth, Edge Functions",
+      "status": "✅ Aktif",
+      "link_id": "[Supabase Link]"
+    },
+    {
+      "platform": "MongoDB",
+      "fungsi_utama": "Opsional untuk form, log AI",
+      "status": "🟡 Optional",
+      "link_id": "[Mongo URI]"
+    },
+    {
+      "platform": "Cloudflare",
+      "fungsi_utama": "Domain dan DNS",
+      "status": "✅ Aktif",
+      "link_id": "[DNS Page]"
+    },
+    {
+      "platform": "Pinata",
+      "fungsi_utama": "IPFS penyimpanan metadata dan media",
+      "status": "✅ Aktif",
+      "link_id": "[Pinata CID]"
+    },
+    {
+      "platform": "Thirdweb",
+      "fungsi_utama": "Smart contract + webhook + NFT/token deploy",
+      "status": "✅ Aktif",
+      "link_id": "[Dashboard]"
+    },
+    {
+      "platform": "OpenAI / GPT",
+      "fungsi_utama": "AI Command & Otak Sistem",
+      "status": "✅ Aktif",
+      "link_id": "[Key/API Doc]"
+    },
+    {
+      "platform": "Nebula",
+      "fungsi_utama": "NFT Viewer Modular, Layer0",
+      "status": "✅ Aktif",
+      "link_id": "[Canvas Link]"
+    }
+  ],
+  "api_token_kunci": [
+    {
+      "nama_key": "SUPABASE_URL",
+      "fungsi": "Koneksi database utama",
+      "disimpan_di": ".env / Notion",
+      "status": "✅"
+    },
+    {
+      "nama_key": "SUPABASE_ANON_KEY",
+      "fungsi": "Koneksi publik (insert data)",
+      "disimpan_di": ".env",
+      "status": "✅"
+    },
+    {
+      "nama_key": "THIRDWEB_WEBHOOK_URL",
+      "fungsi": "Trigger mint / tx Web3",
+      "disimpan_di": "Edge Function",
+      "status": "✅"
+    },
+    {
+      "nama_key": "OPENAI_API_KEY",
+      "fungsi": "Akses ChatGPT",
+      "disimpan_di": ".env",
+      "status": "✅"
+    },
+    {
+      "nama_key": "MONGO_URI",
+      "fungsi": "Koneksi DB opsional",
+      "disimpan_di": ".env",
+      "status": "🟡"
+    },
+    {
+      "nama_key": "PINATA_JWT",
+      "fungsi": "Upload metadata IPFS",
+      "disimpan_di": ".env / Secret",
+      "status": "✅"
+    }
+  ],
+  "strategi_whitepaper": [
+    {
+      "nama_dokumen": "Whitepaper 2BCycle",
+      "fungsi": "Ideologi, sistem, framework",
+      "status": "✅",
+      "link": "[PDF/Link]"
+    },
+    {
+      "nama_dokumen": "Tokenomics NyampahCoin",
+      "fungsi": "Distribusi token & utility",
+      "status": "✅",
+      "link": "[Link]"
+    },
+    {
+      "nama_dokumen": "Proposal CSR / Sponsor",
+      "fungsi": "Pitching ke perusahaan",
+      "status": "🟡",
+      "link": "[Draft]"
+    },
+    {
+      "nama_dokumen": "Struktur Wallet & NFT",
+      "fungsi": "Model reward & royalty",
+      "status": "✅",
+      "link": "[Link]"
+    },
+    {
+      "nama_dokumen": "Alur Smart Contract",
+      "fungsi": "Mint, Webhook, Registry",
+      "status": "✅",
+      "link": "[Visual Flow]"
+    }
+  ],
+  "kontrol_kontrak_smart": [
+    {
+      "kontrak": "NFT_PoCA",
+      "nama_fungsi": "Proof of Clean Act NFT",
+      "alamat": "0x...",
+      "status": "✅ Aktif"
+    },
+    {
+      "kontrak": "NFT_Komunitas",
+      "nama_fungsi": "Identitas Digital",
+      "alamat": "0x...",
+      "status": "✅ Aktif"
+    },
+    {
+      "kontrak": "2BCoin Token",
+      "nama_fungsi": "Token Ekonomi 2BCycle",
+      "alamat": "0x...",
+      "status": "✅ Aktif"
+    },
+    {
+      "kontrak": "Vault DAO",
+      "nama_fungsi": "Treasury / sistem reward komunitas",
+      "alamat": "0x...",
+      "status": "🔒 Coming Soon"
+    }
+  ],
+  "tabel_database_inti": [
+    {
+      "tabel": "Aksi_Warga",
+      "fungsi": "Catatan aktifitas / reward trigger",
+      "status": "✅ Aktif"
+    },
+    {
+      "tabel": "Users",
+      "fungsi": "Daftar wallet & info komunitas",
+      "status": "✅ Aktif"
+    },
+    {
+      "tabel": "PoCA_Mint",
+      "fungsi": "Daftar mint NFT bersih",
+      "status": "✅ Aktif"
+    },
+    {
+      "tabel": "Reward_Log",
+      "fungsi": "Token 2BC / NBC yang diklaim",
+      "status": "🟡 Uji coba"
+    },
+    {
+      "tabel": "Feedback",
+      "fungsi": "Masukan warga (opsional MongoDB)",
+      "status": "🟡 Optional"
+    }
+  ],
+  "otomasi_fungsionalitas": [
+    {
+      "automasi": "Tombol → Insert → NFT",
+      "teknologi": "Replit + Supabase",
+      "status": "✅ Jalan"
+    },
+    {
+      "automasi": "Form Google → Glide",
+      "teknologi": "GoogleSheet",
+      "status": "🟡 Opsional"
+    },
+    {
+      "automasi": "AI WA Rakyat",
+      "teknologi": "WA API + GPT",
+      "status": "🔄 Beta"
+    },
+    {
+      "automasi": "Mint otomatis via Webhook",
+      "teknologi": "Supabase Edge Fn",
+      "status": "✅ Bisa"
+    },
+    {
+      "automasi": "Viewer NFT Modular",
+      "teknologi": "Vercel + Nebula",
+      "status": "✅"
+    }
+  ],
+  "backup_keamanan": [
+    {
+      "aset": "Smart Contract",
+      "disimpan_di": "GitHub + Notion",
+      "status": "✅"
+    },
+    {
+      "aset": "Metadata NFT",
+      "disimpan_di": "IPFS (Pinata/Thirdweb)",
+      "status": "✅"
+    },
+    {
+      "aset": "Wallet Utama",
+      "disimpan_di": "Ledger/Metamask",
+      "status": "✅"
+    },
+    {
+      "aset": "Dokumen PDF",
+      "disimpan_di": "GDrive/Notion",
+      "status": "✅"
+    },
+    {
+      "aset": "Key rahasia",
+      "disimpan_di": ".env lokal + Notion Offline",
+      "status": "✅"
+    }
+  ],
+  "tujuan_mimpi_jangka_panjang": [
+    {
+      "target": "1 Juta Wallet Rakyat",
+      "tahun": "2026",
+      "status": "🌱 Jalan"
+    },
+    {
+      "target": "Diterima oleh Nature",
+      "tahun": "2025",
+      "status": "⏳ Submit"
+    },
+    {
+      "target": "Komunitas Global Aktif",
+      "tahun": "2025",
+      "status": "🌍 Sedang dibangun"
+    },
+    {
+      "target": "DAO + Rakyat Voting",
+      "tahun": "2025",
+      "status": "🔄 Beta"
+    }
+  ]
+}

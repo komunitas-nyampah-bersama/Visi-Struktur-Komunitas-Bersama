@@ -1,0 +1,2053 @@
+{
+  "html_template": "Sempurna_dashboard.html",
+  "component_count": 195,
+  "components": [
+    {
+      "tag": "html",
+      "id": null,
+      "class": null,
+      "content_preview": "Komunitas Akar Rumput - Dashboard\n\n\n\n\n\n\n\n\n\n\n\n\nAkar",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "head",
+      "id": null,
+      "class": null,
+      "content_preview": "Komunitas Akar Rumput - Dashboard",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "meta",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "meta",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "title",
+      "id": null,
+      "class": null,
+      "content_preview": "Komunitas Akar Rumput - Dashboard",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "link",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": "style",
+      "role": null
+    },
+    {
+      "tag": "link",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": "style",
+      "role": null
+    },
+    {
+      "tag": "style",
+      "id": null,
+      "class": null,
+      "content_preview": ":root {\n            --primary: #2ecc71;\n          ",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "body",
+      "id": null,
+      "class": null,
+      "content_preview": "Akar Rumput\n\n\n\n\n\n\nDashboard\n\n\n\n\n\nAksi Lingkungan\n\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "aside",
+      "id": null,
+      "class": [
+        "sidebar"
+      ],
+      "content_preview": "Akar Rumput\n\n\n\n\n\n\nDashboard\n\n\n\n\n\nAksi Lingkungan\n\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "logo-container"
+      ],
+      "content_preview": "Akar Rumput",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "logo"
+      ],
+      "content_preview": "Akar Rumput",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "logo-icon"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-seedling"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "logo-text"
+      ],
+      "content_preview": "Akar Rumput",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "ul",
+      "id": null,
+      "class": [
+        "nav-links"
+      ],
+      "content_preview": "Dashboard\n\n\n\n\n\nAksi Lingkungan\n\n\n\n\n\nPenelitian\n\n\n\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Dashboard",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link",
+        "active"
+      ],
+      "content_preview": "Dashboard",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-home"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Dashboard",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Aksi Lingkungan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Aksi Lingkungan",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-recycle"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Aksi Lingkungan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Penelitian",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-book"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Statistik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Statistik",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-chart-line"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Statistik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Komunitas",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Komunitas",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-users"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Komunitas",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Blockchain",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Blockchain",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fab",
+        "fa-ethereum"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Blockchain",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "li",
+      "id": null,
+      "class": [
+        "nav-item"
+      ],
+      "content_preview": "Pengaturan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "a",
+      "id": null,
+      "class": [
+        "nav-link"
+      ],
+      "content_preview": "Pengaturan",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-cog"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": [
+        "nav-text"
+      ],
+      "content_preview": "Pengaturan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "main",
+      "id": null,
+      "class": [
+        "main-content"
+      ],
+      "content_preview": "Dashboard Anggota\n\nU\n\n Logout\n                \n\n\n\n",
+      "has_script": false,
+      "type": "content",
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "header"
+      ],
+      "content_preview": "Dashboard Anggota\n\nU\n\n Logout",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h1",
+      "id": null,
+      "class": [
+        "header-title"
+      ],
+      "content_preview": "Dashboard Anggota",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "user-menu"
+      ],
+      "content_preview": "U\n\n Logout",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "user-avatar"
+      ],
+      "content_preview": "U",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "button",
+      "id": null,
+      "class": [
+        "btn"
+      ],
+      "content_preview": "Logout",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-sign-out-alt"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "dashboard-grid"
+      ],
+      "content_preview": "Statistik Kontribusi\n\n\n\n\n1,250\nTotal XP\n\n\n350\n2B T",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Statistik Kontribusi\n\n\n\n\n1,250\nTotal XP\n\n\n350\n2B T",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Statistik Kontribusi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Statistik Kontribusi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-chart-bar"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "1,250\nTotal XP\n\n\n350\n2B Tokens\n\n\n#48\nPeringkat\n\n\n2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stats-grid"
+      ],
+      "content_preview": "1,250\nTotal XP\n\n\n350\n2B Tokens\n\n\n#48\nPeringkat\n\n\n2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-card",
+        "animate",
+        "delay-1"
+      ],
+      "content_preview": "1,250\nTotal XP",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-number"
+      ],
+      "content_preview": "1,250",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-label"
+      ],
+      "content_preview": "Total XP",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-card",
+        "animate",
+        "delay-2"
+      ],
+      "content_preview": "350\n2B Tokens",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-number"
+      ],
+      "content_preview": "350",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-label"
+      ],
+      "content_preview": "2B Tokens",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-card",
+        "animate",
+        "delay-3"
+      ],
+      "content_preview": "#48\nPeringkat",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-number"
+      ],
+      "content_preview": "#48",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-label"
+      ],
+      "content_preview": "Peringkat",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-card",
+        "animate",
+        "delay-4"
+      ],
+      "content_preview": "27\nAksi Lingkungan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-number"
+      ],
+      "content_preview": "27",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "stat-label"
+      ],
+      "content_preview": "Aksi Lingkungan",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "progress-container"
+      ],
+      "content_preview": "Level 3\nXP: 1,250/2,000",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "Level 3\nXP: 1,250/2,000",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "content_preview": "Level 3",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "content_preview": "XP: 1,250/2,000",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Verifikasi Akademik\n\n\n\n\niD\nTerhubung dengan ORCID\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Verifikasi Akademik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Verifikasi Akademik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-graduation-cap"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "iD\nTerhubung dengan ORCID\n\nKelola\n\n\nID ORCID: 0000",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "academic-verification"
+      ],
+      "content_preview": "iD\nTerhubung dengan ORCID\n\nKelola",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "orcid-badge"
+      ],
+      "content_preview": "iD\nTerhubung dengan ORCID",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "orcid-icon"
+      ],
+      "content_preview": "iD",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "content_preview": "Terhubung dengan ORCID",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "button",
+      "id": null,
+      "class": [
+        "btn"
+      ],
+      "content_preview": "Kelola",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "ID ORCID: 0000-0002-1825-0097\nAfiliasi: Universita",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "ID ORCID: 0000-0002-1825-0097",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "strong",
+      "id": null,
+      "class": null,
+      "content_preview": "ID ORCID:",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "Afiliasi: Universitas Indonesia",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "strong",
+      "id": null,
+      "class": null,
+      "content_preview": "Afiliasi:",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "Publikasi: 5 paper",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "strong",
+      "id": null,
+      "class": null,
+      "content_preview": "Publikasi:",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Publikasi Penelitian\n\n\n\n\nJudul Penelitian\n\n\n\nAbstr",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Publikasi Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Publikasi Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fab",
+        "fa-zenodo"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "Judul Penelitian\n\n\n\nAbstrak\n\n\n\nDataset Penelitian\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "form",
+      "id": "publicationForm",
+      "class": null,
+      "content_preview": "Judul Penelitian\n\n\n\nAbstrak\n\n\n\nDataset Penelitian\n",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "form-group"
+      ],
+      "content_preview": "Judul Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "label",
+      "id": null,
+      "class": [
+        "form-label"
+      ],
+      "content_preview": "Judul Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "input",
+      "id": "researchTitle",
+      "class": [
+        "form-control"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "form-group"
+      ],
+      "content_preview": "Abstrak",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "label",
+      "id": null,
+      "class": [
+        "form-label"
+      ],
+      "content_preview": "Abstrak",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "textarea",
+      "id": "researchAbstract",
+      "class": [
+        "form-control"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "form-group"
+      ],
+      "content_preview": "Dataset Penelitian\n\n\n\nKlik untuk mengunggah datase",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "label",
+      "id": null,
+      "class": [
+        "form-label"
+      ],
+      "content_preview": "Dataset Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "file-upload"
+      ],
+      "content_preview": "Klik untuk mengunggah dataset\n\n\nBelum ada file ter",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "label",
+      "id": null,
+      "class": [
+        "file-upload-label"
+      ],
+      "content_preview": "Klik untuk mengunggah dataset",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-cloud-upload-alt"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": null,
+      "class": null,
+      "content_preview": "Klik untuk mengunggah dataset",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "input",
+      "id": "datasetFile",
+      "class": [
+        "file-input"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": "fileName",
+      "class": [
+        "file-name"
+      ],
+      "content_preview": "Belum ada file terpilih",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "button",
+      "id": "publishToZenodoBtn",
+      "class": [
+        "btn",
+        "btn-primary",
+        "btn-block"
+      ],
+      "content_preview": "Publikasikan ke Zenodo",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fab",
+        "fa-zenodo"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": "doiOutput",
+      "class": null,
+      "content_preview": "DOI: 10.5281/zenodo.1234567\nPublikasi berhasil! Da",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "DOI: 10.5281/zenodo.1234567",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "strong",
+      "id": null,
+      "class": null,
+      "content_preview": "DOI:",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "span",
+      "id": "doiValue",
+      "class": null,
+      "content_preview": "10.5281/zenodo.1234567",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "Publikasi berhasil! Data penelitian Anda sekarang ",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Reputasi Akademik\n\n\n\nPeneliti Level 3\n82\n\n\n5\nPubli",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Reputasi Akademik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Reputasi Akademik",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-medal"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "Peneliti Level 3\n82\n\n\n5\nPublikasi\n\n\n124\nSitasi\n\n\n3",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "reputation-card"
+      ],
+      "content_preview": "Peneliti Level 3\n82\n\n\n5\nPublikasi\n\n\n124\nSitasi\n\n\n3",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "rep-badge"
+      ],
+      "content_preview": "Peneliti Level 3",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "rep-score"
+      ],
+      "content_preview": "82",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "rep-metrics"
+      ],
+      "content_preview": "5\nPublikasi\n\n\n124\nSitasi\n\n\n3\nProyek",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric"
+      ],
+      "content_preview": "5\nPublikasi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-value"
+      ],
+      "content_preview": "5",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-label"
+      ],
+      "content_preview": "Publikasi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric"
+      ],
+      "content_preview": "124\nSitasi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-value"
+      ],
+      "content_preview": "124",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-label"
+      ],
+      "content_preview": "Sitasi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric"
+      ],
+      "content_preview": "3\nProyek",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-value"
+      ],
+      "content_preview": "3",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "metric-label"
+      ],
+      "content_preview": "Proyek",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Insentif Penelitian\n\n\n\n\n\n\n\n350 2B\nToken Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Insentif Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Insentif Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-award"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "350 2B\nToken Penelitian\n\n\n\nToken yang dapat diklai",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "incentive-card"
+      ],
+      "content_preview": "350 2B\nToken Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "token-icon"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fab",
+        "fa-ethereum"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "token-info"
+      ],
+      "content_preview": "350 2B\nToken Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "token-amount"
+      ],
+      "content_preview": "350 2B",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "token-name"
+      ],
+      "content_preview": "Token Penelitian",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "Token yang dapat diklaim: 120 2B\nSetiap publikasi ",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "Token yang dapat diklaim: 120 2B",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "strong",
+      "id": null,
+      "class": null,
+      "content_preview": "Token yang dapat diklaim:",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "p",
+      "id": null,
+      "class": null,
+      "content_preview": "Setiap publikasi penelitian akan memberikan 50 tok",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "button",
+      "id": "claimTokensBtn",
+      "class": [
+        "btn",
+        "btn-primary",
+        "btn-block"
+      ],
+      "content_preview": "Klaim Token Penelitian",
+      "has_script": false,
+      "type": "interactive",
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-coins"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card",
+        "animate"
+      ],
+      "content_preview": "Peringkat Komunitas\n\n\n\n\n\n\n#\nAnggota\nXP\nToken\n\n\n\n\n1",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-header"
+      ],
+      "content_preview": "Peringkat Komunitas",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "h2",
+      "id": null,
+      "class": [
+        "card-title"
+      ],
+      "content_preview": "Peringkat Komunitas",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "i",
+      "id": null,
+      "class": [
+        "fas",
+        "fa-trophy"
+      ],
+      "content_preview": "",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": [
+        "card-body"
+      ],
+      "content_preview": "#\nAnggota\nXP\nToken\n\n\n\n\n1\n\n\nA\nAni\n\n\n8,450\n2,350\n\n\n2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "#\nAnggota\nXP\nToken\n\n\n\n\n1\n\n\nA\nAni\n\n\n8,450\n2,350\n\n\n2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "table",
+      "id": null,
+      "class": null,
+      "content_preview": "#\nAnggota\nXP\nToken\n\n\n\n\n1\n\n\nA\nAni\n\n\n8,450\n2,350\n\n\n2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "thead",
+      "id": null,
+      "class": null,
+      "content_preview": "#\nAnggota\nXP\nToken",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "tr",
+      "id": null,
+      "class": null,
+      "content_preview": "#\nAnggota\nXP\nToken",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "th",
+      "id": null,
+      "class": null,
+      "content_preview": "#",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "th",
+      "id": null,
+      "class": null,
+      "content_preview": "Anggota",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "th",
+      "id": null,
+      "class": null,
+      "content_preview": "XP",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "th",
+      "id": null,
+      "class": null,
+      "content_preview": "Token",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "tbody",
+      "id": null,
+      "class": null,
+      "content_preview": "1\n\n\nA\nAni\n\n\n8,450\n2,350\n\n\n2\n\n\nB\nBudi\n\n\n7,890\n2,100",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "tr",
+      "id": null,
+      "class": null,
+      "content_preview": "1\n\n\nA\nAni\n\n\n8,450\n2,350",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "1",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "A\nAni",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "A\nAni",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "A",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "Ani",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "8,450",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "2,350",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "tr",
+      "id": null,
+      "class": null,
+      "content_preview": "2\n\n\nB\nBudi\n\n\n7,890\n2,100",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "2",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "B\nBudi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "B\nBudi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "B",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "Budi",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "7,890",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "2,100",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "tr",
+      "id": null,
+      "class": null,
+      "content_preview": "48\n\n\nU\nAnda\n\n\n1,250\n350",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "48",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "U\nAnda",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "U\nAnda",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "U",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "div",
+      "id": null,
+      "class": null,
+      "content_preview": "Anda",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "1,250",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "td",
+      "id": null,
+      "class": null,
+      "content_preview": "350",
+      "has_script": false,
+      "type": null,
+      "role": null
+    },
+    {
+      "tag": "script",
+      "id": null,
+      "class": null,
+      "content_preview": "",
+      "has_script": true,
+      "type": "script",
+      "role": null
+    },
+    {
+      "tag": "script",
+      "id": null,
+      "class": null,
+      "content_preview": "// Konfigurasi\n        const SUPABASE_EDGE_FN = 'h",
+      "has_script": true,
+      "type": "script",
+      "role": null
+    }
+  ]
+}
