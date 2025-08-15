@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel-like JSON Storage</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --border: #dee2e6;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 250px 1fr;
+            }
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h1 i {
+            font-size: 1.5rem;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        button.delete {
+            background: #e63946;
+        }
+        
+        button.delete:hover {
+            background: #d90429;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .editable-cell {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .editable-cell:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: var(--success);
+            color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 2000;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .storage-info {
+            background: #e7f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <i>📊</i> Excel-like JSON Storage
+            </h1>
+            <div class="header-actions">
+                <button id="add-row-btn">
+                    <i>➕</i> Tambah Baris
+                </button>
+            </div>
+        </header>
+        
+        <aside class="sidebar">
+            <h2><i>⚙️</i> Operasi Data</h2>
+            <div class="btn-group">
+                <button id="export-btn">
+                    <i>📥</i> Export ke JSON
+                </button>
+                <button id="import-btn">
+                    <i>📤</i> Import dari JSON
+                </button>
+                <button id="clear-btn" class="delete">
+                    <i>🗑️</i> Hapus Semua Data
+                </button>
+            </div>
+            
+            <h2><i>🔗</i> Integrasi API</h2>
+            <div class="btn-group">
+                <button id="save-api-btn">
+                    <i>💾</i> Simpan ke LocalStorage
+                </button>
+                <button id="load-api-btn">
+                    <i>🔄</i> Muat dari LocalStorage
+                </button>
+            </div>
+            
+            <div class="storage-info">
+                <p><strong>Storage Key:</strong> excelData</p>
+                <p id="storage-status">Status: Tidak ada data tersimpan</p>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="tabs">
+                <div class="tab active" data-tab="table-view">Tabel Data</div>
+                <div class="tab" data-tab="json-view">JSON View</div>
+            </div>
+            
+            <div class="tab-content active" id="table-view">
+                <div class="table-container">
+                    <table id="excel-table">
+                        <thead>
+                            <tr>
+                                <th width="5%">ID</th>
+                                <th width="20%">Nama</th>
+                                <th width="15%">NIM</th>
+                                <th width="20%">Jurusan</th>
+                                <th width="10%">Angkatan</th>
+                                <th width="20%">Email</th>
+                                <th width="10%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Data akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="json-view">
+                <pre id="json-output">{"data": []}</pre>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Sistem Tabel Excel-like dengan LocalStorage JSON | Mudah diintegrasikan dengan halaman lain</p>
+        </footer>
+    </div>
+    
+    <!-- Modal untuk konfirmasi -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <h3 class="modal-title"><i>⚠️</i> Konfirmasi</h3>
+            <p id="confirm-message">Apakah Anda yakin ingin menghapus semua data?</p>
+            <div class="modal-buttons">
+                <button id="confirm-cancel">Batal</button>
+                <button id="confirm-ok" class="delete">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk JSON -->
+    <div class="modal" id="json-modal">
+        <div class="modal-content">
+            <h3 class="modal-title"><i>📄</i> JSON Data</h3>
+            <div class="form-group">
+                <textarea id="json-textarea" placeholder='[{ "id": 1, "nama": "Contoh", ... }]'></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button id="json-cancel">Batal</button>
+                <button id="json-save">Simpan</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notifikasi -->
+    <div class="notification" id="notification">Data berhasil disimpan!</div>
+
+    <script>
+        // API untuk mengelola data
+        const ExcelAPI = {
+            // Mendapatkan data dari localStorage
+            getData: () => {
+                const data = localStorage.getItem('excelData');
+                return data ? JSON.parse(data) : [];
+            },
+            
+            // Menyimpan data ke localStorage
+            saveData: (data) => {
+                localStorage.setItem('excelData', JSON.stringify(data));
+                return true;
+            },
+            
+            // Menambahkan baris baru
+            addRow: (row) => {
+                const data = ExcelAPI.getData();
+                const newId = data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
+                const newRow = { id: newId, ...row };
+                data.push(newRow);
+                ExcelAPI.saveData(data);
+                return newRow;
+            },
+            
+            // Memperbarui baris
+            updateRow: (id, updatedData) => {
+                const data = ExcelAPI.getData();
+                const index = data.findIndex(row => row.id === id);
+                if (index !== -1) {
+                    data[index] = { ...data[index], ...updatedData };
+                    ExcelAPI.saveData(data);
+                    return true;
+                }
+                return false;
+            },
+            
+            // Menghapus baris
+            deleteRow: (id) => {
+                const data = ExcelAPI.getData();
+                const newData = data.filter(row => row.id !== id);
+                ExcelAPI.saveData(newData);
+                return true;
+            },
+            
+            // Menghapus semua data
+            clearData: () => {
+                localStorage.removeItem('excelData');
+                return true;
+            },
+            
+            // Mengekspor data sebagai JSON string
+            exportData: () => {
+                return JSON.stringify(ExcelAPI.getData(), null, 2);
+            },
+            
+            // Mengimpor data dari JSON string
+            importData: (jsonString) => {
+                try {
+                    const data = JSON.parse(jsonString);
+                    if (Array.isArray(data)) {
+                        ExcelAPI.saveData(data);
+                        return true;
+                    }
+                    return false;
+                } catch (e) {
+                    console.error('Invalid JSON:', e);
+                    return false;
+                }
+            }
+        };
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+
+        // Fungsi untuk merender tabel
+        function renderTable() {
+            const data = ExcelAPI.getData();
+            const tableBody = document.getElementById('table-body');
+            
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center;">Tidak ada data. Silakan tambah data baru.</td></tr>`;
+                return;
+            }
+            
+            tableBody.innerHTML = data.map(row => `
+                <tr data-id="${row.id}">
+                    <td>${row.id}</td>
+                    <td><input type="text" class="editable-cell" data-field="nama" value="${row.nama || ''}"></td>
+                    <td><input type="text" class="editable-cell" data-field="nim" value="${row.nim || ''}"></td>
+                    <td><input type="text" class="editable-cell" data-field="jurusan" value="${row.jurusan || ''}"></td>
+                    <td><input type="number" class="editable-cell" data-field="angkatan" value="${row.angkatan || ''}"></td>
+                    <td><input type="email" class="editable-cell" data-field="email" value="${row.email || ''}"></td>
+                    <td class="action-cell">
+                        <button class="action-btn save-btn" title="Simpan Perubahan">💾</button>
+                        <button class="action-btn delete-btn delete" title="Hapus Baris">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Tambahkan event listener untuk sel yang dapat diedit
+            document.querySelectorAll('.editable-cell').forEach(cell => {
+                cell.addEventListener('change', function() {
+                    const rowId = parseInt(this.closest('tr').dataset.id);
+                    const field = this.dataset.field;
+                    const value = this.value;
+                    
+                    ExcelAPI.updateRow(rowId, { [field]: value });
+                    showNotification(`Data diperbarui! (ID: ${rowId})`);
+                });
+            });
+            
+            // Tambahkan event listener untuk tombol simpan per baris
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const rowId = parseInt(this.closest('tr').dataset.id);
+                    showNotification(`Data disimpan! (ID: ${rowId})`);
+                });
+            });
+            
+            // Tambahkan event listener untuk tombol hapus
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const rowId = parseInt(row.dataset.id);
+                    
+                    if (confirm(`Apakah Anda yakin ingin menghapus data ID ${rowId}?`)) {
+                        ExcelAPI.deleteRow(rowId);
+                        row.remove();
+                        showNotification(`Data dihapus! (ID: ${rowId})`);
+                        
+                        // Perbarui tabel jika semua data dihapus
+                        if (ExcelAPI.getData().length === 0) {
+                            renderTable();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Fungsi untuk merender tampilan JSON
+        function renderJSON() {
+            const jsonOutput = document.getElementById('json-output');
+            jsonOutput.textContent = ExcelAPI.exportData();
+        }
+
+        // Fungsi untuk memperbarui status storage
+        function updateStorageStatus() {
+            const statusElement = document.getElementById('storage-status');
+            const data = ExcelAPI.getData();
+            
+            if (data.length > 0) {
+                statusElement.textContent = `Status: ${data.length} data tersimpan`;
+                statusElement.style.color = 'green';
+            } else {
+                statusElement.textContent = 'Status: Tidak ada data tersimpan';
+                statusElement.style.color = 'gray';
+            }
+        }
+
+        // Inisialisasi aplikasi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render data awal
+            renderTable();
+            renderJSON();
+            updateStorageStatus();
+            
+            // Tab navigation
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}`).classList.add('active');
+                });
+            });
+            
+            // Tambah baris baru
+            document.getElementById('add-row-btn').addEventListener('click', function() {
+                const newRow = ExcelAPI.addRow({
+                    nama: 'Nama Baru',
+                    nim: 'NIM Baru',
+                    jurusan: 'Jurusan Baru',
+                    angkatan: new Date().getFullYear(),
+                    email: 'email@contoh.com'
+                });
+                
+                renderTable();
+                renderJSON();
+                updateStorageStatus();
+                showNotification(`Baris baru ditambahkan! (ID: ${newRow.id})`);
+            });
+            
+            // Export data
+            document.getElementById('export-btn').addEventListener('click', function() {
+                const jsonModal = document.getElementById('json-modal');
+                const jsonTextarea = document.getElementById('json-textarea');
+                
+                jsonTextarea.value = ExcelAPI.exportData();
+                jsonModal.style.display = 'flex';
+            });
+            
+            // Import data
+            document.getElementById('import-btn').addEventListener('click', function() {
+                const jsonModal = document.getElementById('json-modal');
+                const jsonTextarea = document.getElementById('json-textarea');
+                
+                jsonTextarea.value = '';
+                jsonModal.style.display = 'flex';
+            });
+            
+            // Simpan ke localStorage
+            document.getElementById('save-api-btn').addEventListener('click', function() {
+                const data = ExcelAPI.getData();
+                ExcelAPI.saveData(data);
+                updateStorageStatus();
+                showNotification('Data disimpan ke localStorage!');
+            });
+            
+            // Muat dari localStorage
+            document.getElementById('load-api-btn').addEventListener('click', function() {
+                renderTable();
+                renderJSON();
+                updateStorageStatus();
+                showNotification('Data dimuat dari localStorage!');
+            });
+            
+            // Hapus semua data
+            document.getElementById('clear-btn').addEventListener('click', function() {
+                const confirmModal = document.getElementById('confirm-modal');
+                const confirmMessage = document.getElementById('confirm-message');
+                
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.';
+                confirmModal.style.display = 'flex';
+                
+                document.getElementById('confirm-ok').onclick = function() {
+                    ExcelAPI.clearData();
+                    renderTable();
+                    renderJSON();
+                    updateStorageStatus();
+                    confirmModal.style.display = 'none';
+                    showNotification('Semua data telah dihapus!');
+                };
+            });
+            
+            // Modal handlers
+            document.getElementById('confirm-cancel').addEventListener('click', function() {
+                document.getElementById('confirm-modal').style.display = 'none';
+            });
+            
+            document.getElementById('json-cancel').addEventListener('click', function() {
+                document.getElementById('json-modal').style.display = 'none';
+            });
+            
+            document.getElementById('json-save').addEventListener('click', function() {
+                const jsonTextarea = document.getElementById('json-textarea');
+                
+                if (ExcelAPI.importData(jsonTextarea.value)) {
+                    renderTable();
+                    renderJSON();
+                    updateStorageStatus();
+                    document.getElementById('json-modal').style.display = 'none';
+                    showNotification('Data diimpor dengan sukses!');
+                } else {
+                    alert('Format JSON tidak valid!');
+                }
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                const confirmModal = document.getElementById('confirm-modal');
+                const jsonModal = document.getElementById('json-modal');
+                
+                if (event.target === confirmModal) {
+                    confirmModal.style.display = 'none';
+                }
+                
+                if (event.target === jsonModal) {
+                    jsonModal.style.display = 'none';
+                }
+            });
+        });
+
+        // Ekspos API untuk diakses dari halaman lain
+        window.ExcelAPI = ExcelAPI;
+    </script>
+</body>
+</html>

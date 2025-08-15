@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komunitas Nyampah Bersama - Platform Terintegrasi</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --secondary: #ffc107;
+            --accent: #4caf50;
+            --light: #e8f5e9;
+            --dark: #1a237e;
+            --text: #333;
+            --background: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: 80vh;
+            overflow: auto;
+        }
+        
+        .panel-header {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+            height: calc(100% - 60px);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .visualization {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .card-header {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            background-color: #ffb300;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .json-key {
+            color: #d73a49;
+        }
+        
+        .json-string {
+            color: #032f62;
+        }
+        
+        .json-number {
+            color: #005cc5;
+        }
+        
+        .json-boolean {
+            color: #6f42c1;
+        }
+        
+        .json-null {
+            color: #6a737d;
+        }
+        
+        /* Fitur 2BCycle */
+        .section {
+            background: #fff;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.08);
+        }
+        
+        .nft-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        .nft-gallery img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .nft-gallery img:hover {
+            transform: scale(1.05);
+        }
+        
+        .cid-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            font-family: monospace;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            margin: 8px 0;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        /* Blog Styles */
+        .post {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .post h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .post .date {
+            color: #777;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #777;
+            border-top: 1px solid #eee;
+            grid-column: 1 / -1;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .panel {
+                height: auto;
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Komunitas Nyampah Bersama - Platform Terintegrasi</h1>
+        <p>Gabungkan kekuatan JSON, NFT, dan Blog dalam satu platform</p>
+        
+        <div class="nav-container">
+            <button class="nav-btn active" data-tab="json-view">JSON Viewer</button>
+            <button class="nav-btn" data-tab="web-functions">Fitur Web</button>
+            <button class="nav-btn" data-tab="blog-content">Blog Komunitas</button>
+            <button class="nav-btn" data-tab="visualization">Visualisasi</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Tab 1: JSON Viewer -->
+        <div class="tab-content active" id="json-view">
+            <div class="panel">
+                <h2 class="panel-header">Struktur JSON dari HTML</h2>
+                <pre id="json-output"></pre>
+            </div>
+            
+            <div class="panel">
+                <h2 class="panel-header">Visualisasi Struktur</h2>
+                <div id="structure-visualization">
+                    <p>Pilih elemen dari panel JSON untuk melihat visualisasinya di sini...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab 2: Web Functions -->
+        <div class="tab-content" id="web-functions">
+            <div class="panel" style="grid-column: 1 / -1;">
+                <h2 class="panel-header">Fitur Platform 2BCycle</h2>
+                
+                <div class="section">
+                    <h2>🎨 NFT Viewer: Gulungan Aksi</h2>
+                    <div class="nft-gallery">
+                        <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?w=200" alt="NFT Gulungan 1">
+                        <img src="https://images.unsplash.com/photo-1639762681485-0744b080e652?w=200" alt="NFT Gulungan 2">
+                        <img src="https://images.unsplash.com/photo-1639762680853-1d0f1d4a4d5f?w=200" alt="NFT Gulungan 3">
+                    </div>
+                    <p>NFT ini berisi catatan aksi rakyat, laporan bersih, dan bukti kontribusi sosial.</p>
+                </div>
+                
+                <div class="section">
+                    <h2>🧮 Kalkulator Karbon</h2>
+                    <div class="input-group">
+                        <label for="transport">Transportasi (km/hari):</label>
+                        <input type="number" id="transport" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="energy">Energi rumah (kWh/hari):</label>
+                        <input type="number" id="energy" value="5">
+                    </div>
+                    <button class="btn" onclick="calculateCarbon()">Hitung Jejak Karbon</button>
+                    <p>🌍 Jejak Karbon Anda: <strong><span id="carbonResult">-</span></strong> kg CO₂/hari</p>
+                </div>
+                
+                <div class="section">
+                    <h2>📚 Jurnal Digital CID + AI</h2>
+                    <div class="input-group">
+                        <label for="cidInput">CID Dokumen:</label>
+                        <input type="text" id="cidInput" value="bafybeigdyrxt4jrwx3b5h5i6z7g3m4d5e6f7g8h9i0j">
+                    </div>
+                    <button class="btn" onclick="verifyCID()">Verifikasi & Visualisasi</button>
+                    <div id="cidOutput" class="cid-box">Menunggu input...</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab 3: Blog -->
+        <div class="tab-content" id="blog-content">
+            <div class="panel" style="grid-column: 1 / -1;">
+                <h2 class="panel-header">Blog Komunitas Nyampah Bersama</h2>
+                
+                <div id="blog-header">
+                    <h1>Memuat...</h1>
+                    <p id="blog-description"></p>
+                </div>
+                
+                <div id="blog-content"></div>
+                
+                <div id="blog-footer"></div>
+            </div>
+        </div>
+        
+        <!-- Tab 4: Visualizations -->
+        <div class="tab-content" id="visualization">
+            <div class="visualization">
+                <div class="card">
+                    <h3 class="card-header">Representasi Komponen HTML</h3>
+                    <div class="chart-container">
+                        <canvas id="htmlChart"></canvas>
+                    </div>
+                    <button class="btn" id="refresh-chart">Refresh Visualisasi</button>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-header">Distribusi Kode</h3>
+                    <div class="chart-container">
+                        <canvas id="codeDistributionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-header">Statistik Komunitas</h3>
+                    <div class="chart-container">
+                        <canvas id="communityStatsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-header">Level Keanggotaan</h3>
+                    <div class="chart-container">
+                        <canvas id="membershipChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        ✨ Komunitas Nyampah Bersama · Transformasi Sampah Menjadi Nilai 💚
+    </div>
+
+    <!-- Konfigurasi JSON untuk Blog -->
+    <script id="blog-config" type="application/json">
+    {
+        "blog": {
+            "title": "Blog Komunitas Nyampah Bersama",
+            "description": "Berbagi pengetahuan dan pengalaman dalam mengelola sampah berkelanjutan",
+            "author": "Komunitas Nyampah Bersama"
+        },
+        "posts": [
+            {
+                "id": 1,
+                "title": "Memulai Perjalanan Pengelolaan Sampah",
+                "date": "15 Juli 2023",
+                "content": "<p>Hari ini kami memulai perjalanan pengelolaan sampah dengan teknologi sederhana tetapi powerful.</p><p>Dengan arsitektur berbasis JSON, kami bisa fokus pada konten tanpa khawatir tentang koding kompleks.</p>"
+            },
+            {
+                "id": 2,
+                "title": "Keuntungan Ekonomi Sirkular",
+                "date": "22 Juli 2023",
+                "content": "<p>Berikut beberapa keuntungan ekonomi sirkular dalam pengelolaan sampah:</p><ul><li>Mengurangi biaya produksi</li><li>Menciptakan lapangan kerja baru</li><li>Mengurangi dampak lingkungan</li><li>Meningkatkan efisiensi sumber daya</li></ul>"
+            },
+            {
+                "id": 3,
+                "title": "Rencana Pengembangan Komunitas",
+                "date": "5 Agustus 2023",
+                "content": "<p>Dengan fondasi yang kuat, kami berencana untuk:</p><ol><li>Menambahkan fitur NFT untuk sertifikasi</li><li>Membuat sistem insentif berbasis token</li><li>Mengintegrasikan dengan platform Web3</li><li>Mengembangkan aplikasi mobile</li></ol>"
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        // Data JSON yang merepresentasikan struktur HTML
+        const htmlAsJson = {
+            "metadata": {
+                "title": "Platform Komunitas Nyampah Bersama",
+                "language": "id",
+                "viewport": "width=device-width, initial-scale=1.0",
+                "description": "Platform untuk Komunitas Nyampah Bersama yang mengintegrasikan aksi lingkungan dengan teknologi Web3"
+            },
+            "styles": {
+                "variables": {
+                    "primary": "#2e7d32",
+                    "primary-dark": "#1b5e20",
+                    "secondary": "#ffc107",
+                    "accent": "#4caf50",
+                    "light": "#e8f5e9",
+                    "dark": "#1a237e",
+                    "text": "#333",
+                    "background": "#f5f5f5"
+                },
+                "global": `* {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }`,
+                "body": `body {
+                    background-color: var(--background);
+                    color: var(--text);
+                    line-height: 1.6;
+                }`,
+                "header": `header {
+                    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                    color: white;
+                    padding: 1rem;
+                    position: sticky;
+                    top: 0;
+                    z-index: 100;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                }`,
+                "hero": `.hero {
+                    background: linear-gradient(rgba(0,0,0,0.6), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09');
+                    background-size: cover;
+                    background-position: center;
+                    color: white;
+                    text-align: center;
+                    padding: 5rem 1rem;
+                }`
+            },
+            "content": {
+                "header": {
+                    "tag": "header",
+                    "attributes": {},
+                    "children": [
+                        {
+                            "tag": "div",
+                            "attributes": {"class": "header-container"},
+                            "children": [
+                                {
+                                    "tag": "div",
+                                    "attributes": {"class": "logo"},
+                                    "children": [
+                                        {
+                                            "tag": "div",
+                                            "attributes": {"class": "logo-icon"},
+                                            "children": [
+                                                {
+                                                    "tag": "i",
+                                                    "attributes": {"class": "fas fa-recycle"}
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "tag": "div",
+                                            "children": [
+                                                {
+                                                    "tag": "div",
+                                                    "attributes": {"class": "logo-text"},
+                                                    "text": "NYAMPAH BERSAMA"
+                                                },
+                                                {
+                                                    "tag": "div",
+                                                    "attributes": {"class": "logo-tagline"},
+                                                    "text": "Kutemani Nyampahmu Sampai Tua"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "scripts": {
+                "chart": `const ctx = document.getElementById('impactChart').getContext('2d');
+                const impactChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pemahaman Karbon', 'Partisipasi', 'Pengelolaan Sampah', 'Insentif Ekonomi'],
+                        datasets: [{
+                            label: 'Peningkatan (%)',
+                            data: [72, 83, 65, 78],
+                            backgroundColor: [
+                                'rgba(46, 125, 50, 0.7)',
+                                'rgba(76, 175, 80, 0.7)',
+                                'rgba(139, 195, 74, 0.7)',
+                                'rgba(255, 193, 7, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true, max: 100 }
+                        }
+                    }
+                });`,
+                "tabs": `const tabBtns = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+                
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        tabContents.forEach(c => c.classList.remove('active'));
+                        btn.classList.add('active');
+                        const tabId = btn.getAttribute('data-tab');
+                        document.getElementById(tabId+'-content').classList.add('active');
+                    });
+                });`
+            },
+            "data": {
+                "stats": [
+                    {"label": "Peningkatan Interaksi", "value": 147, "unit": "%"},
+                    {"label": "Partisipan Termotivasi", "value": 83, "unit": "%"},
+                    {"label": "Sampah Terkelola", "value": 97.4, "unit": "kg"},
+                    {"label": "Pengurangan CO2", "value": 1.47, "unit": "kg/hari"}
+                ],
+                "publications": [
+                    {"title": "Implementasi Proof of Attention Value...", "author": "Muhlisin, M.O.", "year": 2024},
+                    {"title": "Model Ekonomi Perilaku...", "author": "Muhlisin, M.O.", "year": 2023},
+                    {"title": "Trust Mechanism...", "author": "Muhlisin, M.O. & Pratama, A.", "year": 2023}
+                ],
+                "membershipLevels": [
+                    {
+                        "name": "Anggota Umum",
+                        "features": [
+                            "Ikut kegiatan komunitas",
+                            "Akses informasi transparan",
+                            "Hak suara pemilihan",
+                            "Fasilitas komunitas"
+                        ]
+                    },
+                    {
+                        "name": "Anggota Aktif",
+                        "features": [
+                            "Semua manfaat Anggota Umum",
+                            "Prioritas pelatihan",
+                            "Hak dipilih dan memilih",
+                            "Pengakuan kontribusi",
+                            "Insentif NyampahCoin"
+                        ]
+                    },
+                    {
+                        "name": "Pengurus",
+                        "features": [
+                            "Semua manfaat Anggota Aktif",
+                            "Delegasi wewenang",
+                            "Dukungan komunitas",
+                            "Akses sumber daya khusus",
+                            "Kepemimpinan proyek"
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Fungsi untuk menampilkan JSON dengan syntax highlighting
+        function syntaxHighlight(json) {
+            if (typeof json !== 'string') {
+                json = JSON.stringify(json, null, 2);
+            }
+            
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        // Fungsi untuk membuat visualisasi struktur HTML
+        function visualizeStructure() {
+            const ctx = document.getElementById('htmlChart').getContext('2d');
+            const data = {
+                labels: ['Header', 'Hero', 'Profil', '2BCycle', 'Keanggotaan', 'Riset', 'Kontak', 'Footer'],
+                datasets: [{
+                    label: 'Komponen HTML',
+                    data: [15, 20, 18, 22, 25, 17, 16, 12],
+                    backgroundColor: [
+                        'rgba(46, 125, 50, 0.7)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(139, 195, 74, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(255, 152, 0, 0.7)',
+                        'rgba(255, 87, 34, 0.7)',
+                        'rgba(156, 39, 176, 0.7)',
+                        'rgba(33, 150, 243, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Komponen Struktur HTML'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk membuat grafik distribusi kode
+        function createCodeDistributionChart() {
+            const ctx = document.getElementById('codeDistributionChart').getContext('2d');
+            const data = {
+                labels: ['HTML', 'CSS', 'JavaScript'],
+                datasets: [{
+                    label: 'Distribusi Kode',
+                    data: [45, 35, 20],
+                    backgroundColor: [
+                        'rgba(46, 125, 50, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(33, 150, 243, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk membuat grafik statistik komunitas
+        function createCommunityStatsChart() {
+            const ctx = document.getElementById('communityStatsChart').getContext('2d');
+            const data = {
+                labels: htmlAsJson.data.stats.map(stat => stat.label),
+                datasets: [{
+                    label: 'Statistik Komunitas',
+                    data: htmlAsJson.data.stats.map(stat => stat.value),
+                    backgroundColor: [
+                        'rgba(46, 125, 50, 0.7)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(139, 195, 74, 0.7)',
+                        'rgba(255, 193, 7, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 200
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk membuat grafik keanggotaan
+        function createMembershipChart() {
+            const ctx = document.getElementById('membershipChart').getContext('2d');
+            const data = {
+                labels: htmlAsJson.data.membershipLevels.map(level => level.name),
+                datasets: [{
+                    label: 'Jumlah Fitur',
+                    data: htmlAsJson.data.membershipLevels.map(level => level.features.length),
+                    backgroundColor: [
+                        'rgba(46, 125, 50, 0.7)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(139, 195, 74, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fungsi untuk kalkulator karbon
+        function calculateCarbon() {
+            const km = parseFloat(document.getElementById('transport').value);
+            const kWh = parseFloat(document.getElementById('energy').value);
+            const carbon = (km * 0.21) + (kWh * 0.5); // estimasi emisi sederhana
+            document.getElementById('carbonResult').textContent = carbon.toFixed(2);
+        }
+
+        // Fungsi untuk verifikasi CID
+        function verifyCID() {
+            const cid = document.getElementById('cidInput').value;
+            const output = `
+✅ CID diverifikasi sebagai arsip aksi digital.
+📄 ID: ${cid}
+🧠 AI membaca metadata dan menyarankan klasifikasi Scopus:
+• Tipe: Laporan Lapangan · 🌍
+• Aksi: Edukasi Lingkungan + Distribusi Token Kurban
+• Kredensial: NFT gulungan disimpan permanen
+📬 Status: Siap dicetak & disubmit ke jurnal rakyat!
+`;
+            document.getElementById('cidOutput').textContent = output;
+        }
+
+        // Fungsi untuk merender blog
+        function renderBlog() {
+            try {
+                // 1. Ambil konfigurasi JSON
+                const config = JSON.parse(document.getElementById('blog-config').textContent);
+                
+                // 2. Set header
+                document.querySelector('#blog-header h1').textContent = config.blog.title;
+                document.getElementById('blog-description').textContent = config.blog.description;
+                
+                // 3. Render postingan
+                let postsHTML = '';
+                config.posts.forEach(post => {
+                    postsHTML += `
+                        <article class="post">
+                            <h2>${post.title}</h2>
+                            <span class="date">${post.date}</span>
+                            <div class="content">${post.content}</div>
+                        </article>
+                    `;
+                });
+                
+                document.getElementById('blog-content').innerHTML = postsHTML;
+                
+                // 4. Set footer
+                document.getElementById('blog-footer').innerHTML = 
+                    `<div class="footer">&copy; ${new Date().getFullYear()} ${config.blog.author}</div>`;
+                
+            } catch (error) {
+                console.error("Error rendering blog:", error);
+                document.getElementById('blog-content').innerHTML = 
+                    `<p class="error">Terjadi kesalahan saat memuat blog. Silakan coba lagi.</p>`;
+            }
+        }
+
+        // Fungsi untuk navigasi tab
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.nav-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Hapus kelas aktif dari semua tab dan tombol
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Tambahkan kelas aktif ke tab yang dipilih
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tampilkan JSON dengan syntax highlighting
+            document.getElementById('json-output').innerHTML = syntaxHighlight(htmlAsJson);
+            
+            // Buat visualisasi
+            visualizeStructure();
+            createCodeDistributionChart();
+            createCommunityStatsChart();
+            createMembershipChart();
+            
+            // Render blog
+            renderBlog();
+            
+            // Setup tab navigation
+            setupTabs();
+            
+            // Event listener untuk tombol refresh
+            document.getElementById('refresh-chart').addEventListener('click', () => {
+                document.getElementById('htmlChart').remove();
+                const canvas = document.createElement('canvas');
+                canvas.id = 'htmlChart';
+                document.querySelector('#htmlChart').parentElement.appendChild(canvas);
+                visualizeStructure();
+            });
+        });
+    </script>
+</body>
+</html>

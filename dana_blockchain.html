@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWallet - Wallet Cerdas dengan Account Abstraction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <script src="https://unpkg.com/@biconomy/account@latest/dist/index.umd.js"></script>
+    <script src="https://unpkg.com/@biconomy/common@latest/dist/index.umd.js"></script>
+    <script src="https://unpkg.com/@thirdweb-dev/sdk@latest/dist/thirdweb-dev-sdk.evm.min.js"></script>
+    <style>
+        /* CSS sebelumnya tetap sama */
+        /* ... (semua CSS dari implementasi sebelumnya) ... */
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #004aad;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #004aad;
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+            outline: none;
+        }
+        
+        .action-button {
+            background: linear-gradient(135deg, #004aad 0%, #002d6e 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 74, 173, 0.3);
+        }
+        
+        .tx-status {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #004aad;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .tx-success {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .tx-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .tx-hash {
+            font-size: 14px;
+            word-break: break-all;
+            margin-top: 10px;
+            color: #004aad;
+        }
+        
+        .wallet-address {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Account Abstraction Badge -->
+        <div class="aa-badge">
+            <i class="fas fa-brain"></i> Smart Account
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header">
+            <div class="top-bar">
+                <div class="logo">
+                    <i class="fas fa-wallet"></i>
+                    SmartWallet
+                </div>
+                <div class="user-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-qrcode" id="showQR"></i>
+                    <i class="fas fa-cog" id="showSettings"></i>
+                </div>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-label">Saldo Tersedia</div>
+                <div class="balance-amount" id="balanceAmount">Rp 0</div>
+                
+                <div class="action-buttons">
+                    <div class="action-btn" id="topUpBtn">
+                        <i class="fas fa-wallet"></i>
+                        <span>Isi Saldo</span>
+                    </div>
+                    <div class="action-btn" id="requestBtn">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Minta</span>
+                    </div>
+                    <div class="action-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Kirim</span>
+                    </div>
+                    <div class="action-btn">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>Pesan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <!-- ... (konten sebelumnya tetap sama) ... -->
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <!-- ... (navigasi bawah tetap sama) ... -->
+        </div>
+    </div>
+    
+    <!-- Modal untuk Kirim Dana -->
+    <div class="modal" id="sendModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Kirim Dana</div>
+                <button class="close-btn" id="closeSendModal">&times;</button>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Alamat Penerima</label>
+                <input type="text" class="input-field" id="recipientAddress" placeholder="0x...">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Jumlah (ETH)</label>
+                <input type="number" class="input-field" id="sendAmount" placeholder="0.00" step="0.001">
+            </div>
+            <button class="action-button" id="confirmSend">Kirim Sekarang</button>
+            <div class="tx-status" id="sendStatus"></div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk Isi Saldo -->
+    <div class="modal" id="topUpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Isi Saldo</div>
+                <button class="close-btn" id="closeTopUpModal">&times;</button>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Jumlah (ETH)</label>
+                <input type="number" class="input-field" id="topUpAmount" placeholder="0.00" step="0.001">
+            </div>
+            <button class="action-button" id="confirmTopUp">Isi Saldo</button>
+            <div class="tx-status" id="topUpStatus"></div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk Info Wallet -->
+    <div class="modal" id="walletInfoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Info Smart Wallet</div>
+                <button class="close-btn" id="closeWalletInfo">&times;</button>
+            </div>
+            <div class="tx-status">
+                <div class="wallet-address" id="walletAddress"></div>
+                <div class="wallet-address" id="smartAccountAddress"></div>
+                <div class="wallet-address" id="balanceInfo"></div>
+                <div class="wallet-address" id="tokenBalance"></div>
+                <button class="action-button" style="margin-top: 20px;" id="disconnectWallet">Disconnect Wallet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi blockchain
+        const CHAIN_ID = 8453; // Base Mainnet
+        const RPC_URL = "https://mainnet.base.org";
+        const NYAMPAH_TOKEN_ADDRESS = "0xcEcaab4eb1222244Ea0cF4428d700C282F0f3830";
+        const NFT_COLLECTION_ADDRESS = "0xf518d31C41D2c67355e88F76AE5fa1b9356f0213";
+        const BICONOMY_API_KEY = "YOUR_BICONOMY_API_KEY"; // Dapatkan dari dashboard Biconomy
+        
+        // Inisialisasi ThirdWeb SDK
+        let thirdwebSdk;
+        let biconomySmartAccount;
+        let provider;
+        let userAddress;
+        let smartAccountAddress;
+        
+        // Elemen UI
+        const balanceAmountEl = document.getElementById('balanceAmount');
+        const sendBtn = document.getElementById('sendBtn');
+        const topUpBtn = document.getElementById('topUpBtn');
+        const showQRBtn = document.getElementById('showQR');
+        const showSettingsBtn = document.getElementById('showSettings');
+        const disconnectWalletBtn = document.getElementById('disconnectWallet');
+        
+        // Modal elements
+        const sendModal = document.getElementById('sendModal');
+        const topUpModal = document.getElementById('topUpModal');
+        const walletInfoModal = document.getElementById('walletInfoModal');
+        
+        // Inisialisasi wallet
+        async function initWallet() {
+            try {
+                // Periksa apakah Metamask terinstall
+                if (!window.ethereum) {
+                    alert('Silakan install Metamask untuk menggunakan wallet ini!');
+                    return;
+                }
+                
+                // Minta koneksi ke wallet
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                
+                // Inisialisasi ThirdWeb SDK
+                thirdwebSdk = new ThirdwebSDK.ThirdwebSDK(signer);
+                
+                // Inisialisasi Biconomy Smart Account
+                const biconomyConfig = {
+                    biconomyPaymasterApiKey: BICONOMY_API_KEY,
+                    bundlerUrl: `https://bundler.biconomy.io/api/v2/${CHAIN_ID}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`,
+                    rpcUrl: RPC_URL
+                };
+                
+                const biconomyModule = new BiconomyModular.ModularBiconomy({
+                    chainId: CHAIN_ID,
+                    signer: signer,
+                    paymasterApiKey: biconomyConfig.biconomyPaymasterApiKey,
+                    bundlerUrl: biconomyConfig.bundlerUrl
+                });
+                
+                biconomySmartAccount = new BiconomyModular.BiconomySmartAccount({
+                    signer: signer,
+                    chainId: CHAIN_ID,
+                    biconomyPaymaster: biconomyModule,
+                    rpcUrl: biconomyConfig.rpcUrl
+                });
+                
+                await biconomySmartAccount.init();
+                smartAccountAddress = await biconomySmartAccount.getSmartAccountAddress();
+                
+                // Perbarui UI
+                updateBalances();
+                
+                console.log('Smart Account Address:', smartAccountAddress);
+                console.log('User Address:', userAddress);
+                
+                // Tampilkan notifikasi
+                showNotification('Wallet Connected', `Smart wallet berhasil diinisialisasi!`);
+                
+            } catch (error) {
+                console.error('Error initializing wallet:', error);
+                showNotification('Wallet Error', `Gagal menginisialisasi wallet: ${error.message}`);
+            }
+        }
+        
+        // Perbarui saldo wallet
+        async function updateBalances() {
+            if (!provider || !userAddress) return;
+            
+            try {
+                // Dapatkan saldo ETH
+                const ethBalance = await provider.getBalance(userAddress);
+                const ethBalanceInEther = ethers.utils.formatEther(ethBalance);
+                
+                // Konversi ke Rupiah (contoh kurs)
+                const ethToIDR = 24000000; // 1 ETH = 24,000,000 IDR
+                const balanceInIDR = (parseFloat(ethBalanceInEther) * ethToIDR).toLocaleString('id-ID');
+                
+                balanceAmountEl.textContent = `Rp ${balanceInIDR}`;
+                
+                // Dapatkan saldo token Nyampahcoin
+                const tokenContract = await thirdwebSdk.getToken(NYAMPAH_TOKEN_ADDRESS);
+                const tokenBalance = await tokenContract.balanceOf(userAddress);
+                const tokenBalanceFormatted = ethers.utils.formatUnits(tokenBalance, 18);
+                
+                console.log(`ETH Balance: ${ethBalanceInEther}`);
+                console.log(`Token Balance: ${tokenBalanceFormatted} NYMPH`);
+                
+            } catch (error) {
+                console.error('Error updating balances:', error);
+            }
+        }
+        
+        // Kirim transaksi menggunakan Account Abstraction
+        async function sendTransaction(recipient, amount) {
+            if (!biconomySmartAccount) {
+                throw new Error('Smart account not initialized');
+            }
+            
+            const sendStatus = document.getElementById('sendStatus');
+            sendStatus.innerHTML = '<div class="loader"></div>Mengirim transaksi...';
+            
+            try {
+                // Konversi jumlah ke wei
+                const amountInWei = ethers.utils.parseEther(amount.toString());
+                
+                // Buat transaksi
+                const transaction = {
+                    to: recipient,
+                    value: amountInWei,
+                    data: "0x", // Data kosong untuk transfer ETH biasa
+                    gasLimit: 21000
+                };
+                
+                // Kirim transaksi melalui Biconomy
+                const txResponse = await biconomySmartAccount.sendTransaction(transaction);
+                const txReceipt = await txResponse.wait();
+                
+                console.log('Transaction successful:', txReceipt);
+                
+                // Perbarui saldo
+                updateBalances();
+                
+                // Tampilkan status sukses
+                sendStatus.innerHTML = `
+                    <div class="tx-success">Transaksi Berhasil!</div>
+                    <div class="tx-hash">TX Hash: ${txReceipt.transactionHash}</div>
+                `;
+                
+                // Tampilkan notifikasi
+                showNotification('Transfer Berhasil', `Berhasil mengirim ${amount} ETH ke ${recipient.substring(0, 8)}...`);
+                
+                return txReceipt;
+                
+            } catch (error) {
+                console.error('Transaction failed:', error);
+                sendStatus.innerHTML = `<div class="tx-error">Error: ${error.message}</div>`;
+                return null;
+            }
+        }
+        
+        // Isi saldo dengan token
+        async function topUpWallet(amount) {
+            if (!thirdwebSdk || !userAddress) return;
+            
+            const topUpStatus = document.getElementById('topUpStatus');
+            topUpStatus.innerHTML = '<div class="loader"></div>Memproses...';
+            
+            try {
+                // Konversi jumlah ke wei
+                const amountInWei = ethers.utils.parseEther(amount.toString());
+                
+                // Buat transaksi mint token
+                const tokenContract = await thirdwebSdk.getToken(NYAMPAH_TOKEN_ADDRESS);
+                const tx = await tokenContract.mintTo(userAddress, amountInWei);
+                const receipt = await tx.wait();
+                
+                console.log('Top-up successful:', receipt);
+                
+                // Perbarui saldo
+                updateBalances();
+                
+                // Tampilkan status sukses
+                topUpStatus.innerHTML = `
+                    <div class="tx-success">Saldo Berhasil Ditambahkan!</div>
+                    <div class="tx-hash">TX Hash: ${receipt.transactionHash}</div>
+                `;
+                
+                // Tampilkan notifikasi
+                showNotification('Isi Saldo Berhasil', `Berhasil menambahkan ${amount} NYMPH ke wallet`);
+                
+                return receipt;
+                
+            } catch (error) {
+                console.error('Top-up failed:', error);
+                topUpStatus.innerHTML = `<div class="tx-error">Error: ${error.message}</div>`;
+                return null;
+            }
+        }
+        
+        // Tampilkan notifikasi
+        function showNotification(title, message) {
+            if (!('Notification' in window)) {
+                console.log('This browser does not support desktop notification');
+                return;
+            }
+            
+            if (Notification.permission === 'granted') {
+                new Notification(title, { body: message });
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification(title, { body: message });
+                    }
+                });
+            }
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inisialisasi wallet saat halaman dimuat
+            initWallet();
+            
+            // Modal Kirim Dana
+            sendBtn.addEventListener('click', () => {
+                document.getElementById('sendStatus').innerHTML = '';
+                sendModal.style.display = 'flex';
+            });
+            
+            document.getElementById('closeSendModal').addEventListener('click', () => {
+                sendModal.style.display = 'none';
+            });
+            
+            document.getElementById('confirmSend').addEventListener('click', async () => {
+                const recipient = document.getElementById('recipientAddress').value;
+                const amount = parseFloat(document.getElementById('sendAmount').value);
+                
+                if (!recipient || !amount) {
+                    alert('Silakan isi alamat penerima dan jumlah');
+                    return;
+                }
+                
+                await sendTransaction(recipient, amount);
+            });
+            
+            // Modal Isi Saldo
+            topUpBtn.addEventListener('click', () => {
+                document.getElementById('topUpStatus').innerHTML = '';
+                topUpModal.style.display = 'flex';
+            });
+            
+            document.getElementById('closeTopUpModal').addEventListener('click', () => {
+                topUpModal.style.display = 'none';
+            });
+            
+            document.getElementById('confirmTopUp').addEventListener('click', async () => {
+                const amount = parseFloat(document.getElementById('topUpAmount').value);
+                
+                if (!amount) {
+                    alert('Silakan isi jumlah');
+                    return;
+                }
+                
+                await topUpWallet(amount);
+            });
+            
+            // Tampilkan info wallet
+            showSettingsBtn.addEventListener('click', () => {
+                document.getElementById('walletAddress').textContent = `User Address: ${userAddress}`;
+                document.getElementById('smartAccountAddress').textContent = `Smart Account: ${smartAccountAddress}`;
+                
+                // Dapatkan saldo ETH
+                provider.getBalance(userAddress).then(balance => {
+                    const ethBalance = ethers.utils.formatEther(balance);
+                    document.getElementById('balanceInfo').textContent = `ETH Balance: ${ethBalance}`;
+                });
+                
+                // Dapatkan saldo token
+                thirdwebSdk.getToken(NYAMPAH_TOKEN_ADDRESS).then(tokenContract => {
+                    tokenContract.balanceOf(userAddress).then(balance => {
+                        const tokenBalance = ethers.utils.formatUnits(balance, 18);
+                        document.getElementById('tokenBalance').textContent = `NYMPH Balance: ${tokenBalance}`;
+                    });
+                });
+                
+                walletInfoModal.style.display = 'flex';
+            });
+            
+            document.getElementById('closeWalletInfo').addEventListener('click', () => {
+                walletInfoModal.style.display = 'none';
+            });
+            
+            // Disconnect wallet
+            disconnectWalletBtn.addEventListener('click', () => {
+                // Reset state
+                userAddress = null;
+                smartAccountAddress = null;
+                biconomySmartAccount = null;
+                thirdwebSdk = null;
+                
+                // Reset UI
+                balanceAmountEl.textContent = 'Rp 0';
+                walletInfoModal.style.display = 'none';
+                
+                showNotification('Wallet Disconnected', 'Anda telah keluar dari smart wallet');
+            });
+            
+            // Permintaan notifikasi
+            if (!('Notification' in window)) {
+                console.log('This browser does not support desktop notification');
+            } else if (Notification.permission !== 'granted') {
+                Notification.requestPermission();
+            }
+        });
+    </script>
+</body>
+</html>

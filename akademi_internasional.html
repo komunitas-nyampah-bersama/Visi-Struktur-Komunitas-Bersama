@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Nyampah Akademi & Mahasiswa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f0f2f5; /* Light gray background */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* App Container - Mimics Glide's mobile-first approach */
+        .app-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Typical mobile width */
+            min-height: 600px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background-color: #28a745; /* Green from Nyampah Akademi */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Main Tab Navigation */
+        .main-tab-nav {
+            display: flex;
+            background-color: #e9ecef;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .main-tab-nav button {
+            flex: 1;
+            padding: 15px 10px;
+            border: none;
+            background-color: transparent;
+            font-size: 1em;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.2s, background-color 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .main-tab-nav button.active {
+            color: #28a745; /* Active tab color */
+            border-bottom-color: #28a745;
+            background-color: #f8f9fa;
+        }
+
+        .main-tab-nav button:hover:not(.active) {
+            background-color: #f0f2f5;
+        }
+
+        /* Main Tab Content */
+        .main-tab-content {
+            flex-grow: 1; /* Takes remaining space */
+            overflow-y: auto; /* Scrollable content for each tab */
+            padding: 20px;
+            display: none; /* Hidden by default */
+        }
+
+        .main-tab-content.active {
+            display: block; /* Show active tab */
+        }
+
+        /* --- NYAMPAH AKADEMI STYLES --- */
+        .program-card, .class-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .program-card:hover, .class-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+        .program-card h3, .class-card h4 {
+            font-size: 1.5em;
+            color: #28a745;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .program-card p, .class-card p {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        .program-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 15px;
+            text-align: left;
+            color: #555;
+        }
+        .program-card ul li {
+            padding: 5px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .program-card ul li:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 0.9em;
+        }
+        .btn-secondary {
+            background-color: #fff;
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        .btn-secondary:hover {
+            background-color: #e2f0e6;
+            transform: translateY(-2px);
+        }
+
+        .absen-form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .absen-form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .absen-form-container input[type="text"],
+        .absen-form-container input[type="email"],
+        .absen-form-container select,
+        .absen-form-container input[type="date"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .absen-form-container select {
+            width: 100%;
+        }
+
+        .absen-form-container button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .absen-form-container button[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .form-message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* --- PROFIL MAHASISWA STYLES --- */
+        .search-bar {
+            padding-bottom: 15px; /* Adjust padding for search in tab */
+            background-color: #fff; /* Match tab content background */
+            border-bottom: none; /* No border here */
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: #007bff;
+        }
+
+        .student-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #007bff; /* Accent border */
+        }
+
+        .student-info {
+            flex-grow: 1;
+        }
+
+        .student-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+            color: #222;
+        }
+
+        .student-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* My Profile Section within Mahasiswa Tab */
+        .my-profile-display {
+            background-color: #e8f5e9; /* Light green background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+
+        .my-profile-display img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #28a745; /* Green border for self profile */
+        }
+
+        .my-profile-display h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+            color: #222;
+        }
+
+        .my-profile-display p {
+            margin: 0;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        /* Edit Profile Form (hidden by default) */
+        .edit-profile-form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: none; /* Hidden by default */
+        }
+
+        .edit-profile-form-container h3 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .edit-profile-form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .edit-profile-form-container input[type="text"],
+        .edit-profile-form-container input[type="email"],
+        .edit-profile-form-container input[type="number"],
+        .edit-profile-form-container input[type="url"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .edit-profile-form-container input:focus {
+            border-color: #007bff;
+        }
+
+        .edit-profile-form-container button {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .edit-profile-form-container button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Detail View (Overlay) */
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .detail-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .detail-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .detail-overlay.active .detail-card {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .detail-card .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .detail-card .close-btn:hover {
+            color: #333;
+        }
+
+        .detail-card img {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 3px solid #007bff;
+        }
+
+        .detail-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            color: #007bff;
+        }
+
+        .detail-card p {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #555;
+            text-align: center;
+        }
+
+        .detail-card .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95em;
+        }
+
+        .detail-card .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-card .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .detail-card .info-value {
+            font-weight: 400;
+            color: #333;
+        }
+
+        .detail-card .edit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .detail-card .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: #888;
+            padding: 50px 20px;
+            font-size: 1.1em;
+        }
+
+        /* Section Headings within Tabs */
+        .main-tab-content h2 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            Portal Nyampah Akademi
+        </div>
+
+        <div class="main-tab-nav">
+            <button class="main-tab-button active" data-tab="akademiTab">Akademi</button>
+            <button class="main-tab-button" data-tab="mahasiswaTab">Mahasiswa</button>
+        </div>
+
+        <div id="akademiTab" class="main-tab-content active">
+            <h2>Program Unggulan Nyampah Akademi</h2>
+            <div class="program-grid">
+                <div class="program-card">
+                    [span_0](start_span)<h3>PRG-001-1: Edukasi Pilah Sampah dari Rumah</h3>[span_0](end_span)
+                    <p>Pelajari cara memilah sampah dari rumah dengan benar. Ubah kebiasaan menjadi aset berharga!</p>
+                    <ul>
+                        [span_1](start_span)<li>Mengenal Sampah: Pengertian sampah & jenisnya, 4 Kelompok & 17 Kategori Sampah.[span_1](end_span)</li>
+                        [span_2](start_span)<li>Penanganan Sampah B3: Bahaya sampah B3/residu, teknik penanganan aman.[span_2](end_span)</li>
+                        [span_3](start_span)<li>Mindset Pilah Sampah: Psikologi perubahan perilaku, integrasi pilah sampah.[span_3](end_span)</li>
+                        [span_4](start_span)<li>Praktik Daur Ulang: Cara pilah organik & anorganik, daur ulang kreatif botol bekas.[span_4](end_span)</li>
+                        [span_5](start_span)<li>Ekonomi Sirkular: Konsep ekonomi sirkular, studi kasus sampah jadi sumber pendapatan.[span_5](end_span)</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Detail Program</a>
+                </div>
+
+                <div class="program-card">
+                    [span_6](start_span)<h3>PRG-001-2: Edukasi Ekonomi Sampah</h3>[span_6](end_span)
+                    <p>Pahami bagaimana sampah bisa menjadi sumber penghasilan. Sampahku, Tabunganku!</p>
+                    <ul>
+                        [span_7](start_span)<li>Sampah = Tabungan: Skema "Sampahku, Tabunganku", teknik konversi sampah jadi aset.[span_7](end_span)</li>
+                        [span_8](start_span)<li>Pasar Daur Ulang: Tren industri daur ulang global, peluang ekspor sampah bernilai.[span_8](end_span)</li>
+                        [span_9](start_span)<li>Keuangan Sirkular: Dasar-dasar ekonomi sirkular, model bisnis "zero waste".[span_9](end_span)</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Detail Program</a>
+                </div>
+
+                <div class="program-card">
+                    [span_10](start_span)<h3>PRG-001-3: Edukasi Digitalisasi Sampah</h3>[span_10](end_span)
+                    <p>Jelajahi dunia digitalisasi sampah dan teknologi blockchain untuk keberlanjutan.</p>
+                    <ul>
+                        [span_11](start_span)<li>Blockchain & Sampah: Tokenisasi aktivitas lingkungan, konsep NyampahCoin.[span_11](end_span)</li>
+                        [span_12](start_span)<li>AI Pengelolaan Sampah: Optimisasi logistik sampah berbasis AI.[span_12](end_span)</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Detail Program</a>
+                </div>
+
+                <div class="program-card">
+                    [span_13](start_span)<h3>PRG-001-4: Edukasi Energi Terbarukan</h3>[span_13](end_span)
+                    <p>Temukan potensi sampah sebagai sumber energi terbarukan dan proyek berkelanjutan.</p>
+                    <ul>
+                        [span_14](start_span)<li>Konversi Sampah: Teknologi biogas & pirolisis, maggot farming.[span_14](end_span)</li>
+                        [span_15](start_span)<li>Investasi Hijau: Skema investasi energi terbarukan dari sampah.[span_15](end_span)</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Detail Program</a>
+                </div>
+            </div>
+
+            <h2>Jadwal Kelas Nyampah Akademi</h2>
+            <div class="class-list">
+                <div class="class-card">
+                    <h4>Kelas: Mengenal Sampah & Jenis-jenisnya</h4>
+                    [span_16](start_span)<p>Sub-modul: Mengenal Sampah[span_16](end_span)</p>
+                    [span_17](start_span)<p class="meta">Program: PRG-001-1: Edukasi Pilah Sampah dari Rumah</p>[span_17](end_span)
+                    <p class="meta">Jadwal: Setiap Senin, 10:00 - 12:00 WIB</p>
+                </div>
+
+                <div class="class-card">
+                    <h4>Kelas: Sampah = Tabungan</h4>
+                    [span_18](start_span)<p>Sub-modul: Sampah = Tabungan[span_18](end_span)</p>
+                    [span_19](start_span)<p class="meta">Program: PRG-001-2: Edukasi Ekonomi Sampah</p>[span_19](end_span)
+                    <p class="meta">Jadwal: Setiap Rabu, 14:00 - 16:00 WIB</p>
+                </div>
+
+                <div class="class-card">
+                    <h4>Kelas: Blockchain & Sampah</h4>
+                    [span_20](start_span)<p>Sub-modul: Blockchain & Sampah[span_20](end_span)</p>
+                    [span_21](start_span)<p class="meta">Program: PRG-001-3: Edukasi Digitalisasi Sampah</p>[span_21](end_span)
+                    <p class="meta">Jadwal: Setiap Jumat, 09:00 - 11:00 WIB</p>
+                </div>
+
+                 <div class="class-card">
+                    <h4>Kelas: Konversi Sampah</h4>
+                    [span_22](start_span)<p>Sub-modul: Konversi Sampah[span_22](end_span)</p>
+                    [span_23](start_span)<p class="meta">Program: PRG-001-4: Edukasi Energi Terbarukan</p>[span_23](end_span)
+                    <p class="meta">Jadwal: Setiap Kamis, 13:00 - 15:00 WIB</p>
+                </div>
+            </div>
+
+            <h2>Formulir Absensi Kelas</h2>
+            <div class="absen-form-container">
+                <form id="attendanceForm">
+                    <label for="absenNama">Nama Lengkap:</label>
+                    <input type="text" id="absenNama" name="nama" required>
+
+                    <label for="absenEmail">Email:</label>
+                    <input type="email" id="absenEmail" name="email" required>
+
+                    <label for="absenKelas">Pilih Kelas:</label>
+                    <select id="absenKelas" name="kelas" required>
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="Mengenal Sampah & Jenis-jenisnya">Mengenal Sampah & Jenis-jenisnya</option>
+                        <option value="Sampah = Tabungan">Sampah = Tabungan</option>
+                        <option value="Blockchain & Sampah">Blockchain & Sampah</option>
+                        <option value="Konversi Sampah">Konversi Sampah</option>
+                        <option value="Penanganan Sampah B3">Penanganan Sampah B3</option>
+                        <option value="Mindset Pilah Sampah">Mindset Pilah Sampah</option>
+                        <option value="Praktik Daur Ulang">Praktik Daur Ulang</option>
+                        <option value="Ekonomi Sirkular">Ekonomi Sirkular</option>
+                        <option value="Pasar Daur Ulang">Pasar Daur Ulang</option>
+                        <option value="Keuangan Sirkular">Keuangan Sirkular</option>
+                        <option value="AI Pengelolaan Sampah">AI Pengelolaan Sampah</option>
+                        <option value="Investasi Hijau">Investasi Hijau</option>
+                    </select>
+
+                    <label for="absenTanggal">Tanggal Absen:</label>
+                    <input type="date" id="absenTanggal" name="tanggal" required>
+
+                    <button type="submit">Submit Absen</button>
+                </form>
+                <p id="absenFormMessage" class="form-message"></p>
+            </div>
+        </div>
+
+        <div id="mahasiswaTab" class="main-tab-content">
+            <h2>Profil Saya</h2>
+            <div class="my-profile-display" id="myProfileDisplay">
+                </div>
+
+            <div class="edit-profile-form-container" id="editProfileFormContainer">
+                <h3>Edit Profil Saya</h3>
+                <form id="profileEditForm">
+                    <label for="editNama">Nama Lengkap:</label>
+                    <input type="text" id="editNama" name="nama" required>
+
+                    <label for="editNIM">NIM:</label>
+                    <input type="text" id="editNIM" name="nim" required>
+
+                    <label for="editJurusan">Jurusan:</label>
+                    <input type="text" id="editJurusan" name="jurusan" required>
+
+                    <label for="editAngkatan">Angkatan:</label>
+                    <input type="number" id="editAngkatan" name="angkatan" required>
+
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" name="email" required>
+
+                    <label for="editTelepon">No. Telepon:</label>
+                    <input type="text" id="editTelepon" name="telepon">
+
+                    <label for="editPhoto">URL Foto Profil:</label>
+                    <input type="url" id="editPhoto" name="photo">
+
+                    <button type="submit">Simpan Perubahan</button>
+                </form>
+                <p id="profileFormMessage" class="form-message"></p>
+            </div>
+
+            <h2>Daftar Mahasiswa Lain</h2>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Cari nama atau NIM...">
+            </div>
+            <div class="student-list" id="studentList">
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    Tidak ada mahasiswa lain yang ditemukan.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-card" id="detailCard">
+            <button class="close-btn">&times;</button>
+            <img id="detailPhoto" src="" alt="Foto Mahasiswa">
+            <h2 id="detailNama"></h2>
+            <p id="detailNIM"></p>
+            <div class="info-row">
+                <span class="info-label">Jurusan:</span>
+                <span class="info-value" id="detailJurusan"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Angkatan:</span>
+                <span class="info-value" id="detailAngkatan"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Email:</span>
+                <span class="info-value" id="detailEmail"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">No. Telepon:</span>
+                <span class="info-value" id="detailTelepon"></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Judul Skripsi:</span>
+                <span class="info-value" id="detailJudul"></span>
+            </div>
+            <button class="edit-btn" id="editDetailBtn">Edit Profil Ini (Jika Anda)</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data Mahasiswa (Dummy Data)
+            let students = [
+  {
+    "id": 1,
+    "nama": "A. Zalzabila Sagita Ah",
+    "nim": "212201270",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201270@email.com",
+    "telepon": "082122012700",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=ZA",
+    "skripsi": {
+      "judul": "PERANAN GURU KELAS DALAM MEMBANGUN MINAT BELAJAR PESERTA DIDIK KELAS 6 PUTRI DI SD ISLAM AL BAYYINAH MAKASSAR",
+      "status_dikti": "LULUS"
+    }
+  },
+  {
+    "id": 2,
+    "nama": "Abdul Aziz",
+    "nim": "212201271",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201271@email.com",
+    "telepon": "082122012710",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=AA",
+    "skripsi": {
+      "judul": "Nilai-nilai karakter dalam kitab muqoddimah jurumiyyah karya muhammad bin daud ash shinhaji dan relevansinya dengan pendidikan akhlak",
+      "status_dikti": "LULUS"
+    }
+  },
+  {
+    "id": 3,
+    "nama": "Abdul Muqit",
+    "nim": "212201179",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201179@email.com",
+    "telepon": "082122011790",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=AM",
+    "skripsi": {
+      "judul": "PERANAN GURU NGAJI DALAM PEMBELAJARAN TAHSIN AL-QUR'AN KEPADA ANAK-ANAK, REMAJA, DAN DEWASA DI MUSALA SIROTOL MUSTAQIM DESA PAMUTIH KECAMATAN ULUJAMI PEMALANG",
+      "status_dikti": "LULUS"
+    }
+  },
+  {
+    "id": 4,
+    "nama": "Abu Dzar Akbar Navis",
+    "nim": "212201167",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201167@email.com",
+    "telepon": "082122011670",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=AD",
+    "skripsi": {
+      "judul": "Strategi Wali Asrama Dalam Internalisasi Nilai-Nilai Ibadah Pada Santri Pondok Pesantren Tahfidzul Qur'an Al Ikhlash Kecamatan Mojolaban Kabupaten Sukoharjo Tahun Ajaran 2024/2025",
+      "status_dikti": "LULUS"
+    }
+  },
+  {
+    "id": 5,
+    "nama": "Abung Supriadi",
+    "nim": "212201180",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201180@email.com",
+    "telepon": "082122011800",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=AS",
+    "skripsi": {
+      "judul": "PEMANFA'ATAN APLIKASI ChatGPT DALAM MENDESAIN MATERI PEMBELAJARAN PAI DI KELAS VI MI NURUL YAQIN INDRAMAYU",
+      "status_dikti": "LULUS"
+    }
+  },
+  // Data dilanjutkan dari id 6 hingga 172
+  {
+    "id": 172,
+    "nama": "Uswatun Hasanah",
+    "nim": "212201567",
+    "jurusan": "Pendidikan Agama Islam",
+    "angkatan": 2021,
+    "email": "212201567@email.com",
+    "telepon": "082122015670",
+    "photo": "https://via.placeholder.com/150/007bff/FFFFFF?text=UH",
+    "skripsi": {
+      "judul": "Pengaruh buruk killing word terhadap kecerdasan bahasa dan komunikasi anak",
+      "status_dikti": "LULUS"
+    }
+  }
+];
+
+            // Asumsi Budi Santoso (students[0]) adalah user yang "login" / profil saya
+            let myProfile = { ...students[0] }; // Membuat salinan agar perubahan tidak langsung mempengaruhi daftar utama
+
+            // --- Elements for Nyampah Akademi Tab ---
+            const attendanceForm = document.getElementById('attendanceForm');
+            const absenFormMessage = document.getElementById('absenFormMessage');
+
+            // --- Elements for Mahasiswa Tab ---
+            const myProfileDisplay = document.getElementById('myProfileDisplay');
+            const editProfileFormContainer = document.getElementById('editProfileFormContainer');
+            const profileEditForm = document.getElementById('profileEditForm');
+            const profileFormMessage = document.getElementById('profileFormMessage');
+            const studentList = document.getElementById('studentList');
+            const searchInput = document.getElementById('searchInput');
+            const emptyState = document.getElementById('emptyState');
+
+            // --- Elements for Detail Overlay ---
+            const detailOverlay = document.getElementById('detailOverlay');
+            const detailCard = document.getElementById('detailCard');
+            const closeBtn = detailCard.querySelector('.close-btn');
+            const editDetailBtn = document.getElementById('editDetailBtn');
+
+            let currentlyViewingStudentId = null; // Untuk melacak profil yang sedang dilihat di modal detail
+
+            // --- MAIN TAB FUNCTIONALITY ---
+            const mainTabButtons = document.querySelectorAll('.main-tab-button');
+            const mainTabContents = document.querySelectorAll('.main-tab-content');
+
+            function activateMainTab(tabId) {
+                mainTabButtons.forEach(button => {
+                    if (button.dataset.tab === tabId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+
+                mainTabContents.forEach(content => {
+                    if (content.id === tabId) {
+                        content.classList.add('active');
+                        // Scroll to top of active tab content when activated
+                        content.scrollTop = 0;
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+
+                // Render specific content when tab is activated
+                if (tabId === 'mahasiswaTab') {
+                    renderMyProfile(); // Pastikan profil saya ditampilkan
+                    editProfileFormContainer.style.display = 'none'; // Sembunyikan form edit by default
+                    renderStudentList(students.filter(s => s.id !== myProfile.id)); // Tampilkan daftar mahasiswa lain
+                }
+            }
+
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    activateMainTab(button.dataset.tab);
+                });
+            });
+
+            // --- NYAMPAH AKADEMI - ABSEN FORM FUNCTIONALITY ---
+            attendanceForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const nama = document.getElementById('absenNama').value;
+                const kelas = document.getElementById('absenKelas').value;
+                const tanggal = document.getElementById('absenTanggal').value;
+                const email = document.getElementById('absenEmail').value;
+
+                if (nama && kelas && tanggal && email) {
+                    absenFormMessage.textContent = `Absen Anda untuk kelas "${kelas}" pada tanggal ${tanggal} telah terekam. Terima kasih, ${nama}!`;
+                    absenFormMessage.classList.remove('error');
+                    absenFormMessage.classList.add('success');
+                    attendanceForm.reset();
+                } else {
+                    absenFormMessage.textContent = 'Mohon lengkapi semua data untuk absen.';
+                    absenFormMessage.classList.remove('success');
+                    absenFormMessage.classList.add('error');
+                }
+                setTimeout(() => { absenFormMessage.textContent = ''; absenFormMessage.className = 'form-message'; }, 3000);
+            });
+
+
+            // --- PROFIL MAHASISWA - MY PROFILE DISPLAY & EDIT FORM ---
+            function renderMyProfile() {
+                myProfileDisplay.innerHTML = `
+                    <img src="${myProfile.photo}" alt="${myProfile.nama}">
+                    <h3>${myProfile.nama}</h3>
+                    <p>NIM: ${myProfile.nim}</p>
+                    <p>Jurusan: ${myProfile.jurusan}</p>
+                    <p>Angkatan: ${myProfile.angkatan}</p>
+                    <p>Email: ${myProfile.email}</p>
+                    <p>No. Telepon: ${myProfile.telepon || '-'}</p>
+                    <button class="btn btn-secondary" id="showEditProfileFormBtn">Edit Profil Saya</button>
+                `;
+
+                const showEditProfileFormBtn = document.getElementById('showEditProfileFormBtn');
+                if (showEditProfileFormBtn) {
+                    showEditProfileFormBtn.addEventListener('click', () => {
+                        populateEditForm(myProfile);
+                        editProfileFormContainer.style.display = 'block';
+                        myProfileDisplay.style.display = 'none';
+                        profileFormMessage.textContent = ''; // Clear previous messages
+                        profileFormMessage.className = 'form-message';
+                    });
+                }
+            }
+
+            function populateEditForm(studentData) {
+                document.getElementById('editNama').value = studentData.nama;
+                document.getElementById('editNIM').value = studentData.nim;
+                document.getElementById('editJurusan').value = studentData.jurusan;
+                document.getElementById('editAngkatan').value = studentData.angkatan;
+                document.getElementById('editEmail').value = studentData.email;
+                document.getElementById('editTelepon').value = studentData.telepon;
+                document.getElementById('editPhoto').value = studentData.photo;
+            }
+
+            profileEditForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const updatedData = {
+                    nama: document.getElementById('editNama').value,
+                    nim: document.getElementById('editNIM').value,
+                    jurusan: document.getElementById('editJurusan').value,
+                    angkatan: parseInt(document.getElementById('editAngkatan').value),
+                    email: document.getElementById('editEmail').value,
+                    telepon: document.getElementById('editTelepon').value,
+                    photo: document.getElementById('editPhoto').value || `https://via.placeholder.com/150/007bff/FFFFFF?text=${document.getElementById('editNama').value.split(' ').map(n => n[0]).join('')}`
+                };
+
+                // Update myProfile data
+                myProfile = { ...myProfile, ...updatedData };
+
+                // Update the corresponding student in the main `students` array
+                const index = students.findIndex(s => s.id === myProfile.id);
+                if (index !== -1) {
+                    students[index] = { ...students[index], ...updatedData };
+                }
+
+                // Re-render display and list
+                renderMyProfile();
+                renderStudentList(students.filter(s => s.id !== myProfile.id)); // Refresh other students list
+                editProfileFormContainer.style.display = 'none';
+                myProfileDisplay.style.display = 'block';
+
+                profileFormMessage.textContent = 'Profil berhasil diperbarui!';
+                profileFormMessage.classList.remove('error');
+                profileFormMessage.classList.add('success');
+                setTimeout(() => { profileFormMessage.textContent = ''; profileFormMessage.className = 'form-message'; }, 3000);
+            });
+
+
+            // --- PROFIL MAHASISWA - STUDENT LIST & SEARCH FUNCTIONALITY ---
+            function renderStudentList(filteredStudents) {
+                studentList.innerHTML = ''; // Clear current list
+
+                if (filteredStudents.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                    filteredStudents.forEach(student => {
+                        const card = document.createElement('div');
+                        card.classList.add('student-card');
+                        card.dataset.id = student.id; // Store ID for detail lookup
+
+                        card.innerHTML = `
+                            <img src="${student.photo}" alt="${student.nama}">
+                            <div class="student-info">
+                                <h3>${student.nama}</h3>
+                                <p>NIM: ${student.nim}</p>
+                                <p>${student.jurusan}</p>
+                            </div>
+                        `;
+                        studentList.appendChild(card);
+                    });
+                }
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = students.filter(student =>
+                    student.id !== myProfile.id && // Exclude my own profile from "other students" list
+                    (student.nama.toLowerCase().includes(searchTerm) ||
+                    student.nim.toLowerCase().includes(searchTerm) ||
+                    student.jurusan.toLowerCase().includes(searchTerm))
+                );
+                renderStudentList(filtered);
+            });
+
+
+            // --- DETAIL OVERLAY FUNCTIONALITY ---
+            function showStudentDetail(studentId) {
+                const student = students.find(s => s.id === studentId);
+                if (student) {
+                    document.getElementById('detailPhoto').src = student.photo;
+                    document.getElementById('detailPhoto').alt = `Foto ${student.nama}`;
+                    document.getElementById('detailNama').textContent = student.nama;
+                    document.getElementById('detailNIM').textContent = `NIM: ${student.nim}`;
+                    document.getElementById('detailJurusan').textContent = student.jurusan;
+                    document.getElementById('detailAngkatan').textContent = student.angkatan;
+                    document.getElementById('detailEmail').textContent = student.email;
+                    document.getElementById('detailTelepon').textContent = student.telepon;
+                    document.getElementById('detailJudul').textContent = student.skripsi;
+
+
+                    currentlyViewingStudentId = student.id; // Set the ID of the student being viewed
+                    detailOverlay.classList.add('active');
+
+                    // Show/hide edit button based on whether it's my own profile
+                    if (currentlyViewingStudentId === myProfile.id) {
+                        editDetailBtn.style.display = 'block';
+                        editDetailBtn.textContent = 'Edit Profil Saya';
+                    } else {
+                        editDetailBtn.style.display = 'none'; // Or change text to "Hubungi Mahasiswa"
+                    }
+                }
+            }
+
+            function hideStudentDetail() {
+                detailOverlay.classList.remove('active');
+                currentlyViewingStudentId = null; // Clear when closing detail
+            }
+
+            // Event listener for opening detail view from student list
+            studentList.addEventListener('click', (e) => {
+                const card = e.target.closest('.student-card');
+                if (card) {
+                    const studentId = parseInt(card.dataset.id);
+                    showStudentDetail(studentId);
+                }
+            });
+
+            // Event listeners for closing detail view
+            closeBtn.addEventListener('click', hideStudentDetail);
+            detailOverlay.addEventListener('click', (e) => {
+                if (e.target === detailOverlay) { // Only close if click is on the overlay itself, not the card
+                    hideStudentDetail();
+                }
+            });
+
+            // Event listener for "Edit Profil Ini" button on detail overlay
+            editDetailBtn.addEventListener('click', () => {
+                if (currentlyViewingStudentId === myProfile.id) {
+                    activateMainTab('mahasiswaTab'); // Switch to Mahasiswa tab
+                    populateEditForm(myProfile); // Populate form with myProfile data
+                    myProfileDisplay.style.display = 'none'; // Hide profile display
+                    editProfileFormContainer.style.display = 'block'; // Show edit form
+                    hideStudentDetail(); // Close the detail overlay
+                } else {
+                    // This scenario should ideally not happen if edit button is hidden for others' profiles
+                    // But if it were visible, it would need different logic (e.g., admin edit, or simply alert)
+                    alert('Anda hanya dapat mengedit profil Anda sendiri.');
+                }
+            });
+
+
+            // --- INITIALIZATION ---
+            activateMainTab('akademiTab'); // Mulai dengan tab Akademi aktif
+            // Data for Mahasiswa tab will be rendered when that tab is activated
+        });
+    </script>
+</body>
+</html>
+
